@@ -1,0 +1,12 @@
+---
+title: "Análisis Exploratorio de Datos - Proyecto AED"
+author:
+- Pol Reig i Gómez
+- nombre2
+- nombre3
+date: "06/10/2025"
+output: pdf_document
+journal: "Máster en Ciencia de Datos - UV"
+abstract: |
+  Resumen del análisis exploratorio realizado... (Completar)
+---
