@@ -42,5 +42,6 @@ EGHE_2019 <- EGHE_2019 %>%
 EGHE_2019 <- EGHE_2019 %>%
   filter(NHOGAR >= 1)
 
+
 ```
 
