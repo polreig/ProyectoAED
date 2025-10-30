@@ -78,7 +78,20 @@ unique(EGHE_2019["NEST2"])
 EGHE_2019<-EGHE_2019%>%mutate(NEST2=factor(NEST2, levels=c(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11), labels = c("No realiza estudios", "1º Ciclo de Educación Infantil", "2º Ciclo de Educación Infantil", "Educación Primaria", "Educación Secundaria Obligatoria (ESO)", "Bachillerato", "Ciclos Formativos de FP", "Otros estudios de educación secundaria", "Estudios Universitarios", "Ciclos Formativos de Grado Superior", "Otros estudios de educación superior", "Otros estudios sin nivel académico")))
 ```
 
+```{r}
+sum(is.na(EGHE_2019$C01))/dim(EGHE_2019)[1]
+```
 
+```{r}
+table(EGHE_2019$ESTUDIANTE[is.na(EGHE_2019$C01)])
+```
+```{r}
+library(dplyr)
+EGHE_2019<-EGHE_2019%>%
+  filter(!(is.na(C01)&ESTUDIANTE=="Sí"))
+#Queremos mantener las filas que NO cumplen esas dos condiciones
+ 
+```
 
 
   
