@@ -1,0 +1,48 @@
+---
+title: "Limpieza_Hogar"
+author: "Pablo Carbonell Martínez"
+output: html_document
+date: "2025-10-30"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(readr)
+EGHE_2019 <- read_delim("data/EGHE_2019.csv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+```
+
+Esta sección está orientada a la limpieza de las variables relacionadas con el hogar. Después de verificar si hay algún valor NA, recodificaremos las variables categóricas en facotres, mientras que verificaremos las variables numéricas clave.
+Estos datos se han dividido en dos bloques: variables de contexto geográfico y variables de contexto familiar.
+Empezamos por el bloque de las variables de contexto geográfico, que incluye 'TMUNI'. Esta variable representa el tamaño del municipio, la cual vamos a recodificar para facilitar la comprensión del análisis, asignando etiquetas descriptivas a sus códigos numéricos para definir el tipo de área de residencia. La etiquetas son las siguientes: 1="<10.000 habitantes", 2="10.000-49.999 habitantes", 3="50.000-99.999 habitantes", 4="100.000-499.999 habitantes", 5=">500.000 habitantes".
+
+```{r}
+library(dplyr)
+library(tidyr)
+
+unique(EGHE_2019["TMUNI"])
+
+EGHE_2019 <- EGHE_2019 %>% 
+  mutate(TMUNI =factor(TMUNI, levels = c(1,2,3,4,5), labels = c("<10.000 habitantes","10.000-49.999 habitantes","50.000-99.999 habitantes","100.000-499.999 habitantes",">500.000 habitantes")))
+```
+
+Siguiendo con el bloque de contexto familiar, que incluye "EHOGAR" y "NHOGAR". La variable "EHOGAR" se refiere al número de estudiantes del hogar y "NHOGAR" al número de personas del hogar. Tenemos que verificarlas como variables númericas para asegurar su consistencia. Por último, se verifica el "IDHOGAR" como identificador clave.
+
+```{r}
+# Primero, nos aseguramos que son de tipo entero.
+
+EGHE_2019 <- EGHE_2019 %>%
+  mutate(IDHOGAR = as.integer((IDHOGAR), NHOGAR = as.integer(NHOGAR), EHOGAR = as.integer(EHOGAR)))
+
+# Después, verificamos y filtramos inconsistencias lógicas en NHOGAR
+
+EGHE_2019 <- EGHE_2019 %>%
+  filter(NHOGAR >= 1)
+
+```
+
