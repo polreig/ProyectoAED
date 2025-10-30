@@ -1,16 +1,63 @@
 ---
-title: "Análisis Exploratorio de Datos - Proyecto AED"
+title: "Análisis Exploratorio del Gasto de los Hogares en Educación (EGHE 2019)"
 author:
+<<<<<<< HEAD
 - Pol Reig i Gómez
 - Clara Montalvá Barcenilla
 - Pablo Carbonell Martínez
 date: "06/10/2025"
 output: pdf_document
 journal: "Máster en Ciencia de Datos - UV"
+=======
+- name: Pol Reig i Gómez
+  affiliation: "Máster en Ciencia de Datos - UV"
+  email: polreig@alumni.uv.es
+- name: Nombre Alumno 2
+  affiliation: "Máster en Ciencia de Datos - UV"
+  email: email2@alumni.uv.es
+- name: Nombre Alumno 3
+  affiliation: "Máster en Ciencia de Datos - UV"
+  email: email3@alumni.uv.es
+date: "9 de Noviembre de 2025"
+output:
+  pdf_document: default
+  rticles::mdpi_article:
+    pandoc_args:
+    - "--lua-filter=rticles/mdpi-manuscript.lua"
+    - "--lua-filter=rticles/page-break.lua"
+    keep_tex: true
+journal: "Mini Proyecto AED - Máster en Ciencia de Datos UV"
+>>>>>>> 9569a77afe9f11d1993850c57550c4113d3317e5
 abstract: |
-  Resumen del análisis exploratorio realizado... (Completar)
+  El presente proyecto realiza un Análisis Exploratorio de Datos (AED) sobre la Encuesta de Gasto de los Hogares en Educación (EGHE) del año 2019, publicada por el Instituto Nacional de Estadística (INE). El objetivo es entender la estructura del gasto en educación en España, identificando sus principales componentes y las características de los hogares y estudiantes asociados a dicho gasto. Este informe detalla el proceso de importación, limpieza y transformación de los microdatos, seguido de un análisis univariante y bivariante para responder a las preguntas de investigación planteadas.
+keywords: AED, Gasto Educación, INE, EGHE 2019, R Markdown, rticles
 ---
+<<<<<<< HEAD
 Importación del fichero csv
 ```{r}
 EGHE_2019 <- read.delim("data/EGHE_2019.csv")
 ```
+=======
+
+```{r setup, include=FALSE}
+# Chunk de configuración inicial de R Markdown
+knitr::opts_chunk$set(
+  echo = TRUE,       # Muestra el código en el informe final
+  warning = FALSE,   # Oculta warnings
+  message = FALSE,   # Oculta mensajes
+  fig.align = "center",
+  out.width = "80%"
+)
+
+# Librerias principales
+# install.packages(c("tidyverse", "data.table", "summarytools", "knitr", "kableExtra"))
+library(tidyverse)
+library(data.table) # Para leer ficheros csv grandes
+library(knitr)
+library(kableExtra)
+
+# Estilo para las tablas
+options(knitr.table.format = "html")
+```
+
+>>>>>>> 9569a77afe9f11d1993850c57550c4113d3317e5
