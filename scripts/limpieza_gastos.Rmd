@@ -1,14 +1,21 @@
+---
+title: "limpieza_gastos"
+output: html_document
+---
+
+```{r}
 
 # Cargamos librerias
 library(dplyr)
 library(tidyr)
 library(data.table)
 
-cat("Renombrando variables de gasto: \n")
+# Cargamos los datos del .csv
 
-datos <- read.csv("data/EGHE_2019.csv",sep="\t")
+datos <- read.csv("../data/EGHE_2019.csv",sep="\t")
+```
 
-
+```{r}
 # Cambiar los nombres de las columnas usando dplyr
 datos <- datos %>%
   rename(
@@ -69,7 +76,9 @@ datos <- datos %>%
 
 # Verificar los cambios
 colnames(datos)
+```
 
+```{r}
 # Calcular porcentaje de NAs por columna
 porcentaje_nas <- colMeans(is.na(datos)) * 100
 
@@ -81,3 +90,8 @@ analisis_nas <- data.frame(
   n_total = nrow(datos)
 ) %>%
   arrange(desc(porcentaje_nas))
+
+# Ver las variables con más NAs
+head(analisis_nas, 20)
+```
+
