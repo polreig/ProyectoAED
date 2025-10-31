@@ -4,7 +4,6 @@ library(dplyr)
 library(tidyr)
 library(data.table)
 
-cat("Renombrando variables de gasto: \n")
 
 datos <- read.csv("data/EGHE_2019.csv",sep="\t")
 
