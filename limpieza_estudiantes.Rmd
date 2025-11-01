@@ -69,13 +69,13 @@ Por último, aplicamos lo mismo en el bloque de tipo de estudio del estudiante. 
 ```{r}
 unique(EGHE_2019["NEST"])
 
-EGHE_2019<-EGHE_2019%>%mutate(NEST=factor(NEST, levels=c(0, 1, 2, 3, 4, 5), labels=c("No realiza estudios", "Educación Infantil", "Educación Primaria", "Educación Secundaria", "Educación Superior", "Otros estudios sin nivel académico")))
+EGHE_2019<-EGHE_2019%>%mutate(NEST=factor(NEST, levels=c(0, 1, 2, 3, 4, 5), labels=c("No realiza estudios", "Educación Infantil", "Educación Primaria", "Educación Secundaria", "Educación Superior", "Otros estudios sin nivel académico")))%>%rename(Nivel_estudios=NEST)
 ```
 
 ```{r}
 unique(EGHE_2019["NEST2"])
 
-EGHE_2019<-EGHE_2019%>%mutate(NEST2=factor(NEST2, levels=c(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11), labels = c("No realiza estudios", "1º Ciclo de Educación Infantil", "2º Ciclo de Educación Infantil", "Educación Primaria", "Educación Secundaria Obligatoria (ESO)", "Bachillerato", "Ciclos Formativos de FP", "Otros estudios de educación secundaria", "Estudios Universitarios", "Ciclos Formativos de Grado Superior", "Otros estudios de educación superior", "Otros estudios sin nivel académico")))
+EGHE_2019<-EGHE_2019%>%mutate(NEST2=factor(NEST2, levels=c(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11), labels = c("No realiza estudios", "1º Ciclo de Educación Infantil", "2º Ciclo de Educación Infantil", "Educación Primaria", "Educación Secundaria Obligatoria (ESO)", "Bachillerato", "Ciclos Formativos de FP", "Otros estudios de educación secundaria", "Estudios Universitarios", "Ciclos Formativos de Grado Superior", "Otros estudios de educación superior", "Otros estudios sin nivel académico")))%>%rename(Nivel_estudios_especifico=NEST2)
 ```
 
 ```{r}
@@ -87,8 +87,7 @@ table(EGHE_2019$ESTUDIANTE[is.na(EGHE_2019$C01)])
 ```
 ```{r}
 library(dplyr)
-EGHE_2019<-EGHE_2019%>%
-  filter(!(is.na(C01)&ESTUDIANTE=="Sí"))
+EGHE_2019<-EGHE_2019%>%filter(ESTUDIANTE=="Sí" & !is.na(C01))%>%mutate(C01=factor(C01, levels=c(1,2,3), labels=c("Enseñanza pública", "Enseñanza concertada", "Enseñanza privada")))%>%rename(Tipo_educacion=C01)
 #Queremos mantener las filas que NO cumplen esas dos condiciones
  
 ```
