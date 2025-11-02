@@ -60,4 +60,11 @@ library(kableExtra)
 options(knitr.table.format = "html")
 ```
 
->>>>>>> 9569a77afe9f11d1993850c57550c4113d3317e5
+```{r}
+datos <- read.csv("data/EGHE_2019.csv",sep="\t")
+source("scripts/limpieza_gastos.R")
+
+head(dataset_limpio)
+```
+
+
