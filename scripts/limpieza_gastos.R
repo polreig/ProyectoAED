@@ -4,10 +4,6 @@ library(dplyr)
 library(tidyr)
 library(data.table)
 
-
-datos <- read.csv("data/EGHE_2019.csv",sep="\t")
-
-
 # Cambiar los nombres de las columnas usando dplyr
 datos <- datos %>%
   rename(
