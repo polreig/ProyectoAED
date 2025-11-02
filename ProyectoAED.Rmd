@@ -1,43 +1,34 @@
 ---
 title: "Análisis Exploratorio del Gasto de los Hogares en Educación (EGHE 2019)"
 author:
-<<<<<<< HEAD
-- Pol Reig i Gómez
-- Clara Montalvá Barcenilla
-- Pablo Carbonell Martínez
-date: "06/10/2025"
-output: pdf_document
-journal: "Máster en Ciencia de Datos - UV"
-=======
 - name: Pol Reig i Gómez
   affiliation: "Máster en Ciencia de Datos - UV"
   email: polreig@alumni.uv.es
-- name: Nombre Alumno 2
+- name: Clara Montalvá Barcenilla
   affiliation: "Máster en Ciencia de Datos - UV"
   email: email2@alumni.uv.es
-- name: Nombre Alumno 3
+- name: Pablo Carbonell Martínez
   affiliation: "Máster en Ciencia de Datos - UV"
   email: email3@alumni.uv.es
 date: "9 de Noviembre de 2025"
 output:
-  pdf_document: default
+  pdf_document:
+    toc: true
+  html_document:
+    df_print: kable
+    toc: true
+    toc_float: true
+    theme: united
   rticles::mdpi_article:
     pandoc_args:
     - "--lua-filter=rticles/mdpi-manuscript.lua"
     - "--lua-filter=rticles/page-break.lua"
     keep_tex: true
-journal: "Mini Proyecto AED - Máster en Ciencia de Datos UV"
->>>>>>> 9569a77afe9f11d1993850c57550c4113d3317e5
 abstract: |
   El presente proyecto realiza un Análisis Exploratorio de Datos (AED) sobre la Encuesta de Gasto de los Hogares en Educación (EGHE) del año 2019, publicada por el Instituto Nacional de Estadística (INE). El objetivo es entender la estructura del gasto en educación en España, identificando sus principales componentes y las características de los hogares y estudiantes asociados a dicho gasto. Este informe detalla el proceso de importación, limpieza y transformación de los microdatos, seguido de un análisis univariante y bivariante para responder a las preguntas de investigación planteadas.
 keywords: AED, Gasto Educación, INE, EGHE 2019, R Markdown, rticles
+journal: "Proyecto AED - Máster en Ciencia de Datos UV"
 ---
-<<<<<<< HEAD
-Importación del fichero csv
-```{r}
-EGHE_2019 <- read.delim("data/EGHE_2019.csv")
-```
-=======
 
 ```{r setup, include=FALSE}
 # Chunk de configuración inicial de R Markdown
@@ -60,11 +51,48 @@ library(kableExtra)
 options(knitr.table.format = "html")
 ```
 
-```{r}
+
+# 1. Introducción
+
+La educación es ampliamente reconocida como uno de los pilares fundamentales para el desarrollo económico y social de un país. Sin embargo, el acceso y la permanencia en el sistema educativo conllevan una serie de costes directos e indirectos que son asumidos en gran medida por los hogares. Este gasto no se limita únicamente a las tasas y matrículas, sino que abarca un complejo ecosistema de bienes y servicios que incluye desde libros de texto y material escolar hasta servicios de comedor, transporte, actividades extraescolares y clases particulares.
+
+Comprender la magnitud y la composición de este gasto es esencial para evaluar la equidad del sistema educativo y el esfuerzo económico que supone para las familias. El Instituto Nacional de Estadística (INE) proporciona una visión detallada de esta realidad a través de la Encuesta de Gasto de los Hogares en Educación (EGHE).
+
+El presente proyecto tiene como objetivo realizar un Análisis Exploratorio de Datos (AED) sobre los microdatos de la EGHE 2019. Nuestro propósito es diseccionar la estructura del gasto en educación en España, identificando los patrones subyacentes, las diferencias entre distintos tipos de enseñanza y las características de los estudiantes que más gasto generan.
+
+Para guiar nuestro análisis, planteamos las siguientes preguntas de investigación:
+
+1.  **¿Cómo se distribuye el gasto educativo entre los diferentes tipos de centros (públicos, concertados, privados) y qué factores explican estas diferencias?** Compararemos los patrones de gasto entre los tres regímenes de financiación, analizando no solo las diferencias en el gasto total sino también en su composición (matrículas, servicios complementarios, material).
+2.  **¿Qué características del hogar y del estudiante predicen un mayor gasto educativo? ¿Existen diferencias significativas por sexo, composición familiar o tamaño del municipio?** Identificaremos los principales predictores del gasto educativo mediante el análisis de variables demográficas y estructurales. Evaluaremos específicamente si existen brechas de gasto asociadas al sexo del estudiante y el efecto de la composición del hogar.
+3.  **¿Cómo evoluciona la estructura del gasto a lo largo del itinerario educativo, desde Infantil hasta la Universidad, y qué servicios adquieren mayor relevancia en cada etapa?** Compararemos el gasto medio en diferentes niveles, como Educación Infantil, Primaria, ESO, Bachillerato y Universidad.
+4.  **¿Qué peso real tienen los gastos complementarios (clases particulares, actividades extraescolares, material específico) en el presupuesto total y qué familias los asumen en mayor medida?** Cuantificaremos el impacto de partidas específicas como clases particulares, servicios de comedor, actividades extraescolares y uniformes escolares, que frecuentemente pasan desapercibidos en el debate público sobre el coste de la educación.
+
+Este informe detallará el proceso de limpieza y transformación de los datos, seguido del análisis univariante y bivariante para dar respuesta a estas preguntas, concluyendo con los principales hallazgos de nuestro estudio.
+
+
+
+# 2. Carga y Preparación de Datos
+
+Este *chunk* es el "motor" del informe. Carga los datos crudos una vez y
+ejecuta los 3 scripts de limpieza en orden sobre una copia.
+
+
+
+```{r, include=FALSE}
+# Leemos los datos del dataset EGHE_2019.csv
+
+# Se asignará la lectura a una variable llamada datos, esta será modificada por los archivos de limpieza y dará como salida un dataset limpio
 datos <- read.csv("data/EGHE_2019.csv",sep="\t")
+
 source("scripts/limpieza_gastos.R")
 
-head(dataset_limpio)
+
+#head(dataset_limpio)
 ```
+
+# 3. Descripción del Conjunto de Datos Limpio
+
+Tras la ejecución de los scripts de limpieza, obtenemos el *dataset* `dataset_limpio`. Este conjunto de datos contiene *`r nrow(dataset_limpio)`* observaciones (cada una representando a un estudiante que reportó gastos) y *`r ncol(dataset_limpio)`* variables limpias y listas para el análisis.
+
 
 
