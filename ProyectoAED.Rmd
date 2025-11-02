@@ -1,6 +1,14 @@
 ---
 title: "Análisis Exploratorio del Gasto de los Hogares en Educación (EGHE 2019)"
 author:
+<<<<<<< HEAD
+- Pol Reig i Gómez
+- Clara Montalvá Barcenilla
+- Pablo Carbonell Martínez
+date: "06/10/2025"
+output: pdf_document
+journal: "Máster en Ciencia de Datos - UV"
+=======
 - name: Pol Reig i Gómez
   affiliation: "Máster en Ciencia de Datos - UV"
   email: polreig@alumni.uv.es
@@ -19,10 +27,17 @@ output:
     - "--lua-filter=rticles/page-break.lua"
     keep_tex: true
 journal: "Mini Proyecto AED - Máster en Ciencia de Datos UV"
+>>>>>>> 9569a77afe9f11d1993850c57550c4113d3317e5
 abstract: |
   El presente proyecto realiza un Análisis Exploratorio de Datos (AED) sobre la Encuesta de Gasto de los Hogares en Educación (EGHE) del año 2019, publicada por el Instituto Nacional de Estadística (INE). El objetivo es entender la estructura del gasto en educación en España, identificando sus principales componentes y las características de los hogares y estudiantes asociados a dicho gasto. Este informe detalla el proceso de importación, limpieza y transformación de los microdatos, seguido de un análisis univariante y bivariante para responder a las preguntas de investigación planteadas.
 keywords: AED, Gasto Educación, INE, EGHE 2019, R Markdown, rticles
 ---
+<<<<<<< HEAD
+Importación del fichero csv
+```{r}
+EGHE_2019 <- read.delim("data/EGHE_2019.csv")
+```
+=======
 
 ```{r setup, include=FALSE}
 # Chunk de configuración inicial de R Markdown
@@ -45,3 +60,4 @@ library(kableExtra)
 options(knitr.table.format = "html")
 ```
 
+>>>>>>> 9569a77afe9f11d1993850c57550c4113d3317e5
