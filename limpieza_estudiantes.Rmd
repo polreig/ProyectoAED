@@ -1,0 +1,96 @@
+---
+title: "limpieza_estudiantes"
+author: "Clara Montalva Barcenilla"
+date: "2025-10-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+EGHE_2019<-read.delim("data/EGHE_2019.csv")
+```
+
+En la limpieza de los datos referidos al estudiante, visualizaremos si las variables contienen algún valor NA y recodificamos las variables binarias y categóricas en factores. Las codificaciones se basan en el libro de código que acompañaba al dataset.
+Estos datos se han dividido en tres bloques: variables demográficas, variables del perfil del estudiante y varibales del tipo de estudio realizado.
+Empezamos por el bloque de las variables demográficas, que incluye "SEXO", "EDAD" y "NACIONALIDAD".
+La variable "SEXO" la recodificamos para facilitar la comprensión del análisis siendo 1="Hombre", 2="Mujer".
+
+
+```{r}
+unique(EGHE_2019["SEXO"])
+
+EGHE_2019<-EGHE_2019%>%mutate(SEXO=factor(SEXO, levels=c(1, 2), labels=c("Hombre", "Mujer")))
+```
+
+Siguiendo con "NACIONALIDAD", recodificamos la variable siendo 1="Española", 2="Extrangera" y 3="Doble nacionalidad"
+```{r}
+unique(EGHE_2019["NACIONALIDAD"])
+
+EGHE_2019<-EGHE_2019%>%mutate(NACIONALIDAD=factor(NACIONALIDAD, levels=c(1,2,3), labels=c("Española", "Extrangera", "Doble nacionalidad")))
+```
+
+En cuanto a la variable "EDAD" la recodificamos en el factor "EDAD_RANGO" para facilitar el análisis por etapas educativas y demográficas. Esta segmentación se realizó estableciendo rangos que son equivalentes a las etapas del sistema educativo, con un enfoque particular en la población adulta joven. Los intervalos de la infancia a la educación superior se mantuvieron estables, mientras que el intervalo de adultos se expandió para capturar con mayor detalle la formación continua y los posgrados. Finalmente, todos los individuos de más de 46 años fueron consolidados en una única categoría para simplificar el análisis de la población adulta madura y mayor, asumiendo que su participación en estudios es menos frecuente o de un tipo diferente al de las etapas anteriores.
+
+```{r}
+unique(EGHE_2019["EDAD"])
+
+RANGOS_EDAD<-cut(EGHE_2019$EDAD, breaks=c(-1, 2, 5, 11, 17, 25, 35, 45, Inf), labels=c("0-2 años", "3-5 años", "6-11 años", "12-17 años", "18-25 años", "26-35 años", "36-45 años", "46 años o más"), ordered=TRUE)
+EGHE_2019<-EGHE_2019%>%mutate(EDAD=RANGOS_EDAD)
+```
+
+
+Respecto al bloque del perfil del estudiante, recodificamos la variable "ESTUDIANTE" referida a si la persona esta estudiando o no, siendo 1="Sí" y 0="No"
+
+```{r}
+unique(EGHE_2019["ESTUDIANTE"])
+
+EGHE_2019<-EGHE_2019%>%mutate(ESTUDIANTE=factor(ESTUDIANTE, levels=c(0,1), labels=c("No", "Sí")))
+```
+
+En este bloque recodificaremos también "REGLADO" y "NOREGLADO", referidas a si el estudiante reliza estudios reglados o no reglados respectivamente. Para ambas, la codificación es 1="Sí" y 0="No"
+
+```{r}
+unique(EGHE_2019["REGLADO"])
+
+EGHE_2019<-EGHE_2019%>%mutate(REGLADO=factor(REGLADO, levels=c(0,1), labels=c("No", "Sí")))
+
+```
+
+```{r}
+unique(EGHE_2019["NOREGLADO"])
+
+EGHE_2019<-EGHE_2019%>%mutate(NOREGLADO=factor(NOREGLADO, levels=c(0,1), labels=c("No", "Sí")))
+```
+
+Por último, aplicamos lo mismo en el bloque de tipo de estudio del estudiante. Hemos codificado las la variable NEST (nivel de estudio) para crear una categórica más legible y, además, se ha recodificado también (NEST2) que mantiene el detalle de las titulaciones (incluyendo ciclos y grados) para análisis más específicos. 
+```{r}
+unique(EGHE_2019["NEST"])
+
+EGHE_2019<-EGHE_2019%>%mutate(NEST=factor(NEST, levels=c(0, 1, 2, 3, 4, 5), labels=c("No realiza estudios", "Educación Infantil", "Educación Primaria", "Educación Secundaria", "Educación Superior", "Otros estudios sin nivel académico")))%>%rename(Nivel_estudios=NEST)
+```
+
+```{r}
+unique(EGHE_2019["NEST2"])
+
+EGHE_2019<-EGHE_2019%>%mutate(NEST2=factor(NEST2, levels=c(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11), labels = c("No realiza estudios", "1º Ciclo de Educación Infantil", "2º Ciclo de Educación Infantil", "Educación Primaria", "Educación Secundaria Obligatoria (ESO)", "Bachillerato", "Ciclos Formativos de FP", "Otros estudios de educación secundaria", "Estudios Universitarios", "Ciclos Formativos de Grado Superior", "Otros estudios de educación superior", "Otros estudios sin nivel académico")))%>%rename(Nivel_estudios_especifico=NEST2)
+```
+
+```{r}
+sum(is.na(EGHE_2019$C01))/dim(EGHE_2019)[1]
+```
+
+```{r}
+table(EGHE_2019$ESTUDIANTE[is.na(EGHE_2019$C01)])
+```
+```{r}
+library(dplyr)
+EGHE_2019<-EGHE_2019%>%filter(ESTUDIANTE=="Sí" & !is.na(C01))%>%mutate(C01=factor(C01, levels=c(1,2,3), labels=c("Enseñanza pública", "Enseñanza concertada", "Enseñanza privada")))%>%rename(Tipo_educacion=C01)
+#Queremos mantener las filas que NO cumplen esas dos condiciones
+ 
+```
+
+
+  
