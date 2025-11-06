@@ -74,7 +74,7 @@ limpieza_gastos <- function(datos) {
   
   datos_limpios <- datos %>%
     # Solo asegurar que tenemos estudiantes con gasto total conocido
-    filter(ESTUDIANTE == 1, !is.na(gasto_total_educacion)) %>%
+    filter(!is.na(gasto_total_educacion)) %>%
     
     # Imputación solo para análisis específicos
     mutate(
@@ -95,4 +95,4 @@ limpieza_gastos <- function(datos) {
   return(datos_limpios)
 }
 
-dataset_limpio <- limpieza_gastos(datos)
+datos <- limpieza_gastos(datos)

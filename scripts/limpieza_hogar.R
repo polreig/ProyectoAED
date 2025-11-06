@@ -31,6 +31,5 @@ datos <- datos %>%
 datos <- datos %>%
   filter(NHOGAR >= 1)
 
-datos <- datos %>%
-  group_by(IDHOGAR)
+
 

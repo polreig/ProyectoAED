@@ -84,17 +84,15 @@ ejecuta los 3 scripts de limpieza en orden sobre una copia.
 # Se asignará la lectura a una variable llamada datos, esta será modificada por los archivos de limpieza y dará como salida un dataset limpio
 datos <- read.csv("data/EGHE_2019.csv",sep="\t")
 
-source("scripts/limpieza_hogar.R")
 source("scripts/limpieza_gastos.R")
+source("scripts/limpieza_hogar.R")
 source("scripts/limpieza_estudiantes.R")
 
-
-#head(dataset_limpio)
 ```
 
 # 3. Descripción del Conjunto de Datos Limpio
 
-Tras la ejecución de los scripts de limpieza, obtenemos el *dataset* `dataset_limpio`. Este conjunto de datos contiene *`r nrow(dataset_limpio)`* observaciones (cada una representando a un estudiante que reportó gastos) y *`r ncol(dataset_limpio)`* variables limpias y listas para el análisis.
+Tras la ejecución de los scripts de limpieza, obtenemos el *dataset* `datos`. Este conjunto de datos contiene *`r nrow(dataset_limpio)`* observaciones (cada una representando a un estudiante que reportó gastos) y *`r ncol(dataset_limpio)`* variables limpias y listas para el análisis.
 
 
 
