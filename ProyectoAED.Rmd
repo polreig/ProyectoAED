@@ -92,7 +92,7 @@ source("scripts/limpieza_estudiantes.R")
 
 # 3. Descripción del Conjunto de Datos Limpio
 
-Tras la ejecución de los scripts de limpieza, obtenemos el *dataset* `datos`. Este conjunto de datos contiene *`r nrow(dataset_limpio)`* observaciones (cada una representando a un estudiante que reportó gastos) y *`r ncol(dataset_limpio)`* variables limpias y listas para el análisis.
+Tras la ejecución de los scripts de limpieza, obtenemos el *dataset* `datos`. Este conjunto de datos contiene *`r nrow(datos)`* observaciones (cada una representando a un estudiante que reportó gastos) y *`r ncol(datos)`* variables limpias y listas para el análisis.
 
 
 
