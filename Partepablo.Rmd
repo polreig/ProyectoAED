@@ -36,45 +36,69 @@ chi2
 ```
 
 ```{r}
-Gastos_HogarxTMUNI <- datos %>% group_by(TMUNI) %>%
-  summarise(Media_educación = mean(gasto_total_educacion), Media_servicios = mean(gasto_total_servicios), Media_servicios_reglados = mean(gasto_total_servicios_reglados), Media_servicios_noreglados = mean(gasto_total_servicios_no_reglados),Media_bienes = mean(gasto_total_bienes))
-Gastos_HogarxTMUNI
+## Detección outliers
+GastosxTMUNI <- datos %>%
+  select(TMUNI, gasto_total_educacion, gasto_total_servicios, gasto_total_servicios_reglados, gasto_total_servicios_no_reglados, gasto_total_bienes) %>%
+  pivot_longer(cols = starts_with("gasto_total"), names_to = "Tipo_Gasto", values_to = "Valor_Gasto")
 
-Gastos_HogarxLocCen <- datos %>% group_by(Localización_Centro) %>%
+Outlier_TMUNI <- GastosxTMUNI %>%
+  group_by(Tipo_Gasto, TMUNI) %>%
+  mutate(Q1 = quantile(Valor_Gasto, 0.25), Q3 = quantile(Valor_Gasto,0.75), IQR = IQR(Valor_Gasto), LimSup = Q3 + 1.5*IQR, LimInf = Q1 - 1.5*IQR) %>%
+  filter(Valor_Gasto > LimSup | Valor_Gasto < LimInf) %>%
+  ungroup() %>%
+  arrange(Tipo_Gasto, TMUNI) %>%
+  select(Tipo_Gasto, TMUNI, Valor_Gasto, LimInf, LimSup)
+Outlier_TMUNI
+
+```
+
+```{r}
+GastosxLocCen <- datos %>%
+  select(Localización_Centro, gasto_total_educacion, gasto_total_servicios, gasto_total_servicios_reglados, gasto_total_servicios_no_reglados, gasto_total_bienes) %>%
+  pivot_longer(cols = starts_with("gasto_total"), names_to = "Tipo_Gasto", values_to = "Valor_Gasto")
+
+Outlier_LocCen <- GastosxLocCen %>%
+  group_by(Tipo_Gasto, Localización_Centro) %>%
+  mutate(Q1 = quantile(Valor_Gasto, 0.25), Q3 = quantile(Valor_Gasto,0.75), IQR = IQR(Valor_Gasto), LimSup = Q3 + 1.5*IQR, LimInf = Q1 - 1.5*IQR) %>%
+  filter(Valor_Gasto > LimSup | Valor_Gasto < LimInf) %>%
+  ungroup() %>%
+  arrange(Tipo_Gasto, Localización_Centro) %>%
+  select(Tipo_Gasto, Localización_Centro, Valor_Gasto, LimInf, LimSup)
+Outlier_LocCen
+```
+
+
+```{r}
+GastoMed_HogarxTMUNI <- datos %>% group_by(TMUNI) %>%
   summarise(Media_educación = mean(gasto_total_educacion), Media_servicios = mean(gasto_total_servicios), Media_servicios_reglados = mean(gasto_total_servicios_reglados), Media_servicios_noreglados = mean(gasto_total_servicios_no_reglados),Media_bienes = mean(gasto_total_bienes))
-Gastos_HogarxLocCen
+GastoMed_HogarxTMUNI
+
+GastoMed_HogarxLocCen <- datos %>% group_by(Localización_Centro) %>%
+  summarise(Media_educación = mean(gasto_total_educacion), Media_servicios = mean(gasto_total_servicios), Media_servicios_reglados = mean(gasto_total_servicios_reglados), Media_servicios_noreglados = mean(gasto_total_servicios_no_reglados),Media_bienes = mean(gasto_total_bienes))
+GastoMed_HogarxLocCen
 ```
 
 ```{r}
 ## Representación gráfica 
 
-GastosTMUNI <- Gastos_HogarxTMUNI %>%
+GastosMedTMUNI <- GastoMed_HogarxTMUNI %>%
   pivot_longer(cols = starts_with("Media_"), names_to = "Tipo_Gasto", values_to = "Valor_Medio", names_prefix = "Media_")
-head(GastosTMUNI)
+head(GastosMedMUNI)
 
-ggplot(GastosTMUNI, aes(x = TMUNI, y = Valor_Medio)) +
+ggplot(GastosMedTMUNI, aes(x = TMUNI, y = Valor_Medio)) +
   geom_point(color = "blue", outlier.color = "red") +
   labs(title="Distribución Medias de Gasto por Tipo de Municipio", x= "Tipo de Municipio", y ="Media de Gasto") +
   facet_wrap(~Tipo_Gasto, ncol=2) +
   coord_flip() +
   theme_minimal()
 ```
-```{r}
-outliers_TMUNI <- GastosTMUNI %>%
-  group_by(Tipo_Gasto) %>%
-  mutate(IQR_val = IQR(Valor_Medio), Q3 = quantile(Valor_Medio,0.75), LS = Q3 + 1.5*IQR_val) %>%
-  filter(Valor_Medio > LS) %>%
-  select(Tipo_Gasto,TMUNI,Valor_Medio,LS)
-outliers_TMUNI
-```
-
 
 ```{r}
-GastosLocCen <- Gastos_HogarxLocCen %>%
+GastosMedLocCen <- GastoMedHogarxLocCen %>%
   pivot_longer(cols = starts_with("Media_"), names_to = "Tipo_Gasto", values_to = "Valor_Medio", names_prefix = "Media_")
-head(GastosLocCen)
+head(GastosMedLocCen)
 
-ggplot(GastosLocCen, aes(x = Localización_Centro, y = Valor_Medio)) +
+ggplot(GastosMedLocCen, aes(x = Localización_Centro, y = Valor_Medio)) +
   geom_point(color = "blue", outlier.color = "red") +
   labs(title="Distribución Medias de Gasto por Ubicación del Centro", x= "Ubicación del Centro", y ="Media de Gasto") +
   facet_wrap(~Tipo_Gasto, ncol = 2) +
@@ -83,11 +107,7 @@ ggplot(GastosLocCen, aes(x = Localización_Centro, y = Valor_Medio)) +
 ```
 
 ```{r}
-outliers_LocCen <- GastosLocCen %>%
-  group_by(Tipo_Gasto) %>%
-  mutate(IQR_val = IQR(Valor_Medio), Q3 = quantile(Valor_Medio,0.75), LS = Q3 + 1.5*IQR_val) %>%
-  filter(Valor_Medio > LS) %>%
-  select(Tipo_Gasto,Localización_Centro,Valor_Medio,LS)
-outliers_LocCen
+
 ```
+
 
