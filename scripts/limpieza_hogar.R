@@ -6,8 +6,6 @@ library(readr)
 library(dplyr)
 library(tidyr)
 
-# Cargar datos
-datos <- read_delim("data/EGHE_2019.csv", delim = "\t", escape_double = FALSE, trim_ws = TRUE)
 
 # Limpieza de datos: variables de contexto geográfico
 # Recodificación de TMUNI (tamaño del municipio)
