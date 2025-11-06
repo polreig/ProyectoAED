@@ -12,13 +12,13 @@ author:
   email: email3@alumni.uv.es
 date: "9 de Noviembre de 2025"
 output:
-  pdf_document:
-    toc: true
   html_document:
     df_print: kable
     toc: true
     toc_float: true
     theme: united
+  pdf_document:
+    toc: true
   rticles::mdpi_article:
     pandoc_args:
     - "--lua-filter=rticles/mdpi-manuscript.lua"
