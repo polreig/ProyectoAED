@@ -7,11 +7,11 @@ library(dplyr)
 library(tidyr)
 
 # Cargar datos
-EGHE_2019 <- read_delim("data/EGHE_2019.csv", delim = "\t", escape_double = FALSE, trim_ws = TRUE)
+datos <- read_delim("data/EGHE_2019.csv", delim = "\t", escape_double = FALSE, trim_ws = TRUE)
 
 # Limpieza de datos: variables de contexto geográfico
 # Recodificación de TMUNI (tamaño del municipio)
-EGHE_2019 <- EGHE_2019 %>% 
+datos <- datos %>% 
   mutate(TMUNI = factor(TMUNI,
                        levels = c(1,2,3,4,5),
                        labels = c("<10.000 habitantes",
@@ -24,11 +24,15 @@ EGHE_2019 <- EGHE_2019 %>%
 # EHOGAR: nº estudiantes del hogar
 # NHOGAR: nº personas del hogar
 # Convertir a tipo entero
-EGHE_2019 <- EGHE_2019 %>%
+datos <- datos %>%
   mutate(IDHOGAR = as.integer(IDHOGAR),
          NHOGAR = as.integer(NHOGAR),
          EHOGAR = as.integer(EHOGAR))
 
 # Filtrar inconsistencias lógicas en NHOGAR
-EGHE_2019 <- EGHE_2019 %>%
+datos <- datos %>%
   filter(NHOGAR >= 1)
+
+datos <- datos %>%
+  group_by(IDHOGAR)
+
