@@ -1,0 +1,11 @@
+---
+title: "PartePol"
+output: html_document
+---
+
+# 3. Descripción del Conjunto de Datos Limpio: Análisis Univariante
+
+Tras la ejecución de los scripts de limpieza, obtenemos el *dataset* `datos`. Este conjunto de datos contiene *`r nrow(datos)`* observaciones (cada una representando a un estudiante que reportó gastos) y *`r ncol(datos)`* variables limpias y listas para el análisis.
+
+El objetivo de esta sección es realizar un análisis univariante de las variables clave. Este paso es fundamental para entender la distribución y las características de cada variable de forma aislada, antes de buscar relaciones entre ellas. Nos centraremos en la variable objetivo (Gasto Total) y en las principales variables categóricas y numéricas que usaremos para responder a nuestras preguntas.
+
