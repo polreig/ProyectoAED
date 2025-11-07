@@ -1,5 +1,3 @@
-
-
 unique(datos["SEXO"])
 datos<-datos%>%mutate(SEXO=factor(SEXO, levels=c(1, 2), labels=c("Hombre", "Mujer")))
 
