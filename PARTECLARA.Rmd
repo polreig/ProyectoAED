@@ -3,8 +3,8 @@ title: "parteclara"
 author: "Clara Montalva Barcenilla"
 date: "2025-11-06"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -20,6 +20,7 @@ source("scripts/limpieza_estudiantes.R")
 ```
 
 ## **4. Análisis Bivariante del Gasto según las Características de los Estudiantes**
+
 Una vez realizado el análisis univariante, se pretende observar las relaciones y los patrones explicativos que influyen en el gasto educativo. Para ello, se emplea el análisis bivariante, cruzando el gasto total de educación y su composición (bienes, servicios reglados o básicos y servicios no reglados o adicionales) con las variables estructurales del sistema educativo.
 
 Este análisis se centra en dos comparaciones fundamentales:
@@ -62,30 +63,79 @@ df_gasto_3comp <- datos %>%
   ))
 
 # creamos un gráfico de barras apiladas
-grafico_gasto_apilado <- ggplot(df_gasto_3comp, 
-       aes(x = Tipo_educacion, y = Gasto_promedio, fill = Componente_gasto)) +
+grafico_gasto_apilado <- ggplot(df_gasto_3comp, aes(x = Tipo_educacion, y = Gasto_promedio, fill = Componente_gasto)) +
   
   # position = "stack" para apilar los componentes
   geom_bar(stat = "identity", position = "stack") + 
   
   scale_fill_brewer(palette="Paired", direction = -1) +
   
-  labs(
-    title = "Gasto promedio total según el tipo de centro",
+  labs(title = "Gasto promedio total según el tipo de centro",
     subtitle = "Desglosado por gastos en bienes, servicios básicos y adicionales",
-    x = "Tipo de centro",
-    y = "Gasto promedio total (€)",
-    fill = "Componente del gasto"
-  ) +
+    x = "Tipo de centro", y = "Gasto promedio total (€)", fill = "Componente del gasto") +
   
   theme_minimal() +
-  theme(
-    legend.position = "bottom",
-    legend.title = element_text(face = "bold")
-  )
+  theme(legend.position = "bottom", legend.title = element_text(face = "bold"))
 
 print(grafico_gasto_apilado)
 ```
+   
 La gráfica revela una fuerte disparidad en el gasto promedio total entre los tipos de financiación, siendo la enseñanza privada el coste más elevado superando los 4.500€, seguida por la concertada cercana a 2.000€ y finalmente por la pública alrededor de los 1000€. En los tres casos, el componente dominante es el de servicios básicos (coste de estructura como matrícula, cuotas de centro o comedor). No obstante, este gasto es significativamente más alto en la enseñanza privada debido a que estos costes no están subvencionados por el Estado, contrariamente a lo que ocurre en la educación pública y parcielmente en la concertada. lo que confirma que el modelo de financiación es el principal factor que impulsa la brecha económica.
 
 El análisis de la composición demuestra que los bienes, aunque presentes en los tres tipos de centros, representan una proporción relativamente menor del gasto total y no son la causa de las grandes diferencias observadas entre ellos, estableciendo que las familias que optan por la enseñanza privada asumen un coste de servicios muy superior.
+
+
+### 4.2. Gasto educativo total promedio por nivel educativo
+```{r, echo=FALSE}
+
+# Cargar paquetes
+library(dplyr)
+library(ggplot2)
+library(forcats) 
+
+#escogemos los niveles que vamos a representar
+orden_niveles_educativos <- c("Infantil (1er Ciclo)","Infantil (2do Ciclo)", "Primaria", "ESO", "Bachillerato", "Formación Profesional","Universidad")
+
+df_gasto_nivel_agrupado <- datos %>%
+  mutate(Nivel_agrupado = case_when(
+    Nivel_estudios_especifico == "1º Ciclo de Educación Infantil" ~ "Infantil (1er Ciclo)",
+    Nivel_estudios_especifico == "2º Ciclo de Educación Infantil" ~ "Infantil (2do Ciclo)",
+    Nivel_estudios_especifico == "Educación Primaria" ~ "Primaria",
+    Nivel_estudios_especifico == "Educación Secundaria Obligatoria (ESO)" ~ "ESO",
+    Nivel_estudios_especifico == "Bachillerato" ~ "Bachillerato",
+    Nivel_estudios_especifico == "Estudios Universitarios" ~ "Universidad",
+    Nivel_estudios_especifico == "Ciclos Formativos de FP" | 
+      Nivel_estudios_especifico == "Ciclos Formativos de Grado Superior" ~ "Formación Profesional",
+    TRUE ~ NA_character_
+  )) %>%
+  
+  #calculamos media
+  filter(!is.na(Nivel_agrupado)) %>%
+  group_by(Nivel_agrupado) %>% 
+  summarise(Media_Gasto_Total = mean(gasto_total_educacion, na.rm = TRUE), 
+            N = n())%>%
+  ungroup() %>%
+  mutate(Nivel_agrupado = factor(Nivel_agrupado, levels = orden_niveles_educativos))
+
+
+grafico_gasto_nivel_total <- ggplot(df_gasto_nivel_agrupado, aes(x = Nivel_agrupado, y = Media_Gasto_Total, fill = Nivel_agrupado)) + 
+  
+  geom_bar(stat = "identity") +
+  
+  scale_fill_manual(values = c(
+    "Infantil (1er Ciclo)" = "#1f77b4", "Infantil (2do Ciclo)" = "#ff7f0e", "Primaria" = "#2ca02c", "ESO" = "#d62728", "Bachillerato" = "#9467bd", "Formación Profesional (FP)" = "#8c564b", "Universidad" = "#e377c2")) +
+  
+  geom_text(aes(label = paste0("€", format(round(Media_Gasto_Total, 0), big.mark = ".", decimal.mark=","))), vjust = -0.5, size = 3.5, color = "black") +
+
+  labs(title = "Gasto educativo total promedio según el nivel de educación",
+    x = "Nivel educativo", y = "Gasto promedio total (€)", fill = "Nivel educativo")+
+  
+  scale_y_continuous(limits = c(0, max(df_gasto_nivel_agrupado$Media_Gasto_Total) * 1.1)) +
+  theme_minimal() +
+  theme(legend.position = "none", axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+print(grafico_gasto_nivel_total)
+```
+
+La gráfica revela que el gasto educativo promedio aumenta significativamente a lo largo de las etapas académicas. Esta evolución alcanza su punto máximo en la Universidad (€3.056), que es más del doble del gasto en la mayoría de las etapas inferiores, y experimenta su primer gran salto en Bachillerato. En las etapas iniciales, el 1er ciclo de Infantil destaca por ser más caro que las etapas posteriores, lo cual se atribuye a los costes no subvencionados de la etapa 0-3 años. Por otro lado, durante la educación obligatoria, el gasto se mantiene relativamente estable. Las transiciones a Bachillerato y Universidad marcan los puntos críticos donde el coste de tasas, materiales como portátiles y matrículas impacta más fuertemente en el presupuesto familiar.
