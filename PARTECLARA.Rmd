@@ -1,0 +1,141 @@
+---
+title: "parteclara"
+author: "Clara Montalva Barcenilla"
+date: "2025-11-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+datos <- read.csv("data/EGHE_2019.csv",sep="\t")
+
+source("scripts/limpieza_gastos.R")
+source("scripts/limpieza_hogar.R")
+source("scripts/limpieza_estudiantes.R")
+```
+
+Realizamos un análisis univariante focalizado en variables relacionadas con el estudiante. Nos centramos en la edad en rangos, el eexo, el nivel de estudios y el tipo de enseñanza. Para cada una de estas variables categóricas, se utilizó la tabla de frecuencias.
+
+```{r}
+library(summarytools)
+tabla_tipoeducacion <- freq(datos$Tipo_educacion)
+tabla_tipoeducacion
+```
+
+```{r}
+# 1. Instalar y cargar xtable
+# install.packages("xtable")
+library(xtable)
+
+# 2. Generar el código LaTeX
+# Captura el código LaTeX generado en un objeto de R
+codigo_latex <- xtable(
+  tabla_tipoeducacion, 
+  caption = "Tabla de frecuencias del tipo de educación", 
+  label = "tab:frecuencias"
+)
+
+# 3. Imprimir el código LaTeX directamente en la consola
+print(
+  codigo_latex, 
+  type = "latex", 
+  file = "", 
+  include.rownames = TRUE, 
+  hline.after = c(-1, 0, nrow(tabla_tipoeducacion)), 
+  sanitize.text.function = identity 
+)
+```
+La muestra es claramente representativa de una población donde la enseñanza pública es el modelo predominante (casi tres cuartas partes de la muestra). Cualquier análisis posterior que relacione esta variable con otra deberá ser cauteloso, ya que los resultados estarán muy influenciados por la categoría "Enseñanza pública" debido a su gran tamaño muestral.
+
+```{r}
+
+tabla_nivelestudios <- freq(droplevels(datos$Nivel_estudios))
+tabla_nivelestudios
+```
+
+```{r}
+codigo_latex <- xtable(
+  tabla_nivelestudios, 
+  caption = "Tabla de frecuencias del nivel de estudios", 
+  label = "tab:frecuencias"
+)
+
+# 3. Imprimir el código LaTeX directamente en la consola
+print(
+  codigo_latex, 
+  type = "latex", 
+  file = "", 
+  include.rownames = TRUE, 
+  hline.after = c(-1, 0, nrow(tabla_nivelestudios)), 
+  sanitize.text.function = identity 
+)
+```
+La muestra presenta una clara concentración en los niveles de Educación Secundaria y Primaria, que en conjunto representan más de las tres cuartas partes de la población estudiada. Hay una representación significativa, aunque minoritaria, en la Educación Superior.
+
+```{r}
+tabla_nivelestudios_especifico <- freq(droplevels(datos$Nivel_estudios_especifico))
+tabla_nivelestudios_especifico
+```
+
+```{r}
+codigo_latex <- xtable(
+  tabla_nivelestudios_especifico, 
+  caption = "Tabla de frecuencias del nivel de estudios específico", 
+  label = "tab:frecuencias"
+)
+
+print(
+  codigo_latex, 
+  type = "latex", 
+  file = "", 
+  include.rownames = TRUE, 
+  hline.after = c(-1, 0, nrow(tabla_nivelestudios_especifico)), 
+  sanitize.text.function = identity 
+)
+```
+
+
+La distribución del Nivel de Estudios muestra un claro dominio de las etapas obligatorias, con casi la mitad de la muestra concentrada en Educación Primaria (26.88%) y ESO (20.55%). Este sesgo hacia lo básico coexiste con una notable presencia de personas con Estudios Universitarios (19.00%), el tercer grupo más grande
+```{r}
+#print(knitr::kable(tabla_nivelestudios_especifico, format = "latex",
+  #booktabs = TRUE,
+  #caption = "Tabla de Frecuencias de la variable nivel de estudios específico.",
+  #align = "ccccc", # Ajusta el número de 'c's al número de columnas de tu tabla
+  #centering = TRUE, 
+  #table.envir = "table", 
+  #position = "H"))
+```
+
+
+```{r}
+
+tabla_edad <- freq(datos$EDAD)
+tabla_edad
+```
+
+```{r}
+codigo_latex <- xtable(
+  tabla_edad, 
+  caption = "Tabla de frecuencias de edad", 
+  label = "tab:frecuencias"
+)
+
+
+print(
+  codigo_latex, 
+  type = "latex", 
+  file = "", 
+  include.rownames = TRUE, 
+  hline.after = c(-1, 0, nrow(tabla_edad)), 
+  sanitize.text.function = identity 
+)
+```
+La muestra está fuertemente dominada por niños y adolescentes en edad escolar. El 68% de los participantes tiene 17 años o menos, lo que significa que los resultados del estudio reflejan principalmente las características de la población que asiste a la escuela (preescolar, primaria y secundaria obligatoria).
+
+```{r}
+
+```
+
