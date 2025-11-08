@@ -6,10 +6,10 @@ author:
   email: polreig@alumni.uv.es
 - name: Clara Montalvá Barcenilla
   affiliation: "Máster en Ciencia de Datos - UV"
-  email: clara.montalva@alumni.uv.es
+  email: barcenil@alumni.uv.es
 - name: Pablo Carbonell Martínez
   affiliation: "Máster en Ciencia de Datos - UV"
-  email: pablo.carbonell@alumni.uv.es
+  email: pacarma4@alumni.uv.es
 date: "9 de Noviembre de 2025"
 output:
   pdf_document: 
@@ -51,7 +51,7 @@ library(naniar)
 library(patchwork)
 ```
 
-# 1. Introducción
+# Introducción
 
 La educación es ampliamente reconocida como uno de los pilares fundamentales para el desarrollo económico y social de un país. Sin embargo, el acceso y la permanencia en el sistema educativo conllevan una serie de costes directos e indirectos que son asumidos en gran medida por los hogares. Este gasto no se limita únicamente a las tasas y matrículas, sino que abarca un complejo ecosistema de bienes y servicios que incluye desde libros de texto y material escolar hasta servicios de comedor, transporte, actividades extraescolares y clases particulares.
 
@@ -65,11 +65,11 @@ Para guiar nuestro análisis, planteamos las siguientes preguntas de investigaci
 2.  **¿Qué características del hogar y del estudiante predicen un mayor gasto educativo? ¿Existen diferencias significativas por sexo, composición familiar o tamaño del municipio?** Identificaremos los principales predictores del gasto educativo mediante el análisis de variables demográficas y estructurales. Evaluaremos específicamente si existen brechas de gasto asociadas al sexo del estudiante y el efecto de la composición del hogar.
 3.  **¿Cómo evoluciona el gasto educativo total promedio a lo largo del itinerario educativo, desde Infantil hasta la Universidad?** Compararemos el gasto medio en diferentes niveles, como Educación Infantil, Primaria, ESO, Bachillerato y Universidad.
 4.  **¿Qué peso real tienen los gastos complementarios (clases particulares, actividades extraescolares, material específico) en el presupuesto total y qué familias los asumen en mayor medida?** Cuantificaremos el impacto de partidas específicas como clases particulares, servicios de comedor, actividades extraescolares y uniformes escolares, que frecuentemente pasan desapercibidos en el debate público sobre el coste de la educación.
-5. 
+ 
 
 Este informe detallará el proceso de limpieza y transformación de los datos, seguido del análisis univariante y bivariante para dar respuesta a estas preguntas, concluyendo con los principales hallazgos de nuestro estudio.
 
-# 2. Carga y Preparación de Datos
+# Carga y Preparación de Datos
 
 El punto de partida de este análisis son los microdatos de la Encuesta de Gasto de los Hogares en Educación (EGHE) del año 2019, proporcionados por el INE. El fichero original, *EGHE_2019.csv*, es un conjunto de datos que, si bien es completo, presenta desafíos significativos para un análisis directo:
 
@@ -98,13 +98,13 @@ source("scripts/limpieza_estudiantes.R")
 ```
 
 
-## 2.1 Renombrado y Selección de Variables
+## Renombrado y Selección de Variables
 
 El primer paso consistió en "traducir" el dataset. Se renombraron todas las variables de interés de sus códigos del INE a nombres descriptivos en español. Por ejemplo: *C01* se renombró a *Tipo_educacion*. Esto fué posible gracias al archivo de descripción del dataset proporcionado por el INE, donde se describe que tipo de nomenclatura se gasta en cada variable y como se codifican los datos.
 
 Paralelamente, se eliminaron columnas innecesarias, variables con porcentajes demasiado elevados de NAs, como las relacionadas con información de becas, para simplificar la estructura del dataset y reducir el ruido.
 
-## 2.2 Recodificación de Variables Categóricas
+## Recodificación de Variables Categóricas
 
 Las variables categóricas más importantes fueron transformadas a factores con etiquetas descriptivas para la correcta interpretación y visualización en los análisis.
 ```{r,echo=FALSE}
@@ -119,7 +119,7 @@ knitr::kable(ejemplo_recod, caption = "Ejemplos de Recodificación de Variables 
 ```
 
 
-## 2.3 Imputación y Tratamiento de Valores Nulos
+## Imputación y Tratamiento de Valores Nulos
 
 Partimos de la hipótesis de que, en un campo de gasto, un valor NA significa un gasto de 0€. Posteriormente, se realizó la comprobación de que, para todas las muestras, la suma de todos los tipos de gasto es igual al valor de la variable *gasto_total_educacion*:
 
@@ -133,7 +133,7 @@ Tras comprobar que se cumplía esta condición, se aplicó la siguiente lógica 
 
 - **Gastos Totales (*gasto_total_*)**: Del mismo modo, los NA en las columnas de gasto total se reemplazaron por 0.
 
-## 2.4 Filtrado y Saneamiento de Datos
+## Filtrado y Saneamiento de Datos
 
 Finalmente, se aplicaron varios filtros para asegurar la coherencia y relevancia del dataset:
 
@@ -147,13 +147,13 @@ Se eliminaron las filas donde variables fundamentales para nuestro análisis era
 
 Tras este proceso exhaustivo, el objeto datos queda listo para el análisis. Contiene únicamente las observaciones y variables relevantes, con tipos de datos correctos, sin valores nulos ambiguos y con etiquetas descriptivas.
 
-# 3. Descripción del Conjunto de Datos Limpio: Análisis Univariante
+# Descripción del Conjunto de Datos Limpio: Análisis Univariante
 
 Tras la ejecución de los scripts de limpieza, obtenemos el dataset `datos`. Este conjunto de datos contiene `r nrow(datos)` observaciones (cada una representando a un estudiante que reportó gastos) y `r ncol(datos)` variables limpias y listas para el análisis.
 
 El objetivo de esta sección es realizar un análisis univariante de las variables clave. Este paso es fundamental para entender la distribución y las características de cada variable de forma aislada, antes de buscar relaciones entre ellas. Nos centraremos en la variable objetivo (Gasto Total) y en las principales variables categóricas y numéricas que usaremos para responder a nuestras preguntas.
 
-## 3.1 Variable Objetivo: Gasto Total Anual (gasto_total_educacion)
+## Variable Objetivo: Gasto Total Anual (gasto_total_educacion)
 
 Nuestra principal variable de interés es el *gasto_total_educacion* anual por estudiante.
 
@@ -228,7 +228,7 @@ La Figura 1 combina dos vistas de la misma variable:
 
 - El gráfico de la derecha (escala logarítmica) complementa al primero. Al comprimir los valores altos y expandir los bajos, nos permite visualizar la forma de la distribución del grueso de los hogares. En esta vista, se puede apreciar mejor dónde se concentran los gastos más comunes.
 
-## 3.2 Variables Categóricas Principales
+## Variables Categóricas Principales
 
 A continuación, exploramos la composición de nuestra muestra en función de las variables categóricas clave que guían nuestras preguntas de investigación.
 
@@ -273,7 +273,7 @@ De estos gráficos, observamos que:
 
 - **Nivel Educativo**: La muestra tiene una representación significativa en todas las etapas, con los picos de frecuencia en Educación Primaria y Secundaria. Es importante notar que si un grupo está poco representado (ej. "Otros estudios"), deberemos ser cautelosos al generalizar los resultados para ese grupo.
 
-## 3.3 Componentes del Gasto (Bienes vs. Servicios)
+## Componentes del Gasto (Bienes vs. Servicios)
 
 Nuestra Pregunta 2 busca identificar cuál de los dos grandes componentes del gasto (Servicios vs. Bienes) tiene un mayor peso.
 
@@ -307,7 +307,7 @@ ggplot(df_componentes, aes(x = "", y = Porcentaje, fill = Componente)) +
 
 El gráfico circular muestra de forma concluyente que, a nivel agregado, el gasto en Servicios (matrículas, comedor, transporte, extraescolares, etc.) representa la mayor parte del desembolso total de los hogares, superando ampliamente al gasto en Bienes (libros, material, uniformes).
 
-## 3.4 Gastos Complementarios
+## Gastos Complementarios
 
 Finalmente, el análisis debe responder a dos preguntas planteadas inicialmente en la Pregunta 4:
 
@@ -358,7 +358,7 @@ knitr::kable(
 
 En esta tabla se observa que el gasto en Uniformes es el más frecuente (asumido por un 38.5% de los hogares), pero su desembolso medio es el más bajo (109.82€). En el extremo opuesto, el Comedor y las Clases Particulares, aunque son menos frecuentes (22.6% y 18.7% respectivamente), suponen el mayor coste medio para las familias que sí los pagan, con 508.14€ y 449.11€ de media.
 
-## **4. Análisis Bivariante del Gasto según las Características de los Estudiantes**
+# Análisis Bivariante del Gasto según las Características de los Estudiantes
 
 Una vez realizado el análisis univariante, se pretende observar las relaciones y los patrones explicativos que influyen en el gasto educativo. Para ello, se emplea el análisis bivariante, cruzando el gasto total de educación y su composición (bienes, servicios reglados o básicos y servicios no reglados o adicionales) con las variables estructurales del sistema educativo.
 
@@ -369,7 +369,7 @@ Este análisis se centra en dos comparaciones fundamentales:
 2. Evolución del gasto por nivel educativo. Se examinará cómo el gasto total evoluciona a lo largo de las etapas educativas, desde Infantil hasta la Universidad. Esta comparación del gasto medio en diferentes niveles identifica la intensidad y la carga económica que representa cada etapa para los hogares.
 
 
-### 4.1. Composición y promedio del gasto según el tipo de centro
+## Composición y promedio del gasto según el tipo de centro
 ```{r, include=FALSE}
 library(dplyr)
 library(tidyr)
@@ -415,7 +415,7 @@ La gráfica revela una fuerte disparidad en el gasto promedio total entre los ti
 
 El análisis de la composición demuestra que los bienes, aunque presentes en los tres tipos de centros, representan una proporción relativamente menor del gasto total y no son la causa de las grandes diferencias observadas entre ellos, estableciendo que las familias que optan por la enseñanza privada asumen un coste de servicios muy superior.
 
-### 4.2. Gasto educativo total promedio por nivel educativo
+## Gasto educativo total promedio por nivel educativo
 ```{r, echo=FALSE}
 library(forcats) 
 
