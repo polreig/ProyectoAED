@@ -330,8 +330,7 @@ analizar_gasto_complementario <- function(gasto_vector, nombre_gasto) {
     data.frame(
       Gasto = nombre_gasto,
       Porcentaje_Hogares_con_Gasto = porc_gasta * 100,
-      Gasto_Medio_en_quien_paga = media_los_que_gastan,
-      Gasto_Medio_sobre_Total = media_total
+      Gasto_Medio_en_quien_paga = media_los_que_gastan
     )
   )
 }
@@ -353,7 +352,7 @@ knitr::kable(
   tabla_complementarios,
   caption = "Análisis de Gastos Complementarios Específicos",
   digits = 2,
-  col.names = c("Tipo de Gasto", "% Hogares que pagan", "Gasto Medio (si paga) (€)", "Gasto Medio (Total) (€)")
+  col.names = c("Tipo de Gasto", "% Hogares que pagan", "Gasto Medio (si paga) (€)")
 ) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
 ```
@@ -456,3 +455,167 @@ grafico_gasto_nivel_total <- ggplot(df_gasto_nivel_agrupado, aes(x = Nivel_agrup
 print(grafico_gasto_nivel_total)
 ```
 La gráfica revela que el gasto educativo promedio aumenta significativamente a lo largo de las etapas académicas. Esta evolución alcanza su punto máximo en la Universidad (€3.056), que es más del doble del gasto en la mayoría de las etapas inferiores, y experimenta su primer gran salto en Bachillerato. En las etapas iniciales, el 1er ciclo de Infantil destaca por ser más caro que las etapas posteriores, lo cual se atribuye a los costes no subvencionados de la etapa 0-3 años. Por otro lado, durante la educación obligatoria, el gasto se mantiene relativamente estable. Las transiciones a Bachillerato y Universidad marcan los puntos críticos donde el coste de tasas, materiales como portátiles y matrículas impacta más fuertemente en el presupuesto familiar.
+
+# Análisis bivariante de los gastos respecto las características del hogar
+
+Continuando con el análisis bivariante, y tras haber examinado la influencia de las características propias del estudiante, este apartado se centra en las variables estructurales del hogar que condicionan el gasto. Para ello, analizamos la dependencia del gasto total del hogar y su composición (educación, bienes, servicios reglados y no reglados) con dos variables clave del hogar: el tamaño de su municipio y la composición de sus miembros.
+
+1. Gasto del hogar por tamaño del municipio (TMUNI). Se compararán los patrones de gasto mediano entre los diferentes tamaños de municipio (desde "<10.000 habitantes" hasta ">500.000 habitantes"). El objetivo es determinar si la magnitud de la población del municipio se relaciona con el gasto promedio del hogar, tanto en su totalidad como en su composición específica. Para ello, se emplearán diagramas de caja (geom_boxplot) y la prueba de correlación de Spearman, dado el carácter ordinal de la variable TMUNI.
+
+2. Gasto del hogar por proporción de estudiantes. Se examinará cómo evoluciona el gasto total a medida que la "densidad" de estudiantes en el hogar (la proporción EHOGAR / NHOGAR) aumenta. Esta variable numérica se ha categorizado en 5 intervalos (0-20%, 21-40%, etc.) para facilitar la comparación. Esta comparación del gasto mediano (mediante boxplots y correlación de Spearman) medirá la fuerza de la tendencia respecto la carga económica que representan los estudiantes para los hogares.
+
+## Relación del gasto del hogar con el tamaño del municipio.
+```{r, echo=FALSE}
+#### Primero seleccionamos las variables que nos interesan de nuestro dataset original
+datos_hogar <- datos %>%
+  group_by(IDHOGAR) %>%
+  summarise(TMUNI = first(TMUNI), NHOGAR = first(NHOGAR), EHOGAR = first(EHOGAR), Prop_Estudia = (EHOGAR/NHOGAR)*100, H_Gasto_Educación = sum(gasto_total_educacion), H_Gasto_Servicios_Reglados = sum(gasto_total_servicios_reglados), H_Gasto_Servicios_NoReglados = sum(gasto_total_servicios_no_reglados), H_Gasto_Bienes = sum(gasto_total_bienes)) 
+
+datos_hogar$Prop_Estudia <- signif(datos_hogar$Prop_Estudia, digits = 4)
+```
+
+```{r, echo=FALSE}
+#### Segundo sacamos los datos relacionados con el municipio y el gasto.
+datos_muni <- datos_hogar %>%
+  select(IDHOGAR, TMUNI, H_Gasto_Educación, H_Gasto_Servicios_Reglados, H_Gasto_Servicios_NoReglados, H_Gasto_Bienes) %>%
+  pivot_longer(cols = starts_with("H_Gasto_"), names_to = "Tipo_Gasto", values_to = "Valor_Gasto", names_prefix = "H_Gasto_")
+
+```
+
+```{r, echo=FALSE, fig.width=5, fig.height=3}
+#### Ahora representamos una serie de gráficas de diagramas de caja de cada tamaño de municipio. Cada gráfica corresponde a una pieza del gasto total del hogar. Los gastos los representamos el escala logarítmica para mejorar la visualización.
+
+datos_muni %>% ggplot(aes(x = TMUNI, y = log(Valor_Gasto +1))) + 
+  geom_boxplot(aes(fill = TMUNI), show.legend = FALSE, outlier.color = "red") +
+  facet_wrap(~Tipo_Gasto, scales = "free_x", ncol = 2) +
+  coord_flip() +
+  labs(title = "Relación Gastos Hogar y Tamaño del Municipio", x = "Tamaño del Municipio", y = "Log(Gasto Total Hogar (€) +1)") +
+  theme_minimal()
+```
+```{r, echo=FALSE}
+#### Calculamos cual es la máxima mediana 
+
+Medianas_gasto_TMUNI <- datos_muni %>% 
+  group_by(TMUNI, Tipo_Gasto) %>%
+  summarise(Mediana_Gasto = median(Valor_Gasto, na.rm = TRUE), .groups = "drop")
+
+max_mediana_TMUNI <- Medianas_gasto_TMUNI %>%
+  group_by(TMUNI) %>%
+  slice_max(order_by = Mediana_Gasto, n = 1) %>%
+  ungroup()
+
+```
+
+```{r, echo=FALSE}
+#### Sumamos todas las componentes del gasto y calculamos la correlación con el tamaño del municipio.
+
+Gasto_Total_TMUNI <- datos_muni %>%
+  group_by(IDHOGAR, TMUNI) %>%
+  summarise(GastoTotal = sum(Valor_Gasto), .groups = "drop") 
+  
+cor_gasto_tmuni <- cor.test(as.numeric(Gasto_Total_TMUNI$TMUNI),Gasto_Total_TMUNI$GastoTotal, method = "spearman", exact = FALSE)
+
+rho <- cor_gasto_tmuni$estimate
+p <- cor_gasto_tmuni$p.value
+
+```
+
+
+Para analizar la relación entre el gasto del hogar y el Tamaño del Municipio (TMUNI), fue necesario abordar primero la naturaleza de los datos. Las variables de gasto presentan una fuerte asimetría (sesgo a la derecha) y la presencia de numerosos valores cero (0€), lo cual es evidente en la alta concentración de outliers. Para manejar esto y permitir una visualización válida de las tendencias, se aplica una transformación logarítmica (log(Gasto + 1)) a todas las variables de gasto. Esta técnica robustece el análisis al comprimir la escala y mantener los valores cero en el gráfico como log(1)=0.
+
+El análisis visual (mostrado en el gráfico) confirma la hipótesis de que el gasto aumenta con el tamaño del municipio. Los diagramas de caja (geom_boxplot) revelan una clara tendencia positiva: la mediana del gasto (la línea central de la caja) se desplaza sistemáticamente hacia la derecha (mayor gasto) a medida que el municipio es más grande.
+
+Esta observación visual ha sido validada estadísticamente mediante una Correlación de Spearman (cor.test), método robusto que mide la fuerza de una tendencia monótona y es adecuado para variables ordinales como TMUNI.
+
+Los resultados de esta prueba son concluyentes. Se obtuvo un p-value de 2.346e-12, un valor drásticamente inferior al umbral de significación de 0.05, por lo que se rechaza la hipótesis nula. Esto confirma que la relación es estadísticamente significativa. En cuanto a la fuerza y dirección, se obtuvo un coeficiente rho de 0.137. Este valor indica una correlación positiva débil; si bien la relación es estadísticamente real, el tamaño del municipio es solo uno de los factores que influyen en el gasto total del hogar.
+
+
+## Relación entre el gasto y el porcentaje de estudiantes en el hogar
+
+```{r, echo=FALSE}
+#### Primero seleccionamos las variables que nos interesan y categorizamos la proporción de estudiantes para facilitar nuestro estudio.
+
+datos_hogar_porcentaje <- datos_hogar %>%
+  select(IDHOGAR, Prop_Estudia, H_Gasto_Educación, H_Gasto_Servicios_Reglados, H_Gasto_Servicios_NoReglados, H_Gasto_Bienes) %>%
+  mutate(Grupo_Proporción = cut(Prop_Estudia, breaks= c(-0.1, 20, 40, 60, 80, 100), labels = c("0-20%", "21-40%", "41-60%", "61-80%", "81-100%"), include.lowest = TRUE)) %>%
+  pivot_longer(cols = starts_with("H_Gasto_"), names_to = "Tipo_Gasto", values_to = "Valor_Gasto", names_prefix = "H_Gasto_")  
+  
+```
+
+
+```{r, echo=FALSE,fig.width=5, fig.height=3}
+#### Representamos gráficamente
+
+datos_hogar_porcentaje %>% ggplot(aes(x = Grupo_Proporción, y = log(Valor_Gasto+1))) +
+  geom_boxplot(aes(fill = Grupo_Proporción), show.legend = FALSE, outlier.colour = "red") + 
+  facet_wrap(~Tipo_Gasto, scales="free_x", ncol = 2) +
+  coord_flip() +
+  labs(title = "Gastos Hogar (Log) por Prop. Estudiantes ", x = "Grupo de Proporción de Estudiantes", y = "Log(Gasto Total del Hogar (€) + 1)") 
+  
+```
+```{r, echo=FALSE}
+#### Calculamos cual es la máxima mediana
+
+Medianas_gasto <- datos_hogar_porcentaje %>%
+  group_by(Grupo_Proporción, Tipo_Gasto) %>%
+  summarise(Mediana_Gasto = median(Valor_Gasto), .groups = "drop")
+
+max_mediana <- Medianas_gasto %>%
+  group_by(Grupo_Proporción) %>%
+  slice_max(order_by = Mediana_Gasto, n=1) %>%
+  ungroup()
+```
+
+```{r, echo=FALSE}
+#### Estudiamos la correlación de las variables
+Gasto_Total_PropEst <- datos_hogar_porcentaje %>%
+  group_by(IDHOGAR, Grupo_Proporción) %>%
+  summarise(Gasto_Total = sum(Valor_Gasto), .groups = "drop") 
+  
+cor_gasto_prop <- cor.test(as.numeric(Gasto_Total_PropEst$Grupo_Proporción), Gasto_Total_PropEst$Gasto_Total, method = "spearman", exact = FALSE)
+
+rho <- cor_gasto_prop$estimate
+p <- cor_gasto_prop$p.value
+
+```
+
+
+Para analizar cómo el gasto se ve afectado por la "densidad" de estudiantes, la variable Prop_Estudia se categorizó en cinco intervalos ordinales de 20% (de "0-20%" a "81-100%"). Al igual que en el análisis anterior, se aplica la transformación logarítmica (log(Gasto + 1)) a las variables de gasto para gestionar la fuerte asimetría y la presencia de valores cero (0€).
+
+El análisis visual confirma que el gasto mediano (la línea central de la caja) es significativamente diferente entre los grupos. Sin embargo, el análisis numérico (ver image_1c01f3.png) revela un detalle clave: la tendencia no es perfectamente lineal. El gasto mediano alcanza su pico en el grupo '61-80%' (2330.5€), siendo este ligeramente superior al del grupo '81-100%' (2175.0€). Este hallazgo sugiere que el gasto máximo no lo definen los hogares compuestos 100% por estudiantes (posiblemente pisos compartidos con gastos optimizados), sino las familias tradicionales que financian simultáneamente las etapas educativas más caras (ej. Bachillerato y Universidad).
+
+Esta tendencia general creciente ha sido validada estadísticamente mediante una Correlación de Spearman. Los resultados muestran un coeficiente rho positivo de 0.274. Este valor indica una correlación positiva de fuerza moderada, la cual es altamente significativa según el p-value de 5.319e-46. Al ser el p-value drásticamente inferior a 0.05, se rechaza la hipótesis nula, confirmando que la tendencia es real.
+
+En resumen, la evidencia confirma una tendencia significativa y positiva: a mayor proporción de estudiantes, mayor es el gasto total mediano, alcanzando su máximo en los hogares con una proporción de estudiantes del 61-80%.
+
+
+## Relación de gasto con localización del centro escolar
+
+```{r, echo=FALSE}
+#### Seleccionamos las variables que nos interesan y creamos una nueva columna con la mediana de la suma total de los gastos
+
+Medianas_gasto_loc <- datos %>%
+  select(Localización_Centro, gasto_total_educacion, gasto_total_servicios_reglados, gasto_total_servicios_no_reglados, gasto_total_bienes) %>%
+  mutate(Gasto_Total = gasto_total_educacion + gasto_total_servicios_reglados + gasto_total_servicios_no_reglados + gasto_total_bienes) %>%
+  group_by(Localización_Centro) %>%
+  summarise(Mediana_gasto_total = median(Gasto_Total))
+```
+
+```{r, echo=FALSE,fig.width=5, fig.height=3}
+Medianas_gasto_loc %>% ggplot(aes(x = reorder(Localización_Centro, Mediana_gasto_total), y = Mediana_gasto_total)) +
+  geom_col(aes(fill = Localización_Centro), show.legend = FALSE) +
+  geom_text(aes(label = round(Mediana_gasto_total, 0)), hjust = -0.2, size = 3.5) +
+  coord_flip() +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
+  labs(
+    title = "Mediana del Gasto Total por Localización del Centro", x = "Localización del Centro", y = "Mediana del Gasto Total de la Persona (€)"
+  ) +
+  theme_minimal()
+```
+
+
+El análisis bivariante del gasto total por Localización_Centro revela una fuerte y clara disparidad en el coste que asume el estudiante, como se observa en el gráfico. El uso de la mediana para la comparación (en lugar de la media) es fundamental, ya que ofrece una medida de tendencia central robusta que no se ve afectada por los outliers de gasto extremo.
+
+La gráfica muestra una jerarquía de gasto que parece estar directamente correlacionada con la distancia y la necesidad de alojamiento. El coste más elevado corresponde a los estudiantes que cursan en otra Comunidad Autonoma, con una mediana de gasto total de 6039€. Le sigue de cerca el gasto en la misma Comunidad Autónoma (4046€), lo que sugiere que el principal factor que impulsa la brecha económica es el coste asociado a vivir fuera del municipio de residencia (alquiler, manutención).
+
+En el extremo opuesto, el gasto más bajo se da, como es lógico, en el Municipio Residencia (1690€), donde el estudiante no incurre en gastos de alojamiento y el transporte es mínimo. Es notable que estudiar en el Extranjero (2955€) representa un coste intermedio, significativamente más bajo que desplazarse a otra comunidad autónoma, lo que podría explicarse por la naturaleza de los programas de intercambio o becas asociadas.
