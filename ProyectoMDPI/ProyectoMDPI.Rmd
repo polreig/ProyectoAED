@@ -619,3 +619,19 @@ El análisis bivariante del gasto total por Localización_Centro revela una fuer
 La gráfica muestra una jerarquía de gasto que parece estar directamente correlacionada con la distancia y la necesidad de alojamiento. El coste más elevado corresponde a los estudiantes que cursan en otra Comunidad Autonoma, con una mediana de gasto total de 6039€. Le sigue de cerca el gasto en la misma Comunidad Autónoma (4046€), lo que sugiere que el principal factor que impulsa la brecha económica es el coste asociado a vivir fuera del municipio de residencia (alquiler, manutención).
 
 En el extremo opuesto, el gasto más bajo se da, como es lógico, en el Municipio Residencia (1690€), donde el estudiante no incurre en gastos de alojamiento y el transporte es mínimo. Es notable que estudiar en el Extranjero (2955€) representa un coste intermedio, significativamente más bajo que desplazarse a otra comunidad autónoma, lo que podría explicarse por la naturaleza de los programas de intercambio o becas asociadas.
+
+Aquí tienes una propuesta de sección de conclusiones basada en los hallazgos detallados en tu informe ProyectoMDPI.Rmd.
+
+# Conclusiones
+
+El Análisis Exploratorio de Datos (AED) realizado sobre la Encuesta de Gasto de los Hogares en Educación (EGHE) de 2019 ha permitido diseccionar la estructura del gasto educativo en España, dando respuesta a las preguntas de investigación planteadas. Las conclusiones principales de este estudio son las siguientes:
+
+- El gasto educativo está dominado por los Servicios, no por los Bienes. A nivel agregado, el 77.4% del desembolso total de los hogares se destina a Servicios (matrículas, comedor, transporte, etc.), mientras que los Bienes (libros, material) suponen el 22.6%. Esto desmitifica la idea de que los libros o el material son el principal componente del gasto.
+
+- El Tipo de Centro es el factor más determinante del gasto. El análisis confirma una brecha inmensa: el gasto promedio en la enseñanza privada (superando los 4.500€) es más del doble que en la concertada (~2.000€) y más de cuatro veces superior al de la pública (~1.000€). Esta disparidad se explica casi en su totalidad por el coste de los Servicios (tasas, matrículas y cuotas), que no están subvencionados en el caso de la privada.
+
+- El gasto sigue un itinerario claro y creciente con la etapa educativa. El coste de la educación no es lineal. Se identifican dos picos de alto coste: el 1er Ciclo de Educación Infantil (etapa 0-3 años), cuyo gasto es elevado por la falta de subvención pública, y la Universidad, que representa el desembolso promedio más alto (3.056€). Las etapas de educación obligatoria (Primaria y ESO) son las que presentan un gasto más estable y contenido.
+
+- Las características del hogar actúan como condicionantes claros. El gasto educativo no ocurre en el vacío. Este estudio confirma correlaciones estadísticamente significativas (p < 0.05) que indican que el gasto aumenta en municipios más grandes (rho=0.137) y en hogares con una mayor proporción de estudiantes (rho=0.274). Además, la localización del centro es crítica: estudiar fuera del municipio de residencia, y especialmente en otra Comunidad Autónoma (mediana > 6.000€), dispara el gasto por los costes de alojamiento.
+
+En resumen, el gasto educativo en España es profundamente heterogéneo, segmentado por el eje público-privado y por la etapa educativa. El coste real para las familias no solo viene determinado por las tasas oficiales, sino por un ecosistema de gastos complementarios en servicios (comedor, informática, extraescolares) que suponen una carga económica considerable.
