@@ -375,23 +375,20 @@ library(ggplot2)
 
 
 ```{r, echo=FALSE}
-# hacemos el cálculo de medias del gasto en 3 componentes por tipo de centro, agrupamos para sacar las medias y despues desagrupamos para poder hacer la grafica
-df_gasto_3comp <- datos %>%
+# hacemos el cálculo de medias del gasto en 2 componentes por tipo de centro, agrupamos para sacar las medias y despues desagrupamos para poder hacer la grafica
+df_gasto_2comp <- datos %>%
   group_by(Tipo_educacion) %>% summarise(
     Media_bienes = mean(gasto_total_bienes, na.rm = TRUE),
-    Media_reglados = mean(gasto_total_servicios_reglados, na.rm = TRUE),
-    Media_noreglados = mean(gasto_total_servicios_no_reglados, na.rm = TRUE)
-  ) %>% ungroup() %>%
+    Media_reglados = mean(gasto_total_servicios_reglados, na.rm = TRUE)) %>% ungroup() %>%
   
   pivot_longer(cols = starts_with("Media_"), names_to = "Componente_gasto", values_to = "Gasto_promedio") %>%
 
   mutate(Componente_gasto = case_match(Componente_gasto,
-    "Media_reglados" ~ "Servicios básicos",
-    "Media_noreglados" ~ "Servicios adicionales",
+    "Media_reglados" ~ "Servicios",
     "Media_bienes" ~ "Bienes"))
 
 # creamos un gráfico de barras apiladas
-grafico_gasto_apilado <- ggplot(df_gasto_3comp, aes(x = Tipo_educacion, y = Gasto_promedio, fill = Componente_gasto)) +
+grafico_gasto_apilado <- ggplot(df_gasto_2comp, aes(x = Tipo_educacion, y = Gasto_promedio, fill = Componente_gasto)) +
   
   # position = "stack" para apilar los componentes
   geom_bar(stat = "identity", position = "stack") + 
@@ -399,7 +396,7 @@ grafico_gasto_apilado <- ggplot(df_gasto_3comp, aes(x = Tipo_educacion, y = Gast
   scale_fill_brewer(palette="Paired", direction = -1) +
   
   labs(title = "Gasto promedio total según el tipo de centro",
-    subtitle = "Desglosado por gastos en bienes, servicios básicos y adicionales",
+    subtitle = "Desglosado por gastos en bienes y servicios",
     x = "Tipo de centro", y = "Gasto promedio total (€)", fill = "Componente del gasto") +
   
   theme_minimal() +
@@ -408,7 +405,7 @@ grafico_gasto_apilado <- ggplot(df_gasto_3comp, aes(x = Tipo_educacion, y = Gast
 print(grafico_gasto_apilado)
 ```
 
-La gráfica revela una fuerte disparidad en el gasto promedio total entre los tipos de financiación, siendo la enseñanza privada el coste más elevado superando los 4.500€, seguida por la concertada cercana a 2.000€ y finalmente por la pública alrededor de los 1000€. En los tres casos, el componente dominante es el de servicios básicos (coste de estructura como matrícula, cuotas de centro o comedor). No obstante, este gasto es significativamente más alto en la enseñanza privada debido a que estos costes no están subvencionados por el Estado, contrariamente a lo que ocurre en la educación pública y parcielmente en la concertada. lo que confirma que el modelo de financiación es el principal factor que impulsa la brecha económica.
+La gráfica revela una fuerte disparidad en el gasto promedio total entre los tipos de financiación en la educación, siendo la enseñanza privada el coste más elevado superando los 4.500€, seguida por la concertada cercana a 2.000€ y finalmente por la pública alrededor de los 1000€. En los tres casos, el componente dominante es el de servicios (coste como matrícula, cuotas de centro o comedor). No obstante, este gasto es significativamente más alto en la enseñanza privada debido a que estos costes no están subvencionados por el Estado, contrariamente a lo que ocurre en la educación pública y parcielmente en la concertada.
 
 El análisis de la composición demuestra que los bienes, aunque presentes en los tres tipos de centros, representan una proporción relativamente menor del gasto total y no son la causa de las grandes diferencias observadas entre ellos, estableciendo que las familias que optan por la enseñanza privada asumen un coste de servicios muy superior.
 
