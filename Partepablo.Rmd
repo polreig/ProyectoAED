@@ -1,6 +1,8 @@
 ---
 title: "Parte Pablo"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 date: "2025-11-06"
 ---
 
@@ -28,10 +30,10 @@ Continuando con el análisis bivariante, y tras haber examinado la influencia de
 
 1. Gasto del hogar por tamaño del municipio (TMUNI). Se compararán los patrones de gasto mediano entre los diferentes tamaños de municipio (desde "<10.000 habitantes" hasta ">500.000 habitantes"). El objetivo es determinar si la magnitud de la población del municipio se relaciona con el gasto promedio del hogar, tanto en su totalidad como en su composición específica. Para ello, se emplearán diagramas de caja (geom_boxplot) y la prueba de correlación de Spearman, dado el carácter ordinal de la variable TMUNI.
 
-2. Gasto del hogar por proporción de estudiantes. Se examinará cómo evoluciona el gasto total a medida que la "densidad" de estudiantes en el hogar (la proporción EHOGAR / NHOGAR) aumenta. Esta variable numérica se ha categorizado en 5 intervalos (0-20%, 21-40%, etc.) para facilitar la comparación. Esta comparación del gasto mediano (mediante boxplots y el test de Kruskal-Wallis) identificará la intensidad de la carga económica que representan los estudiantes para los hogares.
+2. Gasto del hogar por proporción de estudiantes. Se examinará cómo evoluciona el gasto total a medida que la "densidad" de estudiantes en el hogar (la proporción EHOGAR / NHOGAR) aumenta. Esta variable numérica se ha categorizado en 5 intervalos (0-20%, 21-40%, etc.) para facilitar la comparación. Esta comparación del gasto mediano (mediante boxplots y correlación de Spearman) medirá la fuerza de la tendencia respecto la carga económica que representan los estudiantes para los hogares.
 
 ### 5.1. Relación del gasto del hogar con el tamaño del municipio.
-```{r}
+```{r, echo=FALSE}
 #### Primero seleccionamos las variables que nos interesan de nuestro dataset original
 datos_hogar <- datos %>%
   group_by(IDHOGAR) %>%
@@ -40,7 +42,7 @@ datos_hogar <- datos %>%
 datos_hogar$Prop_Estudia <- signif(datos_hogar$Prop_Estudia, digits = 4)
 ```
 
-```{r}
+```{r, echo=FALSE}
 #### Segundo sacamos los datos relacionados con el municipio y el gasto.
 datos_muni <- datos_hogar %>%
   select(IDHOGAR, TMUNI, H_Gasto_Educación, H_Gasto_Servicios_Reglados, H_Gasto_Servicios_NoReglados, H_Gasto_Bienes) %>%
@@ -48,7 +50,7 @@ datos_muni <- datos_hogar %>%
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 #### Ahora representamos una serie de gráficas de diagramas de caja de cada tamaño de municipio. Cada gráfica corresponde a una pieza del gasto total del hogar. Los gastos los representamos el escala logarítmica para mejorar la visualización.
 
 datos_muni %>% ggplot(aes(x = TMUNI, y = log(Valor_Gasto +1))) + 
@@ -58,7 +60,7 @@ datos_muni %>% ggplot(aes(x = TMUNI, y = log(Valor_Gasto +1))) +
   labs(title = "Relación Gastos Hogar y Tamaño del Municipio", x = "Tamaño del Municipio", y = "Log(Gasto Total Hogar (€) +1)") +
   theme_minimal()
 ```
-```{r}
+```{r, echo=FALSE}
 #### Calculamos cual es la máxima mediana 
 
 Medianas_gasto_TMUNI <- datos_muni %>% 
@@ -72,7 +74,7 @@ max_mediana_TMUNI <- Medianas_gasto_TMUNI %>%
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 #### Sumamos todas las componentes del gasto y calculamos la correlación con el tamaño del municipio.
 
 Gasto_Total_TMUNI <- datos_muni %>%
@@ -96,7 +98,7 @@ Los resultados de esta prueba son concluyentes. Se obtuvo un p-value de 2.346e-1
 
 ### 5.2. Relación entre el gasto y el porcentaje de estudiantes en el hogar
 
-```{r}
+```{r, echo=FALSE}
 #### Primero seleccionamos las variables que nos interesan y categorizamos la proporción de estudiantes para facilitar nuestro estudio.
 
 datos_hogar_porcentaje <- datos_hogar %>%
@@ -107,7 +109,7 @@ datos_hogar_porcentaje <- datos_hogar %>%
 ```
 
 
-```{r}
+```{r, echo=FALSE}
 #### Representamos gráficamente
 
 datos_hogar_porcentaje %>% ggplot(aes(x = Grupo_Proporción, y = log(Valor_Gasto+1))) +
@@ -117,7 +119,7 @@ datos_hogar_porcentaje %>% ggplot(aes(x = Grupo_Proporción, y = log(Valor_Gasto
   labs(title = "Gastos Hogar (Log) por Prop. Estudiantes ", x = "Grupo de Proporción de Estudiantes", y = "Log(Gasto Total del Hogar (€) + 1)") 
   
 ```
-```{r}
+```{r, echo=FALSE}
 #### Calculamos cual es la máxima mediana
 
 Medianas_gasto <- datos_hogar_porcentaje %>%
@@ -130,7 +132,7 @@ max_mediana <- Medianas_gasto %>%
   ungroup()
 ```
 
-```{r}
+```{r, echo=FALSE}
 #### Estudiamos la correlación de las variables
 Gasto_Total_PropEst <- datos_hogar_porcentaje %>%
   group_by(IDHOGAR, Grupo_Proporción) %>%
@@ -154,7 +156,7 @@ En resumen, la evidencia confirma una tendencia significativa y positiva: a mayo
 
 ### ??? Relación de gasto con localización del centro escolar
 
-```{r}
+```{r, echo=FALSE}
 #### Seleccionamos las variables que nos interesan y creamos una nueva columna con la mediana de la suma total de los gastos
 
 Medianas_gasto_loc <- datos %>%
@@ -164,7 +166,7 @@ Medianas_gasto_loc <- datos %>%
   summarise(Mediana_gasto_total = median(Gasto_Total))
 ```
 
-```{r}
+```{r, echo=FALSE}
 Medianas_gasto_loc %>% ggplot(aes(x = reorder(Localización_Centro, Mediana_gasto_total), y = Mediana_gasto_total)) +
   geom_col(aes(fill = Localización_Centro), show.legend = FALSE) +
   geom_text(aes(label = round(Mediana_gasto_total, 0)), hjust = -0.2, size = 3.5) +
