@@ -58,6 +58,7 @@ library(tidyverse)
 library(knitr)
 library(kableExtra)
 library(summarytools)
+library(dplyr)
 
 # Librerías específicas del análisis
 library(ggplot2)
@@ -79,7 +80,7 @@ Para guiar nuestro análisis, planteamos las siguientes preguntas de investigaci
 1.  **¿Cómo se distribuye la estructura del gasto promedio entre los diferentes tipos de centros (públicos, concertados, privados) y qué factores explican estas diferencias?** Compararemos los patrones de gasto entre los tres regímenes de financiación, analizando no solo las diferencias en el gasto total sino también en su composición (matrículas, servicios complementarios, material).
 2.  **¿Qué características del hogar y del estudiante predicen un mayor gasto educativo? ¿Existen diferencias significativas por sexo, composición familiar o tamaño del municipio?** Identificaremos los principales predictores del gasto educativo mediante el análisis de variables demográficas y estructurales. Evaluaremos específicamente si existen brechas de gasto asociadas al sexo del estudiante y el efecto de la composición del hogar.
 3.  **¿Cómo evoluciona el gasto educativo total promedio a lo largo del itinerario educativo, desde Infantil hasta la Universidad?** Compararemos el gasto medio en diferentes niveles, como Educación Infantil, Primaria, ESO, Bachillerato y Universidad.
-4.  **¿Qué peso real tienen los gastos complementarios (clases particulares, actividades extraescolares, material específico) en el presupuesto total y qué familias los asumen en mayor medida?** Cuantificaremos el impacto de partidas específicas como clases particulares, servicios de comedor, actividades extraescolares y uniformes escolares, que frecuentemente pasan desapercibidos en el debate público sobre el coste de la educación.
+4.  **¿Qué peso real tienen los gastos complementarios (clases particulares, actividades extraescolares, material específico) en el presupuesto total?** Cuantificaremos el impacto de partidas específicas como clases particulares, servicios de comedor, actividades extraescolares y uniformes escolares, que frecuentemente pasan desapercibidos en el debate público sobre el coste de la educación.
 
 Este informe detallará el proceso de limpieza y transformación de los datos, seguido del análisis univariante y bivariante para dar respuesta a estas preguntas, concluyendo con los principales hallazgos de nuestro estudio.
 
@@ -313,7 +314,7 @@ Finalmente, el análisis debe responder a dos preguntas planteadas inicialmente 
 - Entre las que sí gastan, ¿cuál es el gasto medio?
 
 ```{r gastcomp}
-# Función para analizar gastos "zero-inflated"
+# Función para analizar gastos
 analizar_gasto_complementario <- function(gasto_vector, nombre_gasto) {
   
   # % de familias que gastan
@@ -340,20 +341,28 @@ df_clases_part <- analizar_gasto_complementario(datos$importe_clases_particulare
 df_comedor <- analizar_gasto_complementario(datos$importe_comedor, "Comedor")
 df_extraescolares <- analizar_gasto_complementario(datos$importe_actividades_extraescolares, "Act. Extraescolares")
 df_uniformes <- analizar_gasto_complementario(datos$importe_uniformes, "Uniformes")
-
+df_transporte <- analizar_gasto_complementario(datos$importe_transporte, "Transporte")
+df_libros <- analizar_gasto_complementario(datos$importe_libros, "Libros de Texto")
+df_papeleria <- analizar_gasto_complementario(datos$importe_papeleria, "Papelería")
+df_informatica <- analizar_gasto_complementario(datos$importe_productos_informaticos, "Prod. Informáticos")
 # Combinamos y mostramos la tabla
-tabla_complementarios <- bind_rows(df_clases_part, df_comedor, df_extraescolares, df_uniformes)
+tabla_complementarios <- bind_rows(df_clases_part, df_comedor, df_extraescolares, df_transporte,
+  df_libros, df_uniformes, df_papeleria, df_informatica)
 
 knitr::kable(
   tabla_complementarios,
   caption = "Análisis de Gastos Complementarios Específicos",
   digits = 2,
-  col.names = c("Partida de Gasto", "% Hogares que pagan", "Gasto Medio (si paga) (€)", "Gasto Medio (Total) (€)")
+  col.names = c("Tipo de Gasto", "% Hogares que pagan", "Gasto Medio (si paga) (€)", "Gasto Medio (Total) (€)")
 ) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
 ```
 
-En la Tabla 3  se observa que el gasto en Uniformes es el más frecuente (asumido por un 38.5% de los hogares), pero su desembolso medio es el más bajo (109.82€). En el extremo opuesto, el Comedor y las Clases Particulares, aunque son menos frecuentes (22.6% y 18.7% respectivamente), suponen el mayor coste medio para las familias que sí los pagan, con 508.14€ y 449.11€ de media.
+En la Tabla 3  se observa una clara distinción entre Bienes (materiales) y Servicios:
+
+- Bienes (Alta Frecuencia, Bajo Coste): Existe un grupo de gastos que son casi universales. La 'Papelería' (78.9%) y los 'Libros de Texto' (70.4%) son asumidos por la gran mayoría de los hogares. Sin embargo, su desembolso medio (para quien paga) es de los más bajos, especialmente la papelería (59.04€). Los 'Uniformes' (38.5%) también son un gasto frecuente, pero con un coste medio bajo (109.82€).
+
+- Servicios (Baja Frecuencia, Alto Coste): El patrón se invierte con los servicios, que son menos frecuentes pero suponen un desembolso mucho mayor. El 'Comedor' (22.56%) es el gasto medio más elevado de la tabla (508.14€). Le siguen de cerca las 'Clases Particulares' (18.73%), que suponen 449.11€ de media para quien las contrata.
 
 # Análisis Bivariante del Gasto según las Características de los Estudiantes
 
