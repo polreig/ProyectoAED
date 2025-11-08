@@ -1,11 +1,322 @@
 ---
 title: "PartePol"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
+```{r,include=FALSE}
+# Configuración global
+knitr::opts_chunk$set(
+  echo = FALSE,           # No mostrar código por defecto
+  warning = FALSE,        # Ocultar warnings
+  message = FALSE,        # Ocultar mensajes
+  fig.align = "center",   # Centrar gráficos
+  out.width = "60%",      # Ancho de gráficos
+  cache = TRUE            # Cache para chunks pesados
+)
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+knitr::opts_chunk$set(fig.width = 5, fig.height  = 3.5)
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "") # Obligar a que las figuras se muestren en la posición del chunk correspondiente
+
+# Librerías esenciales
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(summarytools)
+
+# Librerías específicas del análisis
+library(ggplot2)
+library(scales)
+library(naniar)
+library(patchwork)
+```
+
+
+# 2. Carga y Preparación de Datos
+
+El punto de partida de este análisis son los microdatos de la Encuesta de Gasto de los Hogares en Educación (EGHE) del año 2019, proporcionados por el INE. El fichero original, *EGHE_2019.csv*, es un conjunto de datos que, si bien es completo, presenta desafíos significativos para un análisis directo:
+
+- **Codificación de Variables**: Los nombres de las variables (ej. GTT, C01, NEST2) y sus valores (ej. 1, 2, 3) siguen la codificación interna del INE, lo que los hace poco intuitivos.
+
+- **Valores Nulos (NA)**: El dataset utiliza NA (Not Available) de manera ambigua. Un NA en un campo de importe (como importe_comedor) puede significar que el dato se desconoce o, más probablemente, que el estudiante no incurrió en dicho gasto (gasto de 0€).
+
+- **Datos Irrelevantes**: El dataset original contiene numerosas columnas y filas que no son pertinentes para nuestras preguntas de investigación (ej. personas que no son estudiantes, columnas de control de la encuesta). Estos datos o variables son eliminados.
+
+Para abordar estos retos, se ha implementado un proceso de limpieza y transformación estructurado en tres fases, ejecutadas secuencialmente mediante los scripts *limpieza_gastos.R*, *limpieza_hogar.R* y *limpieza_estudiantes.R*.
+
+El **chunk** de código asociado a la limpieza de los datos carga el conjunto de datos crudo y aplica estos tres scripts para generar el dataset limpio (**datos**) que se utilizará en el resto del informe. A continuación, se detallan las transformaciones clave realizadas durante este proceso.
+
+
+```{r, include=FALSE}
+library(dplyr)
+# Leemos los datos del dataset EGHE_2019.csv
+
+# Se asignará la lectura a una variable llamada datos, esta será modificada por los archivos de limpieza y dará como salida un dataset limpio
+datos <- read.csv("data/raw/EGHE_2019.csv",sep="\t")
+
+source("scripts/limpieza_gastos.R")
+source("scripts/limpieza_hogar.R")
+source("scripts/limpieza_estudiantes.R")
+
+```
+
+
+## 2.1 Renombrado y Selección de Variables
+
+El primer paso consistió en "traducir" el dataset. Se renombraron todas las variables de interés de sus códigos del INE a nombres descriptivos en español. Por ejemplo: *C01* se renombró a *Tipo_educacion*. Esto fué posible gracias al archivo de descripción del dataset proporcionado por el INE, donde se describe que tipo de nomenclatura se gasta en cada variable y como se codifican los datos.
+
+Paralelamente, se eliminaron columnas innecesarias, variables con porcentajes demasiado elevados de NAs, como las relacionadas con información de becas, para simplificar la estructura del dataset y reducir el ruido.
+
+## 2.2 Recodificación de Variables Categóricas
+
+Las variables categóricas más importantes fueron transformadas a factores con etiquetas descriptivas para la correcta interpretación y visualización en los análisis.
+```{r,echo=FALSE}
+
+ejemplo_recod <- data.frame(
+  Variable = c("Tipo_educacion", "SEXO", "Nacionalidad"),
+  Código_INE = c("1, 2, 3", "1, 2", "1, 2, 3"),
+  Etiqueta = c("Pública, Concertada, Privada", "Hombre, Mujer", "Española, Extranjera, Doble nacionalidad")
+)
+
+knitr::kable(ejemplo_recod, caption = "Ejemplos de Recodificación de Variables Categóricas")
+```
+
+
+## 2.3 Imputación y Tratamiento de Valores Nulos
+
+Partimos de la hipótesis de que, en un campo de gasto, un valor NA significa un gasto de 0€. Posteriormente, se realizó la comprobación de que, para todas las muestras, la suma de todos los tipos de gasto es igual al valor de la variable *gasto_total_educacion*:
+
+$$\sum{\textbf{importes individuales} = \textbf{gasto\_total\_educacion}}$$
+
+Tras comprobar que se cumplía esta condición, se aplicó la siguiente lógica de imputación:
+
+- **Importes (*importe_*)**: Todos los valores NA en columnas de importes (ej. *importe_comedor*, *importe_clases_particulares*) se sustituyeron por 0, indicando un gasto nulo.
+
+- **Servicios (*servicio_*)**: En las variables que indican si se usó un servicio (donde 1=Sí), los NA se imputaron como 2 (el código para "No").
+
+- **Gastos Totales (*gasto_total_*)**: Del mismo modo, los NA en las columnas de gasto total se reemplazaron por 0.
+
+## 2.4 Filtrado y Saneamiento de Datos
+
+Finalmente, se aplicaron varios filtros para asegurar la coherencia y relevancia del dataset:
+
+Se eliminaron registros con inconsistencias obvias, como un hogar con NHOGAR (número de personas en el hogar) inferior a 1.
+
+Se eliminaron las filas donde variables fundamentales para nuestro análisis eran nulas, ya que no se podían imputar de forma fiable. Específicamente:
+
+- Se eliminaron muestras con *gasto_total_educacion* nulo, pues es nuestra variable objetivo.
+
+- Se eliminaron muestras con *Tipo_educacion* nulo, ya que esta es una variable explicativa central para la Pregunta 1.
+
+Tras este proceso exhaustivo, el objeto datos queda listo para el análisis. Contiene únicamente las observaciones y variables relevantes, con tipos de datos correctos, sin valores nulos ambiguos y con etiquetas descriptivas.
 
 # 3. Descripción del Conjunto de Datos Limpio: Análisis Univariante
 
-Tras la ejecución de los scripts de limpieza, obtenemos el *dataset* `datos`. Este conjunto de datos contiene *`r nrow(datos)`* observaciones (cada una representando a un estudiante que reportó gastos) y *`r ncol(datos)`* variables limpias y listas para el análisis.
+Tras la ejecución de los scripts de limpieza, obtenemos el dataset `datos`. Este conjunto de datos contiene `r nrow(datos)` observaciones (cada una representando a un estudiante que reportó gastos) y `r ncol(datos)` variables limpias y listas para el análisis.
 
 El objetivo de esta sección es realizar un análisis univariante de las variables clave. Este paso es fundamental para entender la distribución y las características de cada variable de forma aislada, antes de buscar relaciones entre ellas. Nos centraremos en la variable objetivo (Gasto Total) y en las principales variables categóricas y numéricas que usaremos para responder a nuestras preguntas.
 
+## 3.1 Variable Objetivo: Gasto Total Anual (gasto_total_educacion)
+
+Nuestra principal variable de interés es el *gasto_total_educacion* anual por estudiante.
+
+```{r,echo=FALSE}
+# Calculamos las estadísticas descriptivas básicas
+stats_gasto <- data.frame(
+  Metrica = c("Media", "Mediana", "Mínimo", "Máximo", "1er Cuartil", "3er Cuartil", "Desv. Estándar"),
+  Valor = c(
+    mean(datos$gasto_total_educacion),
+    median(datos$gasto_total_educacion),
+    min(datos$gasto_total_educacion),
+    max(datos$gasto_total_educacion),
+    quantile(datos$gasto_total_educacion, 0.25),
+    quantile(datos$gasto_total_educacion, 0.75),
+    sd(datos$gasto_total_educacion)
+  )
+)
+
+# Mostramos la tabla formateada
+knitr::kable(
+  stats_gasto,
+  caption = "Estadísticas Descriptivas del Gasto Total Anual por Estudiante",
+  digits = 2,
+  col.names = c("Métrica", "Valor (€)")
+) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = F)
+```
+
+La tabla anterior revela un hallazgo clave: la media (`r round(mean(datos$gasto_total_educacion), 2)` €) es significativamente más alta que la mediana (`r round(median(datos$gasto_total_educacion), 2)` €). Esto indica una distribución asimétrica positiva (sesgada a la derecha).
+
+En la práctica, esto significa que la mayoría de los hogares reportan un gasto relativamente bajo, pero un pequeño número de hogares (probablemente aquellos en centros privados de élite o con altos gastos en actividades complementarias) tienen gastos muy elevados, "tirando" de la media hacia arriba. Por esta razón, y tal como se planteaba en nuestras preguntas de investigación, la mediana será una métrica más robusta para describir el gasto del hogar "típico".
+
+El siguiente histograma confirma visualmente esta fuerte asimetría. La gran mayoría de las observaciones se concentran en la parte izquierda del gráfico, con una larga cola de outliers hacia la derecha.
+
+```{r, echo=FALSE, fig.cap="Histograma del Gasto Total Anual (Escala Lineal y Logarítmica).",fig.width=10, out.width="100%"}
+# 1. Gráfico Lineal (como el original)
+plot_gasto_linear <- ggplot(datos, aes(x = gasto_total_educacion)) +
+  geom_histogram(bins = 50, fill = "dodgerblue4", alpha = 0.7) +
+  geom_vline(aes(xintercept = mean(gasto_total_educacion), color = "Media"), linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(gasto_total_educacion), color = "Mediana"), linetype = "dotted", size = 1) +
+  labs(
+    x = "Gasto Total (€) - Escala Lineal",
+    y = "Frecuencia (Nº Estudiantes)",
+    color = "Estadístico"
+  ) +
+  scale_color_manual(values = c("Media" = "red", "Mediana" = "black")) +
+  scale_x_continuous(labels = scales::dollar_format(suffix = "€", prefix = "")) +
+  theme_minimal() +
+  theme(legend.position = c(0.8, 0.6)) # Ajusta la posición de la leyenda si es necesario
+
+# 2. Gráfico Logarítmico
+# [cite_start]Filtramos gasto > 0 para evitar errores con log(0), ya que tu mínimo es 0 [cite: 49]
+plot_gasto_log <- ggplot(subset(datos, gasto_total_educacion > 0), aes(x = gasto_total_educacion)) +
+  geom_histogram(bins = 40, fill = "dodgerblue4", alpha = 0.7) +
+  scale_x_log10(
+    labels = scales::dollar_format(suffix = "€", prefix = ""),
+    breaks = c(100, 500, 1000, 5000, 10000, 30000) # Breaks manuales para claridad
+  ) +
+  labs(
+    x = "Gasto Total (€) - Escala Log",
+    y = NULL # Quitar eje Y para no repetir
+  ) +
+  theme_minimal()
+
+# 3. Combinar con patchwork (asegúrate de tener 'library(patchwork)' en el setup)
+plot_gasto_linear + plot_gasto_log
+```
+
+La Figura 1 combina dos vistas de la misma variable:
+
+- El gráfico de la izquierda (escala lineal) nos permite observar la fuerte asimetría positiva y el impacto de los *outliers*, que elevan la media (1638.14 €) muy por encima de la mediana (972 €).
+
+- El gráfico de la derecha (escala logarítmica) complementa al primero. Al comprimir los valores altos y expandir los bajos, nos permite visualizar la forma de la distribución del grueso de los hogares. En esta vista, se puede apreciar mejor dónde se concentran los gastos más comunes.
+
+## 3.2 Variables Categóricas Principales
+
+A continuación, exploramos la composición de nuestra muestra en función de las variables categóricas clave que guían nuestras preguntas de investigación.
+
+```{r,fig.cap="Nº de Estudiantes por Tipo de Centro y por Nivel Educativo"}
+# 1. Gráfico de Tipo de Centro (igual que lo tenías)
+plot_tipo_centro <- ggplot(datos, aes(x = fct_infreq(Tipo_educacion))) +
+  geom_bar(fill = "#0072B2") +
+  geom_text(stat = 'count', aes(label = ..count..), vjust = -0.5) +
+  labs( x = "Tipo de Centro", y = "Frecuencia") +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+
+# 2. Gráfico de Nivel Educativo (con la mejora de orden lógico)
+# Definimos el orden correcto del itinerario educativo
+orden_niveles <- c("Educación Infantil", 
+                   "Educación Primaria", 
+                   "Educación Secundaria", 
+                   "Educación Superior",
+                   "Otros estudios sin nivel académico") # Asegúrate que los nombres coincidan
+
+# Filtramos solo los niveles que SÍ existen en nuestros datos
+niveles_presentes <- intersect(orden_niveles, unique(datos$Nivel_estudios))
+
+plot_nivel <- ggplot(datos, aes(x = Nivel_estudios)) + # Quitamos fct_infreq
+  geom_bar(fill = "#D55E00") +
+  scale_x_discrete(limits = niveles_presentes) + # Aplicamos el orden lógico
+  geom_text(stat = 'count', aes(label = ..count..), vjust = -0.5) +
+  labs( x = "Nivel Educativo", y = "Frecuencia") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+
+# 3. Combinar los gráficos con patchwork
+# Simplemente "sumamos" los plots. Se pondrán uno al lado del otro.
+plot_tipo_centro + plot_nivel
+```
+
+De estos gráficos, observamos que:
+
+- **Tipo de Centro**: La mayoría de los estudiantes de la muestra se encuentran en la enseñanza pública, seguida de la concertada y, finalmente, la privada. Esta distribución es coherente con la estructura del sistema educativo español.
+
+- **Nivel Educativo**: La muestra tiene una representación significativa en todas las etapas, con los picos de frecuencia en Educación Primaria y Secundaria. Es importante notar que si un grupo está poco representado (ej. "Otros estudios"), deberemos ser cautelosos al generalizar los resultados para ese grupo.
+
+## 3.3 Componentes del Gasto (Bienes vs. Servicios)
+
+Nuestra Pregunta 2 busca identificar cuál de los dos grandes componentes del gasto (Servicios vs. Bienes) tiene un mayor peso.
+
+```{r,fig.cap= "Desglose del Gasto Educativo Total"}
+# Calculamos el gasto total agregado para cada categoría
+total_bienes <- sum(datos$gasto_total_bienes, na.rm = TRUE)
+total_servicios <- sum(datos$gasto_total_servicios, na.rm = TRUE)
+total_agregado <- total_bienes + total_servicios
+
+# Creamos un dataframe para el gráfico
+df_componentes <- data.frame(
+  Componente = c("Bienes", "Servicios"),
+  Gasto_Total = c(total_bienes, total_servicios)
+) %>%
+  mutate(
+    Porcentaje = Gasto_Total / total_agregado
+  )
+
+# Gráfico de barras apiladas al 100% (o un simple pie chart)
+ggplot(df_componentes, aes(x = "", y = Porcentaje, fill = Componente)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) + # Esto lo convierte en gráfico circular
+  geom_text(aes(label = scales::percent(Porcentaje, accuracy = 0.1)),
+            position = position_stack(vjust = 0.5)) +
+  labs(
+    x = NULL, y = NULL
+  ) +
+  theme_void() +
+  theme(legend.position = "bottom")
+```
+
+El gráfico circular muestra de forma concluyente que, a nivel agregado, el gasto en Servicios (matrículas, comedor, transporte, extraescolares, etc.) representa la mayor parte del desembolso total de los hogares, superando ampliamente al gasto en Bienes (libros, material, uniformes).
+
+## 3.4 Gastos Complementarios
+
+Finalmente, el análisis debe responder a dos preguntas planteadas inicialmente en la Pregunta 4:
+
+- ¿Qué porcentaje de familias incurre realmente en los gastos complementarios?
+
+- Entre las que sí gastan, ¿cuál es el gasto medio?
+
+```{r}
+# Función para analizar gastos "zero-inflated"
+analizar_gasto_complementario <- function(gasto_vector, nombre_gasto) {
+  
+  # 1. % de familias que gastan
+  porc_gasta <- mean(gasto_vector > 0, na.rm = TRUE)
+  
+  # 2. Gasto medio de SOLO los que gastan
+  media_los_que_gastan <- mean(gasto_vector[gasto_vector > 0], na.rm = TRUE)
+  
+  # 3. Gasto medio sobre el TOTAL (incluyendo ceros)
+  media_total <- mean(gasto_vector, na.rm = TRUE)
+  
+  return(
+    data.frame(
+      Gasto = nombre_gasto,
+      Porcentaje_Hogares_con_Gasto = porc_gasta * 100,
+      Gasto_Medio_en_quien_paga = media_los_que_gastan,
+      Gasto_Medio_sobre_Total = media_total
+    )
+  )
+}
+
+# Aplicamos la función a las variables de interés (usamos 'importe_' que limpiamos en la Sección 2)
+df_clases_part <- analizar_gasto_complementario(datos$importe_clases_particulares, "Clases Particulares")
+df_comedor <- analizar_gasto_complementario(datos$importe_comedor, "Comedor")
+df_extraescolares <- analizar_gasto_complementario(datos$importe_actividades_extraescolares, "Act. Extraescolares")
+df_uniformes <- analizar_gasto_complementario(datos$importe_uniformes, "Uniformes")
+
+# Combinamos y mostramos la tabla
+tabla_complementarios <- bind_rows(df_clases_part, df_comedor, df_extraescolares, df_uniformes)
+
+knitr::kable(
+  tabla_complementarios,
+  caption = "Análisis de Gastos Complementarios Específicos",
+  digits = 2,
+  col.names = c("Partida de Gasto", "% Hogares que pagan", "Gasto Medio (si paga) (€)", "Gasto Medio (Total) (€)")
+) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+```
+
+En esta tabla se observa que el gasto en Uniformes es el más frecuente (asumido por un 38.5% de los hogares), pero su desembolso medio es el más bajo (109.82€). En el extremo opuesto, el Comedor y las Clases Particulares, aunque son menos frecuentes (22.6% y 18.7% respectivamente), suponen el mayor coste medio para las familias que sí los pagan, con 508.14€ y 449.11€ de media.
