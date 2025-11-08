@@ -21,7 +21,7 @@ affiliation:
       Máster en Ciencia de Datos
     email: pablo.carbonell@alumni.uv.es
 correspondence: |
-  Máster en Ciencia de Datos, Universitá de Valencia.
+  Máster en Ciencia de Datos, Universitat de Valencia.
 date: "9 de Noviembre de 2025"
 # document options
 journal: notspecified
