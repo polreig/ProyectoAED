@@ -6,7 +6,7 @@ datos<-datos%>%mutate(NACIONALIDAD=factor(NACIONALIDAD, levels=c(1,2,3), labels=
 
 unique(datos["EDAD"])
 RANGOS_EDAD<-cut(datos$EDAD, breaks=c(-1, 2, 5, 11, 17, 25, 35, 45, Inf), labels=c("0-2 años", "3-5 años", "6-11 años", "12-17 años", "18-25 años", "26-35 años", "36-45 años", "46 años o más"), ordered=TRUE)
-
+datos<-datos%>%mutate(EDAD=RANGOS_EDAD)
 
 unique(datos["ESTUDIANTE"])
 datos<-datos%>%mutate(ESTUDIANTE=factor(ESTUDIANTE, levels=c(0,1), labels=c("No", "Sí")))
