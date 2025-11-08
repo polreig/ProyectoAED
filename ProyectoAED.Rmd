@@ -61,9 +61,9 @@ El presente proyecto tiene como objetivo realizar un Análisis Exploratorio de D
 
 Para guiar nuestro análisis, planteamos las siguientes preguntas de investigación:
 
-1.  **¿Cómo se distribuye el gasto educativo entre los diferentes tipos de centros (públicos, concertados, privados) y qué factores explican estas diferencias?** Compararemos los patrones de gasto entre los tres regímenes de financiación, analizando no solo las diferencias en el gasto total sino también en su composición (matrículas, servicios complementarios, material).
+1.  **¿Cómo se distribuye estructura del gasto promedio entre los diferentes tipos de centros (públicos, concertados, privados) y qué factores explican estas diferencias?** Compararemos los patrones de gasto entre los tres regímenes de financiación, analizando no solo las diferencias en el gasto total sino también en su composición (matrículas, servicios complementarios, material).
 2.  **¿Qué características del hogar y del estudiante predicen un mayor gasto educativo? ¿Existen diferencias significativas por sexo, composición familiar o tamaño del municipio?** Identificaremos los principales predictores del gasto educativo mediante el análisis de variables demográficas y estructurales. Evaluaremos específicamente si existen brechas de gasto asociadas al sexo del estudiante y el efecto de la composición del hogar.
-3.  **¿Cómo evoluciona la estructura del gasto a lo largo del itinerario educativo, desde Infantil hasta la Universidad, y qué servicios adquieren mayor relevancia en cada etapa?** Compararemos el gasto medio en diferentes niveles, como Educación Infantil, Primaria, ESO, Bachillerato y Universidad.
+3.  **¿Cómo evoluciona el gasto educativo total promedio a lo largo del itinerario educativo, desde Infantil hasta la Universidad?** Compararemos el gasto medio en diferentes niveles, como Educación Infantil, Primaria, ESO, Bachillerato y Universidad.
 4.  **¿Qué peso real tienen los gastos complementarios (clases particulares, actividades extraescolares, material específico) en el presupuesto total y qué familias los asumen en mayor medida?** Cuantificaremos el impacto de partidas específicas como clases particulares, servicios de comedor, actividades extraescolares y uniformes escolares, que frecuentemente pasan desapercibidos en el debate público sobre el coste de la educación.
 5. 
 
@@ -357,3 +357,100 @@ knitr::kable(
 ```
 
 En esta tabla se observa que el gasto en Uniformes es el más frecuente (asumido por un 38.5% de los hogares), pero su desembolso medio es el más bajo (109.82€). En el extremo opuesto, el Comedor y las Clases Particulares, aunque son menos frecuentes (22.6% y 18.7% respectivamente), suponen el mayor coste medio para las familias que sí los pagan, con 508.14€ y 449.11€ de media.
+
+## **4. Análisis Bivariante del Gasto según las Características de los Estudiantes**
+
+Una vez realizado el análisis univariante, se pretende observar las relaciones y los patrones explicativos que influyen en el gasto educativo. Para ello, se emplea el análisis bivariante, cruzando el gasto total de educación y su composición (bienes, servicios reglados o básicos y servicios no reglados o adicionales) con las variables estructurales del sistema educativo.
+
+Este análisis se centra en dos comparaciones fundamentales:
+
+1. Distribución del gasto por tipo de centro. Se compararán los patrones de gasto entre los tres tipos de educación (pública, concertada y privada), analizando no solo las diferencias en el gasto total sino también en la composición de la estructura del gasto. Esto permite determinar cómo el tipo de centro afecta el coste promedio y la inversión en bienes y servicios educativos.
+
+2. Evolución del gasto por nivel educativo. Se examinará cómo el gasto total evoluciona a lo largo de las etapas educativas, desde Infantil hasta la Universidad. Esta comparación del gasto medio en diferentes niveles identifica la intensidad y la carga económica que representa cada etapa para los hogares.
+
+
+### 4.1. Composición y promedio del gasto según el tipo de centro
+```{r, include=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+
+```{r, echo=FALSE}
+# hacemos el cálculo de medias del gasto en 3 componentes por tipo de centro, agrupamos para sacar las medias y despues desagrupamos para poder hacer la grafica
+df_gasto_3comp <- datos %>%
+  group_by(Tipo_educacion) %>% summarise(
+    Media_bienes = mean(gasto_total_bienes, na.rm = TRUE),
+    Media_reglados = mean(gasto_total_servicios_reglados, na.rm = TRUE),
+    Media_noreglados = mean(gasto_total_servicios_no_reglados, na.rm = TRUE)
+  ) %>% ungroup() %>%
+  
+  pivot_longer(cols = starts_with("Media_"), names_to = "Componente_gasto", values_to = "Gasto_promedio") %>%
+
+  mutate(Componente_gasto = case_match(Componente_gasto,
+    "Media_reglados" ~ "Servicios básicos",
+    "Media_noreglados" ~ "Servicios adicionales",
+    "Media_bienes" ~ "Bienes"))
+
+# creamos un gráfico de barras apiladas
+grafico_gasto_apilado <- ggplot(df_gasto_3comp, aes(x = Tipo_educacion, y = Gasto_promedio, fill = Componente_gasto)) +
+  
+  # position = "stack" para apilar los componentes
+  geom_bar(stat = "identity", position = "stack") + 
+  
+  scale_fill_brewer(palette="Paired", direction = -1) +
+  
+  labs(title = "Gasto promedio total según el tipo de centro",
+    subtitle = "Desglosado por gastos en bienes, servicios básicos y adicionales",
+    x = "Tipo de centro", y = "Gasto promedio total (€)", fill = "Componente del gasto") +
+  
+  theme_minimal() +
+  theme(legend.position = "bottom", legend.title = element_text(face = "bold"))
+
+print(grafico_gasto_apilado)
+```
+
+La gráfica revela una fuerte disparidad en el gasto promedio total entre los tipos de financiación, siendo la enseñanza privada el coste más elevado superando los 4.500€, seguida por la concertada cercana a 2.000€ y finalmente por la pública alrededor de los 1000€. En los tres casos, el componente dominante es el de servicios básicos (coste de estructura como matrícula, cuotas de centro o comedor). No obstante, este gasto es significativamente más alto en la enseñanza privada debido a que estos costes no están subvencionados por el Estado, contrariamente a lo que ocurre en la educación pública y parcielmente en la concertada. lo que confirma que el modelo de financiación es el principal factor que impulsa la brecha económica.
+
+El análisis de la composición demuestra que los bienes, aunque presentes en los tres tipos de centros, representan una proporción relativamente menor del gasto total y no son la causa de las grandes diferencias observadas entre ellos, estableciendo que las familias que optan por la enseñanza privada asumen un coste de servicios muy superior.
+
+### 4.2. Gasto educativo total promedio por nivel educativo
+```{r, echo=FALSE}
+library(forcats) 
+
+#escogemos los niveles que vamos a representar
+orden_niveles_educativos <- c("Infantil (1er Ciclo)","Infantil (2do Ciclo)", "Primaria", "ESO", "Bachillerato", "Formación Profesional","Universidad")
+
+df_gasto_nivel_agrupado <- datos %>% mutate(Nivel_agrupado = case_when(
+    Nivel_estudios_especifico == "1º Ciclo de Educación Infantil" ~ "Infantil (1er Ciclo)",
+    Nivel_estudios_especifico == "2º Ciclo de Educación Infantil" ~ "Infantil (2do Ciclo)",
+    Nivel_estudios_especifico == "Educación Primaria" ~ "Primaria",
+    Nivel_estudios_especifico == "Educación Secundaria Obligatoria (ESO)" ~ "ESO",
+    Nivel_estudios_especifico == "Bachillerato" ~ "Bachillerato",
+    Nivel_estudios_especifico == "Estudios Universitarios" ~ "Universidad",
+    Nivel_estudios_especifico == "Ciclos Formativos de FP" | 
+      Nivel_estudios_especifico == "Ciclos Formativos de Grado Superior" ~ "Formación Profesional",
+    TRUE ~ NA_character_ )) %>%
+  
+  #calculamos media
+  filter(!is.na(Nivel_agrupado)) %>% group_by(Nivel_agrupado) %>% summarise(Media_Gasto_Total = mean(gasto_total_educacion, na.rm = TRUE), N=n())%>%
+  ungroup() %>% mutate(Nivel_agrupado = factor(Nivel_agrupado, levels = orden_niveles_educativos))
+
+grafico_gasto_nivel_total <- ggplot(df_gasto_nivel_agrupado, aes(x = Nivel_agrupado, y = Media_Gasto_Total, fill = Nivel_agrupado)) + geom_bar(stat = "identity") +
+  
+  scale_fill_manual(values = c(
+    "Infantil (1er Ciclo)" = "#1f77b4", "Infantil (2do Ciclo)" = "#ff7f0e", "Primaria" = "#2ca02c", "ESO" = "#d62728", "Bachillerato" = "#9467bd", "Formación Profesional (FP)" = "#8c564b", "Universidad" = "#e377c2")) +
+  
+  geom_text(aes(label = paste0("€", format(round(Media_Gasto_Total, 0), big.mark = ".", decimal.mark=","))), vjust = -0.5, size = 3.5, color = "black") +
+
+  labs(title = "Gasto educativo total promedio según el nivel de educación",
+    x = "Nivel educativo", y = "Gasto promedio total (€)", fill = "Nivel educativo")+
+  
+  scale_y_continuous(limits = c(0, max(df_gasto_nivel_agrupado$Media_Gasto_Total) * 1.1)) + theme_minimal() + theme(legend.position = "none", axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+print(grafico_gasto_nivel_total)
+```
+
+La gráfica revela que el gasto educativo promedio aumenta significativamente a lo largo de las etapas académicas. Esta evolución alcanza su punto máximo en la Universidad (€3.056), que es más del doble del gasto en la mayoría de las etapas inferiores, y experimenta su primer gran salto en Bachillerato. En las etapas iniciales, el 1er ciclo de Infantil destaca por ser más caro que las etapas posteriores, lo cual se atribuye a los costes no subvencionados de la etapa 0-3 años. Por otro lado, durante la educación obligatoria, el gasto se mantiene relativamente estable. Las transiciones a Bachillerato y Universidad marcan los puntos críticos donde el coste de tasas, materiales como portátiles y matrículas impacta más fuertemente en el presupuesto familiar.
