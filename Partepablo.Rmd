@@ -37,10 +37,6 @@ chi2
 
 
 ```{r}
-GastoMed_HogarxTMUNI <- datos %>% group_by(TMUNI) %>%
-  summarise(Media_educación = mean(gasto_total_educacion), Media_servicios = mean(gasto_total_servicios), Media_servicios_reglados = mean(gasto_total_servicios_reglados), Media_servicios_noreglados = mean(gasto_total_servicios_no_reglados),Media_bienes = mean(gasto_total_bienes))
-GastoMed_HogarxTMUNI
-
 GastoMed_HogarxLocCen <- datos %>% group_by(Localización_Centro) %>%
   summarise(Media_educación = mean(gasto_total_educacion), Media_servicios = mean(gasto_total_servicios), Media_servicios_reglados = mean(gasto_total_servicios_reglados), Media_servicios_noreglados = mean(gasto_total_servicios_no_reglados),Media_bienes = mean(gasto_total_bienes))
 GastoMed_HogarxLocCen
@@ -49,22 +45,7 @@ GastoMed_HogarxLocCen
 
 ```{r}
 ## Detección outliers
-GastosxTMUNI <- datos %>%
-  select(TMUNI, gasto_total_educacion, gasto_total_servicios, gasto_total_servicios_reglados, gasto_total_servicios_no_reglados, gasto_total_bienes) %>%
-  pivot_longer(cols = starts_with("gasto_total"), names_to = "Tipo_Gasto", values_to = "Valor_Gasto")
 
-Outlier_TMUNI <- GastosxTMUNI %>%
-  group_by(Tipo_Gasto, TMUNI) %>%
-  mutate(Q1 = quantile(Valor_Gasto, 0.25), Q3 = quantile(Valor_Gasto,0.75), IQR = IQR(Valor_Gasto), LimSup = Q3 + 1.5*IQR, LimInf = Q1 - 1.5*IQR) %>%
-  filter(Valor_Gasto > LimSup | Valor_Gasto < LimInf) %>%
-  ungroup() %>%
-  arrange(Tipo_Gasto, TMUNI) %>%
-  select(Tipo_Gasto, TMUNI, Valor_Gasto, LimInf, LimSup)
-Outlier_TMUNI
-
-```
-
-```{r}
 GastosxLocCen <- datos %>%
   select(Localización_Centro, gasto_total_educacion, gasto_total_servicios, gasto_total_servicios_reglados, gasto_total_servicios_no_reglados, gasto_total_bienes) %>%
   pivot_longer(cols = starts_with("gasto_total"), names_to = "Tipo_Gasto", values_to = "Valor_Gasto")
@@ -77,31 +58,19 @@ Outlier_LocCen <- GastosxLocCen %>%
   arrange(Tipo_Gasto, Localización_Centro) %>%
   select(Tipo_Gasto, Localización_Centro, Valor_Gasto, LimInf, LimSup)
 Outlier_LocCen
+
 ```
 
 
 ```{r}
 ## Representación gráfica 
 
-GastosMedTMUNI <- GastoMed_HogarxTMUNI %>%
-  pivot_longer(cols = starts_with("Media_"), names_to = "Tipo_Gasto", values_to = "Valor_Medio", names_prefix = "Media_")
-head(GastosMedMUNI)
-
-ggplot(GastosMedTMUNI, aes(x = TMUNI, y = Valor_Medio)) +
-  geom_point(color = "blue", outlier.color = "red") +
-  labs(title="Distribución Medias de Gasto por Tipo de Municipio", x= "Tipo de Municipio", y ="Media de Gasto") +
-  facet_wrap(~Tipo_Gasto, ncol=2) +
-  coord_flip() +
-  theme_minimal()
-```
-
-```{r}
-GastosMedLocCen <- GastoMedHogarxLocCen %>%
+GastosMedLocCen <- GastoMed_HogarxLocCen %>%
   pivot_longer(cols = starts_with("Media_"), names_to = "Tipo_Gasto", values_to = "Valor_Medio", names_prefix = "Media_")
 head(GastosMedLocCen)
 
 ggplot(GastosMedLocCen, aes(x = Localización_Centro, y = Valor_Medio)) +
-  geom_point(color = "blue", outlier.color = "red") +
+  geom_point(color = "blue") +
   labs(title="Distribución Medias de Gasto por Ubicación del Centro", x= "Ubicación del Centro", y ="Media de Gasto") +
   facet_wrap(~Tipo_Gasto, ncol = 2) +
   coord_flip() +
@@ -113,8 +82,12 @@ Terminado el estudio de la relación entre la ubicación del estudiantes y su ce
 ```{r}
 datos_hogar <- datos %>%
   group_by(IDHOGAR) %>%
-  summarise(TMUNI = first(TMUNI), NHOGAR = first(NHOGAR), EHOGAR = first(EHOGAR), Prop_Estudia = EHOGAR/NHOGAR, H_Gasto_Educación = sum(gasto_total_educacion), H_Gasto_Servicios = sum(gasto_total_servicios), H_Gasto_Servicios_Reglados = sum(gasto_total_servicios_reglados), H_Gasto_Servicios_NoReglados = sum(gasto_total_servicios_no_reglados), H_Gasto_Bienes = sum(gasto_total_bienes))
-datos_hogar
+  summarise(TMUNI = first(TMUNI), NHOGAR = first(NHOGAR), EHOGAR = first(EHOGAR), Prop_Estudia = (EHOGAR/NHOGAR)*100, H_Gasto_Educación = sum(gasto_total_educacion), H_Gasto_Servicios = sum(gasto_total_servicios), H_Gasto_Servicios_Reglados = sum(gasto_total_servicios_reglados), H_Gasto_Servicios_NoReglados = sum(gasto_total_servicios_no_reglados), H_Gasto_Bienes = sum(gasto_total_bienes)) 
+
+datos_hogar$Prop_Estudia <- signif(datos_hogar$Prop_Estudia, digits = 4)
+
+head(datos_hogar)
+
 ```
 
 Nos interesa estudiar la relación entre la proporción estudiantes/personas de un mismo hogar con los gastos totales.
@@ -122,44 +95,53 @@ Nos interesa estudiar la relación entre la proporción estudiantes/personas de 
 ```{r}
 Prop_Hogar <- datos_hogar %>%
   select(IDHOGAR, Prop_Estudia, H_Gasto_Educación, H_Gasto_Servicios, H_Gasto_Servicios_Reglados, H_Gasto_Servicios_NoReglados, H_Gasto_Bienes) %>%
-  pivot_longer(cols = starts_with("H_Gasto_"), names_to = "Tipo_Gasto", values_to = "Valor_Gasto", names_prefix = "H_Gasto_")
-
+  pivot_longer(cols = starts_with("H_Gasto_"), names_to = "Tipo_Gasto", values_to = "Valor_Gasto", names_prefix = "H_Gasto_")  
 head(Prop_Hogar)
   
 ```
 
 ```{r}
-Prop_Hogar %>% ggplot(aes(x = Prop_Estudia, y = Valor_Gasto)) + 
-  geom_point(alpha = 0.5, color = "green") + 
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  facet_wrap(~Tipo_Gasto, scales = "free_y", ncol = 3) +
-  labs(title = "Relación Gastos Hogar y Proporción Estudiantes", x = "Proporción Estudiantes", y = "Gasto Total Hogar") +
-  theme_minimal()
+datos_hogar_porcentaje <- Prop_Hogar %>%
+  mutate(Grupo_Proporción = cut(Prop_Estudia, breaks= c(-0.1, 20, 40, 60, 80, 100), labels = c("0-20%", "21-40%", "41-60%", "61-80%", "81-100%"), include.lowest = TRUE)) 
+datos_hogar_porcentaje
 ```
 
 ```{r}
-Corr_rho_gasto_hogar <- Prop_Hogar %>%
-  group_by(Tipo_Gasto) %>%
-  summarise(corr_rho = cor(Prop_Estudia, Valor_Gasto, method = "spearman")) %>%
-  arrange(desc(corr_rho))
-
-corr_p_gasto_hogar <- Prop_Hogar %>%
-  group_by(Tipo_Gasto) %>%
-  summarise(p = cor.test(Prop_Estudia, Valor_Gasto, method = "spearman", exact = FALSE)$p.value) 
-
-Corr_gasto_hogar <- left_join(Corr_rho_gasto_hogar, corr_p_gasto_hogar, by = "Tipo_Gasto") %>%
-  arrange(desc(corr_rho))
-Corr_gasto_hogar
+datos_hogar_porcentaje %>% ggplot(aes(x = Grupo_Proporción, y = log(Valor_Gasto+1))) +
+  geom_boxplot(aes(fill = Grupo_Proporción), show.legend = FALSE, outlier.colour = "red") + 
+  facet_wrap(~Tipo_Gasto, scales="free_x", ncol = 3) +
+  coord_flip() +
+  labs(title = "Gastos Hogar (Log) por Prop. Estudiantes ", x = "Grupo de Proporción de Estudiantes", y = "Log(Gastos Totales del Hogar + 1)") 
+  
 ```
-
 ```{r}
-Prop_Hogar %>% ggplot(aes(x = Prop_Estudia, y =log(Valor_Gasto+1))) +
-  geom_point(alpha = 0.5, color = "green") + 
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  facet_wrap(~Tipo_Gasto, ncol = 3, scales = "free_y") +
-  labs(title = "Rel Gasto (Escala Log) y Prop Estudiantes", x = "Proporción Estudiantes", y = "Gasto del Hogar (Escala Logarítmica)") +
-  theme_minimal()
+Medianas_gasto <- datos_hogar_porcentaje %>%
+  group_by(Grupo_Proporción, Tipo_Gasto) %>%
+  summarise(Mediana_Gasto = median(Valor_Gasto), .groups = "drop")
+
+max_mediana <- Medianas_gasto %>%
+  group_by(Grupo_Proporción) %>%
+  slice_max(order_by = Mediana_Gasto, n=1) %>%
+  ungroup()
+max_mediana
 ```
+```{r}
+Gasto_Total_PropEst <- datos_hogar_porcentaje %>%
+  group_by(IDHOGAR, Grupo_Proporción) %>%
+  summarise(Gasto_Total = sum(Valor_Gasto), .groups = "drop") 
+  
+  
+
+cor_gasto_prop <- cor.test(as.numeric(Gasto_Total_PropEst$Grupo_Proporción), Gasto_Total_PropEst$Gasto_Total, method = "spearman", exact = FALSE)
+
+rho <- cor_gasto_prop$estimate
+p <- cor_gasto_prop$p.value
+
+rho
+p
+```
+
+
 Vamos ahora con el estudio de la relación entre el tamaño del municipio y los gastos totales.
 
 ```{r}
@@ -193,7 +175,9 @@ total_outliers_TMUNI
 ```{r}
 Gasto_Total_TMUNI <- datos_muni %>%
   group_by(IDHOGAR, TMUNI) %>%
-  summarise(GastoTotal = sum(Valor_Gasto))
+  summarise(GastoTotal = sum(Valor_Gasto), .groups = "drop") 
+  
+  
 
 cor_gasto_tmuni <- cor.test(as.numeric(Gasto_Total_TMUNI$TMUNI),Gasto_Total_TMUNI$GastoTotal, method = "spearman", exact = FALSE)
 
@@ -202,5 +186,21 @@ p <- cor_gasto_tmuni$p.value
 
 rho
 p
+```
+
+```{r}
+# 1. Calcular las medianas para TMUNI
+Medianas_gasto_TMUNI <- datos_muni %>% # Usando tu data frame largo
+  group_by(TMUNI, Tipo_Gasto) %>%
+  summarise(Mediana_Gasto = median(Valor_Gasto, na.rm = TRUE), .groups = "drop")
+
+# 2. Encontrar el gasto MÁXIMO para cada TMUNI
+max_mediana_TMUNI <- Medianas_gasto_TMUNI %>%
+  group_by(TMUNI) %>%
+  slice_max(order_by = Mediana_Gasto, n = 1) %>%
+  ungroup()
+
+# 3. Ver los resultados
+print(max_mediana_TMUNI)
 ```
 
