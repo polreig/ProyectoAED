@@ -50,7 +50,7 @@ datos_muni <- datos_hogar %>%
 
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width=6, fig.height=4}
 #### Ahora representamos una serie de gráficas de diagramas de caja de cada tamaño de municipio. Cada gráfica corresponde a una pieza del gasto total del hogar. Los gastos los representamos el escala logarítmica para mejorar la visualización.
 
 datos_muni %>% ggplot(aes(x = TMUNI, y = log(Valor_Gasto +1))) + 
@@ -109,7 +109,7 @@ datos_hogar_porcentaje <- datos_hogar %>%
 ```
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE,fig.width=6, fig.height=4}
 #### Representamos gráficamente
 
 datos_hogar_porcentaje %>% ggplot(aes(x = Grupo_Proporción, y = log(Valor_Gasto+1))) +
@@ -166,7 +166,7 @@ Medianas_gasto_loc <- datos %>%
   summarise(Mediana_gasto_total = median(Gasto_Total))
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE,fig.width=6, fig.height=4}
 Medianas_gasto_loc %>% ggplot(aes(x = reorder(Localización_Centro, Mediana_gasto_total), y = Mediana_gasto_total)) +
   geom_col(aes(fill = Localización_Centro), show.legend = FALSE) +
   geom_text(aes(label = round(Mediana_gasto_total, 0)), hjust = -0.2, size = 3.5) +
