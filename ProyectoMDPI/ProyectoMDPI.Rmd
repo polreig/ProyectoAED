@@ -1,437 +1,357 @@
 ---
-title: Full title of the paper (Capitalized)
+title: "Análisis Exploratorio del Gasto de los Hogares en Educación (EGHE 2019)"
 author:
-  - name: Dominik Leutnant
-    affil: 1,2,\ddagger,*
-    orcid: 0000-0003-3293-2315
-  - name: John Doe
-    affil: 2, \dagger, \ddagger
+ - name: Pol Reig i Gómez
+   affil: 1
+ - name: Clara Montalvá Barcenilla
+   affil: 2
+ - name: Pablo Carbonell Martínez
+   affil: 3
 affiliation:
   - num: 1
     address: |
-      Muenster University of Applied Sciences - 
-      Institute for Infrastructure, Water, Resources, Environment
-      Correnstr. 25, 48149 Muenster, Germany
-    email: leutnant@fh-muenster.de
+      Máster en Ciencia de Datos
+    email: polreig@alumni.uv.es
   - num: 2
     address: |
-      Your department
-      Street, City, Country
-    email: mail@mail.com
-# author citation list in chicago format
-authorcitation: |
-  Leutnant, D.; Doe, J.
-# firstnote to eighthnote
-firstnote: |
-  Current address: Updated affiliation
-secondnote: |
-  These authors contributed equally to this work.
+      Máster en Ciencia de Datos
+    email: clara.montalva@alumni.uv.es
+  - num: 3
+    address: |
+      Máster en Ciencia de Datos
+    email: pablo.carbonell@alumni.uv.es
 correspondence: |
-  leutnant@fh-muenster.de; Tel.: +XX-000-00-0000.
+  Máster en Ciencia de Datos, Universitá de Valencia.
+date: "9 de Noviembre de 2025"
 # document options
 journal: notspecified
 type: article
 status: submit
 # front matter
-simplesummary: |
-  A Simple summary goes here.
 abstract: |
-  A single paragraph of about 200 words maximum. For research articles, 
-  abstracts should give a pertinent overview of the work. We strongly encourage
-  authors to use the following style of structured abstracts, but without 
-  headings: 1) Background: Place the question addressed in a broad context and
-  highlight the purpose of the study; 2) Methods: Describe briefly the main
-  methods or treatments applied; 3) Results: Summarize the article's main 
-  findings; and 4) Conclusion: Indicate the main conclusions or interpretations. 
-  The abstract should be an objective representation of the article, it must not 
-  contain results which are not presented and substantiated in the main text and 
-  should not exaggerate the main conclusions.
-keywords: |
-  keyword 1; keyword 2; keyword 3 (list three to ten pertinent keywords specific 
-  to the article, yet reasonably common within the subject discipline.).
-# back matter
-acknowledgement: |
-  All sources of funding of the study should be disclosed. Please clearly 
-  indicate grants that you have received in support of your research work. 
-  Clearly state if you received funds for covering the costs to publish in open 
-  access.
-authorcontributions: |
-  For research articles with several authors, a short paragraph specifying their 
-  individual contributions must be provided. The following statements should be 
-  used ``X.X. and Y.Y. conceive and designed the experiments; X.X. performed the 
-  experiments; X.X. and Y.Y. analyzed the data; W.W. contributed 
-  reagents/materials/analysis tools; Y.Y. wrote the paper.'' Authorship must be
-  limited to those who have contributed substantially to the work reported.
-funding: |
-  Please add: ``This research received no external funding'' or ``This research 
-  was funded by NAME OF FUNDER grant number XXX.'' and  and ``The APC was funded 
-  by XXX''. Check carefully that the details given are accurate and use the 
-  standard spelling of funding agency names at 
-  \url{https://search.crossref.org/funding}, any errors may affect your future 
-  funding.
-institutionalreview: |
-  In this section, you should add the Institutional Review Board Statement and 
-  approval number, if relevant to your study. You might choose to exclude 
-  this statement if the study did not require ethical approval. Please note 
-  that the Editorial Office might ask you for further information. Please add 
-  “The study was conducted in accordance with the Declaration of Helsinki, 
-  and approved by the Institutional Review Board (or Ethics Committee) of 
-  NAME OF INSTITUTE (protocol code XXX and date of approval).” for studies 
-  involving humans. OR “The animal study protocol was approved by the 
-  Institutional Review Board (or Ethics Committee) of NAME OF INSTITUTE 
-  (protocol code XXX and date of approval).” for studies involving animals. 
-  OR “Ethical review and approval were waived for this study due to REASON 
-  (please provide a detailed justification).” OR “Not applicable” for
-   studies not involving humans or animals.
-informedconsent: |
-  Any research article describing a study involving humans should contain this 
-  statement. Please add ``Informed consent was obtained from all subjects 
-  involved in the study.'' OR ``Patient consent was waived due to REASON 
-  (please provide a detailed justification).'' OR ``Not applicable'' for 
-  studies not involving humans. You might also choose to exclude this statement 
-  if the study did not involve humans.
-  
-  Written informed consent for publication must be obtained from participating 
-  patients who can be identified (including by the patients themselves). Please 
-  state ``Written informed consent has been obtained from the patient(s) to 
-  publish this paper'' if applicable.
-dataavailability: |
-  We encourage all authors of articles published in MDPI journals to share 
-  their research data. In this section, please provide details regarding where 
-  data supporting reported results can be found, including links to publicly 
-  archived datasets analyzed or generated during the study. Where no new data 
-  were created, or where data is unavailable due to privacy or ethical 
-  re-strictions, a statement is still required. Suggested Data Availability 
-  Statements are available in section “MDPI Research Data Policies” at 
-  \url{https://www.mdpi.com/ethics}.
-conflictsofinterest: |
-  Declare conflicts of interest or state 'The authors declare no conflict of 
-  interest.' Authors must identify and declare any personal circumstances or
-  interest that may be perceived as inappropriately influencing the
-  representation or interpretation of reported research results. Any role of the
-  funding sponsors in the design of the study; in the collection, analyses or 
-  interpretation of data in the writing of the manuscript, or in the decision to 
-  publish the results must be declared in this section. If there is no role, 
-  please state 'The founding sponsors had no role in the design of the study; 
-  in the collection, analyses, or interpretation of data; in the writing of the 
-  manuscript, an in the decision to publish the results'.
-supplementary: |
- The following supporting information can be downloaded at:  
- \linksupplementary{s1}, Figure S1: title; Table S1: title; Video S1: title.
-abbreviations:
-  - short: MDPI
-    long: Multidisciplinary Digital Publishing Institute
-  - short: DOAJ
-    long: Directory of open access journals
-  - short: TLA
-    long: Three letter acronym
-  - short: LD 
-    long: linear dichroism
+  El presente proyecto realiza un Análisis Exploratorio de Datos (AED) sobre la Encuesta de Gasto de los Hogares en Educación (EGHE) del año 2019, publicada por el Instituto Nacional de Estadística (INE). El objetivo es entender la estructura del gasto en educación en España, identificando sus principales componentes y las características de los hogares y estudiantes asociados a dicho gasto. Este informe detalla el proceso de importación, limpieza y transformación de los microdatos, seguido de un análisis univariante y bivariante para responder a las preguntas de investigación planteadas.
+keywords: AED, Gasto Educación, INE, EGHE 2019.
+
 bibliography: mybibfile.bib
-appendix: appendix.tex
+appendix:
 endnotes: false
 output: 
   rticles::mdpi_article:
     extra_dependencies: longtable
 ---
+```{r,include=FALSE}
+# Configuración global
+knitr::opts_chunk$set(
+  echo = FALSE,           # No mostrar código por defecto
+  warning = FALSE,        # Ocultar warnings
+  message = FALSE,        # Ocultar mensajes
+  fig.align = "center",   # Centrar gráficos
+  out.width = "60%",      # Ancho de gráficos
+  cache = TRUE            # Cache para chunks pesados
+)
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+knitr::opts_chunk$set(fig.width = 5, fig.height  = 3.5)
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "") # Obligar a que las figuras se muestren en la posición del chunk correspondiente
 
-# Version
+# Librerías esenciales
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(summarytools)
 
-This Rmd-skeleton uses the mdpi Latex template published 2024-03-21. 
-However, the official template gets more frequently updated than the **rticles**
-package. Therefore, please make sure prior to paper submission, that you're 
-using the most recent .cls, .tex and .bst files 
-(available [here](http://www.mdpi.com/authors/latex)).
-
-# Article Header Information
-
-The YAML header includes information needed mainly for formatting the front and 
-back matter of the article. Required elements include:
-
-```yaml
-title: Title of the paper
-author:
-  - name: first and last name
-    affil: |
-      One or more comma seperated numbers corresponding to affilitation
-      and one or more  comma seperated symbols corresponding 
-      optional notes.
-    orcid: optional orcid number
-affiliation:  
-  - num: 1,..., n for each affiliation
-    address: required
-    email: required
-authorcitation: |
-  Lastname, F.
-correspondence: |
-  email@email.com; Tel.: +XX-000-00-0000.
-journal: notspecified
-type: article
-status: submit
+# Librerías específicas del análisis
+library(ggplot2)
+library(scales)
+library(naniar)
+library(patchwork)
 ```
 
-Journal options are in Table \ref{tab:mdpinames}. The `status` variable should 
-generally not be changed by authors. The `type` variable describes 
-the type of of submission and defaults to `article` but can be replaced with any of the ones in Table \ref{tab:mdpitype}
+# Introducción
 
-```{r mdpitype, echo = FALSE}
-type <- c("abstract, addendum, article, book, bookreview, briefreport, 
-casereport, comment, commentary, communication, conferenceproceedings, 
-correction, conferencereport, entry, expressionofconcern, extendedabstract, 
-datadescriptor, editorial, essay, erratum, hypothesis, interestingimage, 
-obituary, opinion, projectreport, reply, retraction, review, perspective, 
-protocol, shortnote, studyprotocol, systematicreview, supfile, 
-technicalnote, viewpoint, guidelines, registeredreport, tutorial")
-knitr::kable(rticles::string_to_table(type, 3), 
-             col.names = NULL, format = "latex", booktab = TRUE, 
-             caption = "MDPI article types.")
-```
+La educación es ampliamente reconocida como uno de los pilares fundamentales para el desarrollo económico y social de un país. Sin embargo, el acceso y la permanencia en el sistema educativo conllevan una serie de costes directos e indirectos que son asumidos en gran medida por los hogares. Este gasto no se limita únicamente a las tasas y matrículas, sino que abarca un complejo ecosistema de bienes y servicios que incluye desde libros de texto y material escolar hasta servicios de comedor, transporte, actividades extraescolares y clases particulares.
 
-## Journal Specific YAML variables
+Comprender la magnitud y la composición de este gasto es esencial para evaluar la equidad del sistema educativo y el esfuerzo económico que supone para las familias. El Instituto Nacional de Estadística (INE) proporciona una visión detallada de esta realidad a través de la Encuesta de Gasto de los Hogares en Educación (EGHE).
 
-```yaml
-# for journal Diversity,
-# add the Life Science Identifier using:
-lsid: http://zoobank.org/urn:lsid:zoobank.org:act:nnnn
+El presente proyecto tiene como objetivo realizar un Análisis Exploratorio de Datos (AED) sobre los microdatos de la EGHE 2019. Nuestro propósito es diseccionar la estructura del gasto en educación en España, identificando los patrones subyacentes, las diferencias entre distintos tipos de enseñanza y las características de los estudiantes que más gasto generan.
+
+Para guiar nuestro análisis, planteamos las siguientes preguntas de investigación:
+
+1.  **¿Cómo se distribuye el gasto educativo entre los diferentes tipos de centros (públicos, concertados, privados) y qué factores explican estas diferencias?** Compararemos los patrones de gasto entre los tres regímenes de financiación, analizando no solo las diferencias en el gasto total sino también en su composición (matrículas, servicios complementarios, material).
+2.  **¿Qué características del hogar y del estudiante predicen un mayor gasto educativo? ¿Existen diferencias significativas por sexo, composición familiar o tamaño del municipio?** Identificaremos los principales predictores del gasto educativo mediante el análisis de variables demográficas y estructurales. Evaluaremos específicamente si existen brechas de gasto asociadas al sexo del estudiante y el efecto de la composición del hogar.
+3.  **¿Cómo evoluciona la estructura del gasto a lo largo del itinerario educativo, desde Infantil hasta la Universidad, y qué servicios adquieren mayor relevancia en cada etapa?** Compararemos el gasto medio en diferentes niveles, como Educación Infantil, Primaria, ESO, Bachillerato y Universidad.
+4.  **¿Qué peso real tienen los gastos complementarios (clases particulares, actividades extraescolares, material específico) en el presupuesto total y qué familias los asumen en mayor medida?** Cuantificaremos el impacto de partidas específicas como clases particulares, servicios de comedor, actividades extraescolares y uniformes escolares, que frecuentemente pasan desapercibidos en el debate público sobre el coste de la educación.
+
+Este informe detallará el proceso de limpieza y transformación de los datos, seguido del análisis univariante y bivariante para dar respuesta a estas preguntas, concluyendo con los principales hallazgos de nuestro estudio.
+
+# Carga y Preparación de Datos
+
+El punto de partida de este análisis son los microdatos de la Encuesta de Gasto de los Hogares en Educación (EGHE) del año 2019, proporcionados por el INE. El fichero original, *EGHE_2019.csv*, es un conjunto de datos que, si bien es completo, presenta desafíos significativos para un análisis directo:
+
+- **Codificación de Variables**: Los nombres de las variables (ej. GTT, C01, NEST2) y sus valores (ej. 1, 2, 3) siguen la codificación interna del INE, lo que los hace poco intuitivos.
+
+- **Valores Nulos (NA)**: El dataset utiliza NA (Not Available) de manera ambigua. Un NA en un campo de importe (como importe_comedor) puede significar que el dato se desconoce o, más probablemente, que el estudiante no incurrió en dicho gasto (gasto de 0€).
+
+- **Datos Irrelevantes**: El dataset original contiene numerosas columnas y filas que no son pertinentes para nuestras preguntas de investigación (ej. personas que no son estudiantes, columnas de control de la encuesta). Estos datos o variables son eliminados.
+
+Para abordar estos retos, se ha implementado un proceso de limpieza y transformación estructurado en tres fases, ejecutadas secuencialmente mediante los scripts *limpieza_gastos.R*, *limpieza_hogar.R* y *limpieza_estudiantes.R*.
+
+El **chunk** de código asociado a la limpieza de los datos carga el conjunto de datos crudo y aplica estos tres scripts para generar el dataset limpio (**datos**) que se utilizará en el resto del informe. A continuación, se detallan las transformaciones clave realizadas durante este proceso.
 
 
-# for journal Applied Sciences
-# add featured application
-featuredapplication: |
-  Authors are encouraged to provide a concise 
-  description of the specific application or 
-  a potential application of the work. This 
-  section is not mandatory.
+```{r, include=FALSE}
+library(dplyr)
+# Leemos los datos del dataset EGHE_2019.csv
 
-# for the journal Data
-# add dataset doi and license
-dataset: https://doi.org/10.1000/182
-datasetlicense: CC-BY-4.0
+# Se asignará la lectura a una variable llamada datos, esta será modificada por los archivos de limpieza y dará como salida un dataset limpio
+datos <- read.csv("../data/raw/EGHE_2019.csv",sep="\t")
 
-# for the journal Toxins
-# add key contributions
-keycontributions: |
-  The breakthroughs or highlights of the manuscript. 
-  Authors can write one or two sentences to describe 
-  the most important part of the paper.
-
-# for the journal Encyclopedia
-encyclopediadef: |
-  For entry manuscripts only: please provide a brief overview
-  of the entry title instead of an abstract.
-entrylink: The Link to this entry published on the encyclopedia platform.
-
-# for the journal Advances in Respiratory Medicine
-# add highlights
-addhighlights: |
-  This is an obligatory section in “Advances in Respiratory Medicine”, 
-  whose goal is to increase the discoverability and readability of the
-  article via search engines and other scholars. Highlights should not 
-  be a copy of the abstract, but a simple text allowing the reader to 
-  quickly and simplified find out what the article is about and what can 
-  be cited from it. Each of these parts should be devoted up to 2~bullet 
-  points.
+source("../scripts/limpieza_gastos.R")
+source("../scripts/limpieza_hogar.R")
+source("../scripts/limpieza_estudiantes.R")
 
 ```
 
 
-\startlandscape
-```{r, mdpinames, echo=FALSE, results='asis'}
-mdpi_journals <- "acoustics, actuators, addictions, admsci, adolescents, aerobiology, aerospace, agriculture, agriengineering, agrochemicals, agronomy, ai, air, algorithms, allergies, alloys, analytica, analytics, anatomia, animals, antibiotics, antibodies, antioxidants, applbiosci, appliedchem, appliedmath, applmech, applmicrobiol, applnano, applsci, aquacj, architecture, arm, arthropoda, arts, asc, asi, astronomy, atmosphere, atoms, audiolres, automation, axioms, bacteria, batteries, bdcc, behavsci, beverages, biochem, bioengineering, biologics, biology, biomass, biomechanics, biomed, biomedicines, biomedinformatics, biomimetics, biomolecules, biophysica, biosensors, biotech, birds, bloods, blsf, brainsci, breath, buildings, businesses, cancers, carbon, cardiogenetics, catalysts, cells, ceramics, challenges, chemengineering, chemistry, chemosensors, chemproc, children, chips, cimb, civileng, cleantechnol, climate, clinpract, clockssleep, cmd, coasts, coatings, colloids, colorants, commodities, compounds, computation, computers, condensedmatter, conservation, constrmater, cosmetics, covid, crops, cryptography, crystals, csmf, ctn, curroncol, cyber, dairy, data, ddc, dentistry, dermato, dermatopathology, designs, devices, diabetology, diagnostics, dietetics, digital, disabilities, diseases, diversity, dna, drones, dynamics, earth, ebj, ecologies, econometrics, economies, education, ejihpe, electricity, electrochem, electronicmat, electronics, encyclopedia, endocrines, energies, eng, engproc, entomology, entropy, environments, environsciproc, epidemiologia, epigenomes, est, fermentation, fibers, fintech, fire, fishes, fluids, foods, forecasting, forensicsci, forests, foundations, fractalfract, fuels, future, futureinternet, futurepharmacol, futurephys, futuretransp, galaxies, games, gases, gastroent, gastrointestdisord, gels, genealogy, genes, geographies, geohazards, geomatics, geosciences, geotechnics, geriatrics, grasses, gucdd, hazardousmatters, healthcare, hearts, hemato, hematolrep, heritage, higheredu, highthroughput, histories, horticulturae, hospitals, humanities, humans, hydrobiology, hydrogen, hydrology, hygiene, idr, ijerph, ijfs, ijgi, ijms, ijns, ijpb, ijtm, ijtpp, ime, immuno, informatics, information, infrastructures, inorganics, insects, instruments, inventions, iot, j, jal, jcdd, jcm, jcp, jcs, jcto, jdb, jeta, jfb, jfmk, jimaging, jintelligence, jlpea, jmmp, jmp, jmse, jne, jnt, jof, joitmc, jor, journalmedia, jox, jpm, jrfm, jsan, jtaer, jvd, jzbg, kidneydial, kinasesphosphatases, knowledge, land, languages, laws, life, liquids, literature, livers, logics, logistics, lubricants, lymphatics, machines, macromol, magnetism, magnetochemistry, make, marinedrugs, materials, materproc, mathematics, mca, measurements, medicina, medicines, medsci, membranes, merits, metabolites, metals, meteorology, methane, metrology, micro, microarrays, microbiolres, micromachines, microorganisms, microplastics, minerals, mining, modelling, molbank, molecules, mps, msf, mti, muscles, nanoenergyadv, nanomanufacturing, nanomaterials, ncrna, ndt, network, neuroglia, neurolint, neurosci, nitrogen, notspecified, nri, nursrep, nutraceuticals, nutrients, obesities, oceans, ohbm, onco, oncopathology, optics, oral, organics, organoids, osteology, oxygen, parasites, parasitologia, particles, pathogens, pathophysiology, pediatrrep, pharmaceuticals, pharmaceutics, pharmacoepidemiology, pharmacy, philosophies, photochem, photonics, phycology, physchem, physics, physiologia, plants, plasma, platforms, pollutants, polymers, polysaccharides, poultry, powders, preprints, proceedings, processes, prosthesis, proteomes, psf, psych, psychiatryint, psychoactives, publications, quantumrep, quaternary, qubs, radiation, reactions, receptors, recycling, regeneration, religions, remotesensing, reports, reprodmed, resources, rheumato, risks, robotics, ruminants, safety, sci, scipharm, sclerosis, seeds, sensors, separations, sexes, signals, sinusitis, skins, smartcities, sna, societies, socsci, software, soilsystems, solar, solids, spectroscj, sports, standards, stats, std, stresses, surfaces, surgeries, suschem, sustainability, symmetry, synbio, systems, targets, taxonomy, technologies, telecom, test, textiles, thalassrep, thermo, tomography, tourismhosp, toxics, toxins, transplantology, transportation, traumacare, traumas, tropicalmed, universe, urbansci, uro, vaccines, vehicles, venereology, vetsci, vibration, virtualworlds, viruses, vision, waste, water, wem, wevj, wind, women, world, youth, zoonoticdis"
+## Renombrado y Selección de Variables
 
-knitr::kable(rticles::string_to_table(mdpi_journals, 8),
-             col.names = NULL,
-             format = "latex",
-             booktabs = TRUE, 
-             caption = "MDPI journal names.",
-             longtable = TRUE)
+El primer paso consistió en "traducir" el dataset. Se renombraron todas las variables de interés de sus códigos del INE a nombres descriptivos en español. Por ejemplo: *C01* se renombró a *Tipo_educacion*. Esto fué posible gracias al archivo de descripción del dataset proporcionado por el INE, donde se describe que tipo de nomenclatura se gasta en cada variable y como se codifican los datos.
 
-```
-\finishlandscape
+Paralelamente, se eliminaron columnas innecesarias, variables con porcentajes demasiado elevados de NAs, como las relacionadas con información de becas, para simplificar la estructura del dataset y reducir el ruido.
 
+## Recodificación de Variables Categóricas
 
+Las variables categóricas más importantes fueron transformadas a factores con etiquetas descriptivas para la correcta interpretación y visualización en los análisis.
+```{r,echo=FALSE}
 
+ejemplo_recod <- data.frame(
+  Variable = c("Tipo_educacion", "SEXO", "Nacionalidad"),
+  Código_INE = c("1, 2, 3", "1, 2", "1, 2, 3"),
+  Etiqueta = c("Pública, Concertada, Privada", "Hombre, Mujer", "Española, Extranjera, Doble nacionalidad")
+)
 
-# Introduction
-
-The introduction should briefly place the study in a broad context and highlight
-why it is important. It should define the purpose of the work and its
-significance. The current state of the research field should be reviewed
-carefully and key publications cited. Please highlight controversial and
-diverging hypotheses when necessary. Finally, briefly mention the main aim of
-the work and highlight the principal conclusions. As far as possible, please
-keep the introduction comprehensible to scientists outside your particular
-field of research. Citing a journal paper [@bertrand-krajewski_distribution_1998;
-@leutnant_stormwater_2016]. And now citing a book reference @gujer_systems_2008.
-Some MDPI journals use Chicago and others use APA, this template should choose
-the correct citation format for you once you specify the journal in the YAML
-header.
-
-To use endnotes, change `endnotes: true` in the YAML header, then use
-`\endnote{This is an endnote.}`.
-
-
-# Materials and Methods
-
-Materials and Methods should be described with sufficient details to allow 
-others to replicate and build on published results. Please note that publication 
-of your manuscript implicates that you must make all materials, data, computer 
-code, and protocols associated with the publication available to readers. Please
-disclose at the submission stage any restrictions on the availability of 
-materials or information. New methods and protocols should be described in 
-detail while well-established methods can be briefly described and appropriately
-cited.
-
-Research manuscripts reporting large datasets that are deposited in a publicly 
-available database should specify where the data have been deposited and provide
-the relevant accession numbers. If the accession numbers have not yet been
-obtained at the time of submission, please state that they will be provided
-during review. They must be provided prior to publication.
-
-Interventionary studies involving animals or humans, and other studies require
-ethical approval must list the authority that provided approval and the
-corresponding ethical approval code.
-
-# Results
-
-This section may be divided by subheadings. It should provide a concise and
-precise description of the experimental results, their interpretation as well
-as the experimental conclusions that can be drawn.
-
-## Subsection Heading Here
-
-Subsection text here.
-
-### Subsubsection Heading Here
-
-Bulleted lists look like this:
-
-* First bullet
-* Second bullet
-* Third bullet
-
-Numbered lists can be added as follows:
-
-1. First item
-2. Second item
-3. Third item
-
-The text continues here.
-
-## Figures, Tables and Schemes
-
-All figures and tables should be cited in the main text as Figure \ref{fig:fig1}, 
-\ref{tab:tab1}, etc. To get cross-reference to figure generated by R chunks 
-include the `\\label{}` tag in the `fig.cap` attribute of the R chunk: 
-`fig.cap = "Fancy Caption\\label{fig:plot}"`.
-
-```{r fig1, echo=FALSE, fig.width=3, fig.cap="A figure added with a code chunk.\\label{fig:fig1}"}
-x = rnorm(10)
-y = rnorm(10)
-plot(x, y)
+knitr::kable(ejemplo_recod, caption = "Ejemplos de Recodificación de Variables Categóricas")
 ```
 
 
-When making tables using `kable`, it is suggested to use
-the `format="latex"` and `tabl.envir="table"` arguments
-to ensure table numbering and compatibility with the mdpi
-document class.
+## Imputación y Tratamiento de Valores Nulos
 
-```{r tab1, echo=FALSE}
-knitr::kable(mtcars[1:5, 1:3], format = "latex", 
-             booktabs = TRUE, 
-             caption = "This is a table caption. Tables should be placed in the 
-             main text near to the first time they are~cited.", 
-             align = 'ccc', centering = FALSE,
-             table.envir = "table", position = "H")
+Partimos de la hipótesis de que, en un campo de gasto, un valor NA significa un gasto de 0€. Posteriormente, se realizó la comprobación de que, para todas las muestras, la suma de todos los tipos de gasto es igual al valor de la variable *gasto_total_educacion*:
+
+$$\sum{\textbf{importes individuales} = \textbf{gasto\_total\_educacion}}$$
+
+Tras comprobar que se cumplía esta condición, se aplicó la siguiente lógica de imputación:
+
+- **Importes (*importe_*)**: Todos los valores NA en columnas de importes (ej. *importe_comedor*, *importe_clases_particulares*) se sustituyeron por 0, indicando un gasto nulo.
+
+- **Servicios (*servicio_*)**: En las variables que indican si se usó un servicio (donde 1=Sí), los NA se imputaron como 2 (el código para "No").
+
+- **Gastos Totales (*gasto_total_*)**: Del mismo modo, los NA en las columnas de gasto total se reemplazaron por 0.
+
+Tras este proceso exhaustivo, el objeto datos queda listo para el análisis. Contiene únicamente las observaciones y variables relevantes, con tipos de datos correctos, sin valores nulos ambiguos y con etiquetas descriptivas.
+
+# Descripción del Conjunto de Datos Limpio: Análisis Univariante
+
+Tras la ejecución de los scripts de limpieza, obtenemos el dataset `datos`. Este conjunto de datos contiene `r nrow(datos)` observaciones (cada una representando a un estudiante que reportó gastos) y `r ncol(datos)` variables limpias y listas para el análisis.
+
+El objetivo de esta sección es realizar un análisis univariante de las variables clave. Este paso es fundamental para entender la distribución y las características de cada variable de forma aislada, antes de buscar relaciones entre ellas. Nos centraremos en la variable objetivo (Gasto Total) y en las principales variables categóricas y numéricas que usaremos para responder a nuestras preguntas.
+
+## Variable Objetivo: Gasto Total Anual (gasto_total_educacion)
+
+Nuestra principal variable de interés es el *gasto_total_educacion* anual por estudiante.
+
+```{r,echo=FALSE}
+# Calculamos las estadísticas descriptivas básicas
+stats_gasto <- data.frame(
+  Metrica = c("Media", "Mediana", "Mínimo", "Máximo", "1er Cuartil", "3er Cuartil", "Desv. Estándar"),
+  Valor = c(
+    mean(datos$gasto_total_educacion),
+    median(datos$gasto_total_educacion),
+    min(datos$gasto_total_educacion),
+    max(datos$gasto_total_educacion),
+    quantile(datos$gasto_total_educacion, 0.25),
+    quantile(datos$gasto_total_educacion, 0.75),
+    sd(datos$gasto_total_educacion)
+  )
+)
+
+# Mostramos la tabla formateada
+knitr::kable(
+  stats_gasto,
+  caption = "Estadísticas Descriptivas del Gasto Total Anual por Estudiante",
+  digits = 2,
+  col.names = c("Métrica", "Valor (€)")
+) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = F)
 ```
 
+La tabla 2 revela un hallazgo clave: la media (`r round(mean(datos$gasto_total_educacion), 2)` €) es significativamente más alta que la mediana (`r round(median(datos$gasto_total_educacion), 2)` €). Esto indica una distribución asimétrica positiva (sesgada a la derecha).
 
+En la práctica, esto significa que la mayoría de los hogares reportan un gasto relativamente bajo, pero un pequeño número de hogares (probablemente aquellos en centros privados de élite o con altos gastos en actividades complementarias) tienen gastos muy elevados, "inflando" la media hacia arriba. Por esta razón, y tal como se planteaba en nuestras preguntas de investigación, la mediana será una métrica más robusta para describir el gasto del hogar "típico".
 
-For a very wide table, landscape layouts are allowed.
+El siguiente histograma confirma visualmente esta fuerte asimetría. La gran mayoría de las observaciones se concentran en la parte izquierda del gráfico, con una larga cola de outliers hacia la derecha.
 
+```{r, echo=FALSE, fig.cap="Histograma del Gasto Total Anual (Escala Lineal y Logarítmica).",fig.width=10, out.width="100%"}
+# Gráfico Lineal
+plot_gasto_linear <- ggplot(datos, aes(x = gasto_total_educacion)) +
+  geom_histogram(bins = 50, fill = "dodgerblue4", alpha = 0.7) +
+  geom_vline(aes(xintercept = mean(gasto_total_educacion), color = "Media"), linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(gasto_total_educacion), color = "Mediana"), linetype = "dotted", size = 1) +
+  labs(
+    x = "Gasto Total (€) - Escala Lineal",
+    y = "Frecuencia (Nº Estudiantes)",
+    color = "Estadístico"
+  ) +
+  scale_color_manual(values = c("Media" = "red", "Mediana" = "black")) +
+  scale_x_continuous(labels = scales::dollar_format(suffix = "€", prefix = "")) +
+  theme_minimal() +
+  theme(legend.position = c(0.8, 0.6)) 
 
-\startlandscape
+# Gráfico Logarítmico
+plot_gasto_log <- ggplot(subset(datos, gasto_total_educacion > 0), aes(x = gasto_total_educacion)) +
+  geom_histogram(bins = 40, fill = "dodgerblue4", alpha = 0.7) +
+  scale_x_log10(
+    labels = scales::dollar_format(suffix = "€", prefix = ""),
+    breaks = c(100, 500, 1000, 5000, 10000, 30000) # Breaks manuales para claridad
+  ) +
+  labs(
+    x = "Gasto Total (€) - Escala Log",
+    y = NULL # Quitar eje Y para no repetir
+  ) +
+  theme_minimal()
 
-```{r tab2, echo=FALSE}
-df <- data.frame(`Title 1` = c("Entry 1", "Entry 2"),
-                 `Title 2` = c("Data", "Data"),
-                 `Title 3` = c("Data", "Data"),
-                 `Title 4` = c("This cell has some longer content that runs over
-                               two lines",
-                               "Data"))
-knitr::kable(df, format = "latex", 
-             booktabs = TRUE, 
-             caption = "This is a very wide table", 
-             align = 'ccc', centering = FALSE,
-             table.envir = "table", position = "H")
+# Combinar con patchwork
+plot_gasto_linear + plot_gasto_log
 ```
 
-\finishlandscape
+La Figura 1 combina dos vistas de la misma variable:
 
-## Formatting of Mathematical Components
+- El gráfico de la izquierda (escala lineal) nos permite observar la fuerte asimetría positiva y el impacto de los *outliers*, que elevan la media (1638.14 €) muy por encima de la mediana (972 €).
 
-This is an example of an equation:
+- El gráfico de la derecha (escala logarítmica) complementa al primero. Al comprimir los valores altos y expandir los bajos, nos permite visualizar la forma de la distribución del grueso de los hogares. En esta vista, se puede apreciar mejor dónde se concentran los gastos más comunes.
 
-$$
-a = 1.
-$$
+## Variables Categóricas Principales
 
-If you want numbered equations use Latex and wrap in the equation environment:
+A continuación, exploramos la composición de nuestra muestra en función de las variables categóricas clave que guían nuestras preguntas de investigación.
 
-\begin{equation}
-a = 1,
-\end{equation}
+```{r,fig.cap="Nº de Estudiantes por Tipo de Centro y por Nivel Educativo"}
+# Gráfico de Tipo de Centro
+plot_tipo_centro <- ggplot(datos, aes(x = fct_infreq(Tipo_educacion))) +
+  geom_bar(fill = "#0072B2") +
+  geom_text(stat = 'count', aes(label = ..count..), vjust = -0.5) +
+  labs( x = "Tipo de Centro", y = "Frecuencia") +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
 
-the text following an equation need not be a new paragraph. Please punctuate 
-equations as regular text.
+# Gráfico de Nivel Educativo
+# Definimos el orden correcto del itinerario educativo
+orden_niveles <- c("Educación Infantil", 
+                   "Educación Primaria", 
+                   "Educación Secundaria", 
+                   "Educación Superior",
+                   "Otros estudios sin nivel académico")
 
-```{comment}
-If the documentclass option "submit" is chosen, please insert a blank line before and after any math environment (equation and eqnarray environments). This ensures correct linenumbering. The blank line should be removed when the documentclass option is changed to "accept" because the text following an equation should not be a new paragraph.
+niveles_presentes <- intersect(orden_niveles, unique(datos$Nivel_estudios))
+
+plot_nivel <- ggplot(datos, aes(x = Nivel_estudios)) + 
+  geom_bar(fill = "#D55E00") +
+  scale_x_discrete(limits = niveles_presentes) + # Aplicamos el orden lógico
+  geom_text(stat = 'count', aes(label = ..count..), vjust = -0.5) +
+  labs( x = "Nivel Educativo", y = "Frecuencia") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+
+plot_tipo_centro + plot_nivel
 ```
 
-This is the example 2 of equation:
+De estos gráficos, observamos que:
 
-\begin{adjustwidth}{-\extralength}{0cm}
-\begin{equation}
-a = b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + 
-u + v + w + x + y + z
-\end{equation}
-\end{adjustwidth}
+- **Tipo de Centro**: La mayoría de los estudiantes de la muestra se encuentran en la enseñanza pública, seguida de la concertada y, finalmente, la privada. Esta distribución es coherente con la estructura del sistema educativo español.
 
-Theorem-type environments (including propositions, lemmas, corollaries etc.) 
-can be formatted as follows:
+- **Nivel Educativo**: La muestra tiene una representación significativa en todas las etapas, con los picos de frecuencia en Educación Primaria y Secundaria.
 
-Example of a theorem:
+## Componentes del Gasto (Bienes vs. Servicios)
 
-::: {.Theorem latex=true}
-Example text of a theorem
-:::
+Las componentes que forman el gasto total son los bienes y los servicios, por eso es interesante identificar cuál de los dos grandes componentes del gasto tiene un mayor peso.
 
-The text continues here. Proofs must be formatted as follows:
+```{r,fig.cap= "Desglose del Gasto Educativo Total"}
+# Calculamos el gasto total agregado para cada categoría
+total_bienes <- sum(datos$gasto_total_bienes, na.rm = TRUE)
+total_servicios <- sum(datos$gasto_total_servicios, na.rm = TRUE)
+total_agregado <- total_bienes + total_servicios
 
-Example of a proof:
+# Creamos un dataframe para el gráfico
+df_componentes <- data.frame(
+  Componente = c("Bienes", "Servicios"),
+  Gasto_Total = c(total_bienes, total_servicios)
+) %>%
+  mutate(
+    Porcentaje = Gasto_Total / total_agregado
+  )
 
-::: {.proof latex="[Proof of Theorem1]"}
-Text of the proof. Note that the phrase ``of Theorem 1'' is optional if it is 
-clear which theorem is being referred to.
-:::
+ggplot(df_componentes, aes(x = "", y = Porcentaje, fill = Componente)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) + # Esto lo convierte en gráfico circular
+  geom_text(aes(label = scales::percent(Porcentaje, accuracy = 0.1)),
+            position = position_stack(vjust = 0.5)) +
+  labs(
+    x = NULL, y = NULL
+  ) +
+  theme_void() +
+  theme(legend.position = "bottom")
+```
 
-The text continues here.
+El gráfico circular de la Figura 3 muestra de forma concluyente que, a nivel agregado, el gasto en Servicios (matrículas, comedor, transporte, extraescolares, etc.) representa la mayor parte del desembolso total de los hogares, superando ampliamente al gasto en Bienes (libros, material, uniformes).
 
-# Discussion
+## Gastos Complementarios
 
-Authors should discuss the results and how they can be interpreted in 
-perspective of previous studies and of the working hypotheses. The findings and 
-their implications should be discussed in the broadest context possible. Future 
-research directions may also be highlighted.
+Finalmente, el análisis debe responder a dos preguntas planteadas inicialmente en la Pregunta 4:
 
-# Conclusion
+- ¿Qué porcentaje de familias incurre realmente en los gastos complementarios?
 
-This section is not mandatory, but can be added to the manuscript if the
-discussion is unusually long or complex.
+- Entre las que sí gastan, ¿cuál es el gasto medio?
 
-# Patents
+```{r gastcomp}
+# Función para analizar gastos "zero-inflated"
+analizar_gasto_complementario <- function(gasto_vector, nombre_gasto) {
+  
+  # % de familias que gastan
+  porc_gasta <- mean(gasto_vector > 0, na.rm = TRUE)
+  
+  # Gasto medio de SOLO los que gastan
+  media_los_que_gastan <- mean(gasto_vector[gasto_vector > 0], na.rm = TRUE)
+  
+  # Gasto medio sobre el TOTAL (incluyendo ceros)
+  media_total <- mean(gasto_vector, na.rm = TRUE)
+  
+  return(
+    data.frame(
+      Gasto = nombre_gasto,
+      Porcentaje_Hogares_con_Gasto = porc_gasta * 100,
+      Gasto_Medio_en_quien_paga = media_los_que_gastan,
+      Gasto_Medio_sobre_Total = media_total
+    )
+  )
+}
 
-This section is not mandatory, but may be added if there are patents resulting
-from the work reported in this manuscript.
+# Aplicamos la función a las variables de interés
+df_clases_part <- analizar_gasto_complementario(datos$importe_clases_particulares, "Clases Particulares")
+df_comedor <- analizar_gasto_complementario(datos$importe_comedor, "Comedor")
+df_extraescolares <- analizar_gasto_complementario(datos$importe_actividades_extraescolares, "Act. Extraescolares")
+df_uniformes <- analizar_gasto_complementario(datos$importe_uniformes, "Uniformes")
+
+# Combinamos y mostramos la tabla
+tabla_complementarios <- bind_rows(df_clases_part, df_comedor, df_extraescolares, df_uniformes)
+
+knitr::kable(
+  tabla_complementarios,
+  caption = "Análisis de Gastos Complementarios Específicos",
+  digits = 2,
+  col.names = c("Partida de Gasto", "% Hogares que pagan", "Gasto Medio (si paga) (€)", "Gasto Medio (Total) (€)")
+) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
+```
+
+En la Tabla 3  se observa que el gasto en Uniformes es el más frecuente (asumido por un 38.5% de los hogares), pero su desembolso medio es el más bajo (109.82€). En el extremo opuesto, el Comedor y las Clases Particulares, aunque son menos frecuentes (22.6% y 18.7% respectivamente), suponen el mayor coste medio para las familias que sí los pagan, con 508.14€ y 449.11€ de media.
+
