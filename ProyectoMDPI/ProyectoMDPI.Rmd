@@ -382,7 +382,7 @@ library(ggplot2)
 ```
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.cap= "Gasto educativo promedio desglosado en bienes y servicios según el tipo de centro"}
 # hacemos el cálculo de medias del gasto en 2 componentes por tipo de centro, agrupamos para sacar las medias y despues desagrupamos para poder hacer la grafica
 df_gasto_2comp <- datos %>%
   group_by(Tipo_educacion) %>% summarise(
@@ -418,7 +418,7 @@ La gráfica revela una fuerte disparidad en el gasto promedio total entre los ti
 El análisis de la composición demuestra que los bienes, aunque presentes en los tres tipos de centros, representan una proporción relativamente menor del gasto total y no son la causa de las grandes diferencias observadas entre ellos, estableciendo que las familias que optan por la enseñanza privada asumen un coste de servicios muy superior.
 
 ## Gasto educativo total promedio por nivel educativo
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.cap= "Gasto educativo promedio total según el nivel educativo}
 library(forcats) 
 
 #escogemos los niveles que vamos a representar
@@ -482,7 +482,7 @@ datos_muni <- datos_hogar %>%
 
 ```
 
-```{r, echo=FALSE, fig.width=5, fig.height=3}
+```{r, echo=FALSE, fig.width=5, fig.height=3, fig.cap= "Relación entre gastos del hogar y tamaño del municipio"}
 #### Ahora representamos una serie de gráficas de diagramas de caja de cada tamaño de municipio. Cada gráfica corresponde a una pieza del gasto total del hogar. Los gastos los representamos el escala logarítmica para mejorar la visualización.
 
 datos_muni %>% ggplot(aes(x = TMUNI, y = log(Valor_Gasto +1))) + 
@@ -543,7 +543,7 @@ datos_hogar_porcentaje <- datos_hogar %>%
 ```
 
 
-```{r, echo=FALSE,fig.width=5, fig.height=3}
+```{r, echo=FALSE,fig.width=5, fig.height=3, fig.cap= "Gastos del hogar por proporción de esudiantes"}
 #### Representamos gráficamente
 
 datos_hogar_porcentaje %>% ggplot(aes(x = Grupo_Proporción, y = log(Valor_Gasto+1))) +
@@ -601,7 +601,7 @@ Medianas_gasto_loc <- datos %>%
   summarise(Mediana_gasto_total = median(Gasto_Total))
 ```
 
-```{r, echo=FALSE,fig.width=5, fig.height=3}
+```{r, echo=FALSE,fig.width=5, fig.height=3, fig.cap= "Mediana del gasto total por localización del centro"}
 Medianas_gasto_loc %>% ggplot(aes(x = reorder(Localización_Centro, Mediana_gasto_total), y = Mediana_gasto_total)) +
   geom_col(aes(fill = Localización_Centro), show.legend = FALSE) +
   geom_text(aes(label = round(Mediana_gasto_total, 0)), hjust = -0.2, size = 3.5) +
@@ -626,9 +626,9 @@ Aquí tienes una propuesta de sección de conclusiones basada en los hallazgos d
 
 El Análisis Exploratorio de Datos (AED) realizado sobre la Encuesta de Gasto de los Hogares en Educación (EGHE) de 2019 ha permitido diseccionar la estructura del gasto educativo en España, dando respuesta a las preguntas de investigación planteadas. Las conclusiones principales de este estudio son las siguientes:
 
-- El gasto educativo está dominado por los Servicios, no por los Bienes. A nivel agregado, el 77.4% del desembolso total de los hogares se destina a Servicios (matrículas, comedor, transporte, etc.), mientras que los Bienes (libros, material) suponen el 22.6%. Esto desmitifica la idea de que los libros o el material son el principal componente del gasto.
+- El gasto educativo está dominado por los servicios, no por los bienes. A nivel agregado, el 77.4% del desembolso total de los hogares se destina a servicios (matrículas, comedor, transporte, etc.), mientras que los bienes (libros, material) suponen el 22.6%. Esto desmitifica la idea de que los libros o el material son el principal componente del gasto.
 
-- El Tipo de Centro es el factor más determinante del gasto. El análisis confirma una brecha inmensa: el gasto promedio en la enseñanza privada (superando los 4.500€) es más del doble que en la concertada (~2.000€) y más de cuatro veces superior al de la pública (~1.000€). Esta disparidad se explica casi en su totalidad por el coste de los Servicios (tasas, matrículas y cuotas), que no están subvencionados en el caso de la privada.
+- El tipo de centro es el factor más determinante del gasto. El análisis confirma una brecha inmensa: el gasto promedio en la enseñanza privada (superando los 4.500€) es más del doble que en la concertada (~2.000€) y más de cuatro veces superior al de la pública (~1.000€). Esta disparidad se explica casi en su totalidad por el coste de los servicios (tasas, matrículas y cuotas), que no están subvencionados en el caso de la privada.
 
 - El gasto sigue un itinerario claro y creciente con la etapa educativa. El coste de la educación no es lineal. Se identifican dos picos de alto coste: el 1er Ciclo de Educación Infantil (etapa 0-3 años), cuyo gasto es elevado por la falta de subvención pública, y la Universidad, que representa el desembolso promedio más alto (3.056€). Las etapas de educación obligatoria (Primaria y ESO) son las que presentan un gasto más estable y contenido.
 
