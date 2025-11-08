@@ -50,7 +50,7 @@ datos_muni <- datos_hogar %>%
 
 ```
 
-```{r, echo=FALSE, fig.width=6, fig.height=4}
+```{r, echo=FALSE, fig.width=5, fig.height=3}
 #### Ahora representamos una serie de gráficas de diagramas de caja de cada tamaño de municipio. Cada gráfica corresponde a una pieza del gasto total del hogar. Los gastos los representamos el escala logarítmica para mejorar la visualización.
 
 datos_muni %>% ggplot(aes(x = TMUNI, y = log(Valor_Gasto +1))) + 
@@ -87,6 +87,8 @@ rho <- cor_gasto_tmuni$estimate
 p <- cor_gasto_tmuni$p.value
 
 ```
+
+
 Para analizar la relación entre el gasto del hogar y el Tamaño del Municipio (TMUNI), fue necesario abordar primero la naturaleza de los datos. Las variables de gasto presentan una fuerte asimetría (sesgo a la derecha) y la presencia de numerosos valores cero (0€), lo cual es evidente en la alta concentración de outliers. Para manejar esto y permitir una visualización válida de las tendencias, se aplica una transformación logarítmica (log(Gasto + 1)) a todas las variables de gasto. Esta técnica robustece el análisis al comprimir la escala y mantener los valores cero en el gráfico como log(1)=0.
 
 El análisis visual (mostrado en el gráfico) confirma la hipótesis de que el gasto aumenta con el tamaño del municipio. Los diagramas de caja (geom_boxplot) revelan una clara tendencia positiva: la mediana del gasto (la línea central de la caja) se desplaza sistemáticamente hacia la derecha (mayor gasto) a medida que el municipio es más grande.
@@ -109,7 +111,7 @@ datos_hogar_porcentaje <- datos_hogar %>%
 ```
 
 
-```{r, echo=FALSE,fig.width=6, fig.height=4}
+```{r, echo=FALSE,fig.width=5, fig.height=3}
 #### Representamos gráficamente
 
 datos_hogar_porcentaje %>% ggplot(aes(x = Grupo_Proporción, y = log(Valor_Gasto+1))) +
@@ -145,6 +147,7 @@ p <- cor_gasto_prop$p.value
 
 ```
 
+
 Para analizar cómo el gasto se ve afectado por la "densidad" de estudiantes, la variable Prop_Estudia se categorizó en cinco intervalos ordinales de 20% (de "0-20%" a "81-100%"). Al igual que en el análisis anterior, se aplica la transformación logarítmica (log(Gasto + 1)) a las variables de gasto para gestionar la fuerte asimetría y la presencia de valores cero (0€).
 
 El análisis visual confirma que el gasto mediano (la línea central de la caja) es significativamente diferente entre los grupos. Sin embargo, el análisis numérico (ver image_1c01f3.png) revela un detalle clave: la tendencia no es perfectamente lineal. El gasto mediano alcanza su pico en el grupo '61-80%' (2330.5€), siendo este ligeramente superior al del grupo '81-100%' (2175.0€). Este hallazgo sugiere que el gasto máximo no lo definen los hogares compuestos 100% por estudiantes (posiblemente pisos compartidos con gastos optimizados), sino las familias tradicionales que financian simultáneamente las etapas educativas más caras (ej. Bachillerato y Universidad).
@@ -166,7 +169,7 @@ Medianas_gasto_loc <- datos %>%
   summarise(Mediana_gasto_total = median(Gasto_Total))
 ```
 
-```{r, echo=FALSE,fig.width=6, fig.height=4}
+```{r, echo=FALSE,fig.width=5, fig.height=3}
 Medianas_gasto_loc %>% ggplot(aes(x = reorder(Localización_Centro, Mediana_gasto_total), y = Mediana_gasto_total)) +
   geom_col(aes(fill = Localización_Centro), show.legend = FALSE) +
   geom_text(aes(label = round(Mediana_gasto_total, 0)), hjust = -0.2, size = 3.5) +
@@ -177,6 +180,7 @@ Medianas_gasto_loc %>% ggplot(aes(x = reorder(Localización_Centro, Mediana_gast
   ) +
   theme_minimal()
 ```
+
 
 El análisis bivariante del gasto total por Localización_Centro revela una fuerte y clara disparidad en el coste que asume el estudiante, como se observa en el gráfico. El uso de la mediana para la comparación (en lugar de la media) es fundamental, ya que ofrece una medida de tendencia central robusta que no se ve afectada por los outliers de gasto extremo.
 
