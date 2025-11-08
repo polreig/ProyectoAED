@@ -1,0 +1,381 @@
+% ---
+% ARCHIVO LaTeX BEAMER
+% Título: Análisis Exploratorio del Gasto de los Hogares en Educación (EGHE 2019)
+% Autor: Gemini (basado en el trabajo de Reig, Montalvá y Carbonell)
+% ---
+
+% ---
+% 1. PREÁMBULO
+% ---
+
+% Se define la clase del documento como 'beamer'
+\documentclass[11pt]{beamer}
+
+% --- Paquetes de Beamer ---
+% 'Madrid' es un tema clásico que muestra las secciones en la parte superior.
+\usetheme{Madrid}
+% Colores verde y azul pastel personalizados
+\definecolor{pastelAzul}{RGB}{173, 216, 230}    % Azul pastel claro
+\definecolor{pastelVerde}{RGB}{152, 251, 152}   % Verde pastel claro
+\definecolor{pastelAzulOscuro}{RGB}{70, 130, 180} % Azul pastel más oscuro
+\definecolor{pastelVerdeOscuro}{RGB}{60, 179, 113}  % Verde pastel más oscuro
+\definecolor{grisMuyClaro}{RGB}{250, 250, 250}  % Gris muy claro para fondos
+
+% Configuración de colores del tema
+\setbeamercolor{structure}{fg=pastelAzulOscuro}
+\setbeamercolor{palette primary}{fg=white,bg=pastelVerdeOscuro}
+\setbeamercolor{palette secondary}{fg=white,bg=pastelAzulOscuro}
+\setbeamercolor{palette tertiary}{fg=white,bg=pastelAzulOscuro}
+\setbeamercolor{palette quaternary}{fg=white,bg=pastelVerdeOscuro}
+
+% --- Configuración de Idioma y Fuentes ---
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% --- Paquetes Adicionales ---
+% 'booktabs' para crear tablas con un aspecto más profesional
+\usepackage{booktabs}
+
+% --- Comando para el marcador de posición de la figura ---
+\newcommand{\figuraplaceholder}[2]{%
+  \framebox{\parbox{0.9\linewidth}{\centering
+    \vspace{#1}
+    \textbf{Espacio para Figura} \\
+    \small\textit{#2}
+    \vspace{#1}
+  }}
+}
+
+% ---
+% 2. METADATOS DE LA PRESENTACIÓN
+% ---
+\title[AED Gasto Educación 2019]{Análisis Exploratorio del Gasto de los Hogares en Educación (EGHE 2019)}
+\author{Pol Reig i Gómez \and Clara Montalvá Barcenilla \and Pablo Carbonell Martínez}
+\institute{Máster en Ciencia de Datos \\ Universitat de Valencia}
+\date{Noviembre 2025}
+
+% ---
+% 3. CUERPO DE LA PRESENTACIÓN
+% ---
+\begin{document}
+
+% --- Diapositiva 1: Portada ---
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% --- Diapositiva 2: Agenda ---
+\begin{frame}
+  \frametitle{Agenda}
+  \tableofcontents
+\end{frame}
+
+% --- SECCIÓN 1: INTRODUCCIÓN ---
+\section{Introducción}
+
+% --- Diapositiva 3: Contexto ---
+\begin{frame}
+  \frametitle{Contexto del Estudio}
+  \begin{itemize}
+    \item La educación es un pilar fundamental para el desarrollo económico y social.
+    \item Sin embargo, el acceso y la permanencia conllevan costes directos e indirectos asumidos por los hogares.
+    \item Este gasto no se limita a tasas; incluye un ecosistema de bienes (libros, material) y servicios (comedor, transporte, extraescolares).
+    \item Comprender esta estructura es esencial para evaluar la equidad del sistema.
+  \end{itemize}
+
+  \begin{block}{Fuente de Datos}
+    Encuesta de Gasto de los Hogares en Educación (EGHE) del año 2019, publicada por el Instituto Nacional de Estadística (INE).
+  \end{block}
+\end{frame}
+
+% --- Diapositiva 4: Objetivos y Preguntas (1/2) ---
+\begin{frame}
+  \frametitle{Objetivo y Preguntas de Investigación (1/2)}
+  
+  \begin{block}{Objetivo Principal}
+    Realizar un Análisis Exploratorio de Datos (AED) para diseccionar la estructura del gasto en educación en España, identificando patrones y características de los hogares y estudiantes.
+  \end{block}
+  
+  \begin{enumerate}
+    \item ¿Cómo se distribuye el gasto promedio entre centros \textbf{públicos, concertados y privados}?
+    \item ¿Qué \textbf{características del hogar y del estudiante} (sexo, municipio) predicen un mayor gasto?
+  \end{enumerate}
+\end{frame}
+
+% --- Diapositiva 5: Preguntas de Investigación (2/2) ---
+\begin{frame}
+  \frametitle{Preguntas de Investigación (2/2)}
+  
+  \begin{enumerate}
+    \setcounter{enumi}{2} % Continuar la numeración
+    \item ¿Cómo evoluciona el gasto promedio a lo largo del \textbf{itinerario educativo} (Infantil, Primaria, ESO, Universidad)?
+    \item ¿Qué peso real tienen los \textbf{gastos complementarios} (clases particulares, extraescolares, comedor, material)?
+  \end{enumerate}
+\end{frame}
+
+% --- SECCIÓN 2: DATOS Y METODOLOGÍA ---
+\section{Datos y Metodología}
+
+% --- Diapositiva 6: Preparación de Datos ---
+\begin{frame}
+  \frametitle{Metodología: Preparación de Datos}
+  El análisis partió de los microdatos crudos del INE. Fue necesario un proceso de limpieza exhaustivo:
+  \begin{itemize}
+    \item \textbf{Renombrado:} "Traducción" de códigos (ej. C01) a variables descriptivas (ej. Tipo\_educacion).
+    \item \textbf{Recodificación:} Transformación de valores numéricos (1, 2, 3) a factores con etiquetas (Pública, Concertada, Privada).
+    \item \textbf{Imputación de NAs:} Se asumió que un NA en un campo de importe (ej. \textit{importe\_comedor}) significa un gasto de 0€, no un dato desconocido.
+  \end{itemize}
+  
+  \begin{block}{Dataset Limpio}
+    El resultado final es un dataset limpio con \textbf{4185 observaciones} (estudiantes) y 61 variables listas para el análisis.
+  \end{block}
+\end{frame}
+
+% --- SECCIÓN 3: ANÁLISIS UNIVARIANTE ---
+\section{Análisis Univariante}
+
+% --- Diapositiva 7: Gasto Total Anual ---
+\begin{frame}
+  \frametitle{Variable Objetivo: Gasto Total Anual}
+  
+  \begin{columns}[T] % 'T' alinea por arriba
+    
+    % Columna izquierda (Texto)
+    \begin{column}{0.5\textwidth}
+      Análisis de \texttt{gasto\_total\_educacion}.
+      
+      \begin{alertblock}{Asimetría Fuerte}
+        La distribución está sesgada a la derecha:
+        \begin{itemize}
+            \item \textbf{Media: 1638.14 €}
+            \item \textbf{Mediana: 972.00 €}
+        \end{itemize}
+        La media > mediana indica que pocos gastos muy altos "inflan" el promedio.
+      \end{alertblock}
+      
+      \begin{block}{Conclusión}
+        La \textbf{mediana} es una métrica más robusta para el hogar "típico".
+      \end{block}
+    \end{column}
+    
+    % Columna derecha (Figura)
+    \begin{column}{0.5\textwidth}
+      \figuraplaceholder{2.5cm}{Figura 1: Histograma del Gasto Total (Lineal y Log)}
+    \end{column}
+    
+  \end{columns}
+\end{frame}
+
+% --- Diapositiva 8: Componentes del Gasto ---
+\begin{frame}
+  \frametitle{Componentes del Gasto: Bienes vs. Servicios}
+  
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Hallazgo Clave}
+        El gasto está dominado por los Servicios.
+      \end{block}
+      
+      \begin{itemize}
+        \item \textbf{Servicios (77.4\%):} Matrículas, comedor, transporte, etc.
+        \item \textbf{Bienes (22.6\%):} Libros, material, uniformes.
+      \end{itemize}
+      
+      \begin{alertblock}{Mito Desmentido}
+        Los libros (Bienes) no son el componente principal del gasto, sino los Servicios.
+      \end{alertblock}
+    \end{column}
+    
+    \begin{column}{0.5\textwidth}
+      \figuraplaceholder{2.5cm}{Figura 3: Desglose del Gasto (Bienes vs. Servicios)}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% --- Diapositiva 9: Gastos Complementarios ---
+\begin{frame}
+  \frametitle{Análisis de Gastos Específicos}
+  No todos gastan en todo. El análisis distingue entre la frecuencia del gasto y su coste medio (solo para los que pagan).
+  
+  \begin{block}{Patrones Identificados}
+    \begin{itemize}
+        \item \textbf{Bienes (Alta Frecuencia, Bajo Coste):}
+            \item \textit{Papelería:} 78.9\% de los hogares gasta (media de 59€).
+            \item \textit{Libros de Texto:} 70.4\% gasta (media de 161€).
+        \item \textbf{Servicios (Baja Frecuencia, Alto Coste):}
+            \item \textit{Comedor:} 22.6\% gasta (media de 508€).
+            \item \textit{Clases Particulares:} 18.7\% gasta (media de 449€).
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+% --- SECCIÓN 4: ANÁLISIS BIVARIANTE ---
+\section{Análisis Bivariante}
+
+% --- Diapositiva 10: Gasto por Tipo de Centro ---
+\begin{frame}
+  \frametitle{Hallazgo 1: Gasto por Tipo de Centro}
+  
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{alertblock}{Factor Más Determinante}
+        El tipo de centro crea la mayor brecha de gasto.
+      \end{alertblock}
+      
+      \begin{block}{Gasto Promedio Total}
+        \begin{itemize}
+          \item \textbf{Privada:} $>$ 4.500 €
+          \item \textbf{Concertada:} $\approx$ 2.000 €
+          \item \textbf{Pública:} $\approx$ 1.000 €
+        \end{itemize}
+      \end{block}
+      
+      \begin{itemize}
+        \item Se explica por el coste de los \textbf{Servicios} (tasas, cuotas) no subvencionados.
+      \end{itemize}
+    \end{column}
+    
+    \begin{column}{0.5\textwidth}
+      \figuraplaceholder{2.5cm}{Gráfico: Gasto promedio por tipo de centro}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% --- Diapositiva 11: Gasto por Nivel Educativo ---
+\begin{frame}
+  \frametitle{Hallazgo 2: Gasto por Nivel Educativo}
+  
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      El gasto no es lineal y presenta picos claros.
+      
+      \begin{block}{Picos de Gasto Elevado}
+        \begin{itemize}
+          \item \textbf{Universidad:} \textbf{3.056 €} (la más cara).
+          \item \textbf{Infantil (1er Ciclo):} 1.457 € (etapa 0-3 no subvencionada).
+        \end{itemize}
+      \end{block}
+      
+      \begin{block}{Etapas de Gasto Contenido}
+        \begin{itemize}
+          \item Primaria y ESO (obligatoria) son las más estables y bajas.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.5\textwidth}
+      \figuraplaceholder{2.5cm}{Gráfico: Gasto promedio por nivel educativo}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% --- Diapositiva 12: Gasto y Características del Hogar (1/2) ---
+\begin{frame}
+  \frametitle{Hallazgo 3: Gasto y Características del Hogar (1/2)}
+  
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      El contexto del hogar influye en el gasto.
+      
+      \begin{block}{Tamaño del Municipio}
+        \begin{itemize}
+            \item Correlación positiva débil (\textit{rho} = 0.137).
+            \item \textbf{Tendencia:} A más grande el municipio, mayor gasto mediano.
+        \end{itemize}
+      \end{block}
+      
+      \begin{block}{Proporción de Estudiantes}
+        \begin{itemize}
+            \item Correlación positiva moderada (\textit{rho} = 0.274).
+            \item \textbf{Tendencia:} A mayor "densidad" de estudiantes, mayor gasto.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.5\textwidth}
+      \figuraplaceholder{2.5cm}{Gráficos: Boxplots de Gasto por Hogar}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% --- Diapositiva 13: Gasto y Características del Hogar (2/2) ---
+\begin{frame}
+  \frametitle{Hallazgo 4: Gasto y Localización del Centro}
+  
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{alertblock}{La Distancia Dispara el Gasto}
+        Estudiar fuera del municipio es un factor crítico por el alojamiento.
+      \end{alertblock}
+      
+      \begin{block}{Mediana del Gasto Total}
+        \begin{itemize}
+          \item \textbf{Otra C.A.:} 6.039 €
+          \item \textbf{Misma C.A.:} 4.046 €
+          \item \textbf{Extranjero:} 2.955 €
+          \item \textbf{Municipio:} 1.690 €
+        \end{itemize}
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.5\textwidth}
+      \figuraplaceholder{2.5cm}{Gráfico: Mediana de Gasto por Localización}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% --- SECCIÓN 5: CONCLUSIONES ---
+\section{Conclusiones}
+
+% --- Diapositiva 14: Conclusiones (1/2) ---
+\begin{frame}
+  \frametitle{Conclusiones Principales (1/2)}
+  
+  \begin{enumerate}
+    \item \textbf{El gasto está dominado por los Servicios (77.4\%), no por los Bienes (22.6\%).}
+    
+    El debate sobre el coste de la educación a menudo se centra erróneamente en los libros, cuando la carga principal proviene de matrículas, comedores y transporte.
+    
+    \item \textbf{El Tipo de Centro es el factor más determinante.}
+    
+    Existe una inmensa brecha entre la enseñanza pública (~1.000€), la concertada (~2.000€) y la privada (>4.500€), explicada casi en su totalidad por el coste de los servicios no subvencionados.
+  \end{enumerate}
+\end{frame}
+
+% --- Diapositiva 15: Conclusiones (2/2) ---
+\begin{frame}
+  \frametitle{Conclusiones Principales (2/2)}
+  
+  \begin{enumerate}
+    \setcounter{enumi}{2} % Continuar la numeración
+    \item \textbf{El gasto sigue un itinerario creciente con picos claros.}
+    
+    Los momentos de mayor esfuerzo económico para las familias son el \textbf{1er Ciclo de Infantil} (por falta de subvención) y la \textbf{Universidad} (la etapa más cara).
+    
+    \item \textbf{Las características del hogar y la localización son críticas.}
+    
+    El gasto aumenta en municipios más grandes y en hogares con más estudiantes. Estudiar en \textbf{otra Comunidad Autónoma} (mediana > 6.000€) dispara el coste por los gastos de alojamiento.
+  \end{enumerate}
+\end{frame}
+
+
+% --- Diapositiva 16: Fin ---
+\begin{frame}
+  \frametitle{Fin de la Presentación}
+  
+  \begin{center}
+    \vspace{2cm}
+    \Huge
+    Gracias por su atención.
+    \vspace{1cm}
+    
+    \Large
+    ¿Preguntas?
+  \end{center}
+  
+\end{frame}
+
+\end{document}
+% --- FIN DEL DOCUMENTO ---
