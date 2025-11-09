@@ -464,6 +464,8 @@ Continuando con el análisis bivariante, y tras haber examinado la influencia de
 
 2. Gasto del hogar por proporción de estudiantes. Se examinará cómo evoluciona el gasto total a medida que la "densidad" de estudiantes en el hogar (la proporción EHOGAR / NHOGAR) aumenta. Esta variable numérica se ha categorizado en 5 intervalos (0-20%, 21-40%, etc.) para facilitar la comparación. Esta comparación del gasto mediano (mediante boxplots y correlación de Spearman) medirá la fuerza de la tendencia respecto la carga económica que representan los estudiantes para los hogares.
 
+3. Gasto por localización del centro de estudios. Finalmente, se analizará la dependencia del gasto con la localización del centro. Aunque esta es una característica del estudiante (nivel de persona) y no del hogar, su impacto económico es fundamental. Se compararán los patrones de gasto mediano (mediante diagramas de barras) para determinar si la distancia al centro supone una brecha económica significativa.
+
 ## Relación del gasto del hogar con el tamaño del municipio.
 ```{r, echo=FALSE}
 #### Primero seleccionamos las variables que nos interesan de nuestro dataset original
