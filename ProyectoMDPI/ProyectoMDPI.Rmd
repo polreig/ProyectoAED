@@ -336,6 +336,7 @@ analizar_gasto_complementario <- function(gasto_vector, nombre_gasto) {
 }
 
 # Aplicamos la función a las variables de interés
+df_matricula <- analizar_gasto_complementario(datos$importe_matricula_clases, "Matrícula/Tasas")
 df_clases_part <- analizar_gasto_complementario(datos$importe_clases_particulares, "Clases Particulares")
 df_comedor <- analizar_gasto_complementario(datos$importe_comedor, "Comedor")
 df_extraescolares <- analizar_gasto_complementario(datos$importe_actividades_extraescolares, "Act. Extraescolares")
@@ -345,14 +346,14 @@ df_libros <- analizar_gasto_complementario(datos$importe_libros, "Libros de Text
 df_papeleria <- analizar_gasto_complementario(datos$importe_papeleria, "Papelería")
 df_informatica <- analizar_gasto_complementario(datos$importe_productos_informaticos, "Prod. Informáticos")
 # Combinamos y mostramos la tabla
-tabla_complementarios <- bind_rows(df_clases_part, df_comedor, df_extraescolares, df_transporte,
+tabla_complementarios <- bind_rows(df_matricula,df_clases_part, df_comedor, df_extraescolares, df_transporte,
   df_libros, df_uniformes, df_papeleria, df_informatica)
 
 knitr::kable(
   tabla_complementarios,
   caption = "Análisis de Gastos Complementarios Específicos",
   digits = 2,
-  col.names = c("Tipo de Gasto", "% Hogares que pagan", "Gasto Medio (si paga) (€)")
+  col.names = c("Tipo de Gasto", "% Estudiantes que pagan", "Gasto Medio (si paga) (€)")
 ) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
 ```
@@ -418,7 +419,7 @@ La gráfica revela una fuerte disparidad en el gasto promedio total entre los ti
 El análisis de la composición demuestra que los bienes, aunque presentes en los tres tipos de centros, representan una proporción relativamente menor del gasto total y no son la causa de las grandes diferencias observadas entre ellos, estableciendo que las familias que optan por la enseñanza privada asumen un coste de servicios muy superior.
 
 ## Gasto educativo total promedio por nivel educativo
-```{r, echo=FALSE, fig.cap= "Gasto educativo promedio total según el nivel educativo}
+```{r, echo=FALSE, fig.cap= "Gasto educativo promedio total según el nivel educativo"}
 library(forcats) 
 
 #escogemos los niveles que vamos a representar
