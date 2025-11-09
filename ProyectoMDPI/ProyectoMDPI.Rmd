@@ -626,7 +626,7 @@ La gráfica muestra una jerarquía de gasto que parece estar directamente correl
 
 En el extremo opuesto, el gasto más bajo se da, como es lógico, en el Municipio Residencia (1690€), donde el estudiante no incurre en gastos de alojamiento y el transporte es mínimo. Es notable que estudiar en el Extranjero (2955€) representa un coste intermedio, significativamente más bajo que desplazarse a otra comunidad autónoma, lo que podría explicarse por la naturaleza de los programas de intercambio o becas asociadas.
 
-Aquí tienes una propuesta de sección de conclusiones basada en los hallazgos detallados en tu informe ProyectoMDPI.Rmd.
+
 
 # Conclusiones
 
