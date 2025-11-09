@@ -492,7 +492,9 @@ datos_muni %>% ggplot(aes(x = TMUNI, y = log(Valor_Gasto +1))) +
   facet_wrap(~Tipo_Gasto, scales = "free_x", ncol = 2) +
   coord_flip() +
   labs(title = "Relación Gastos Hogar y Tamaño del Municipio", x = "Tamaño del Municipio", y = "Log(Gasto Total Hogar (€) +1)") +
-  theme_minimal()
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 1.25))
+
 ```
 ```{r, echo=FALSE}
 #### Calculamos cual es la máxima mediana 
@@ -612,7 +614,8 @@ Medianas_gasto_loc %>% ggplot(aes(x = reorder(Localización_Centro, Mediana_gast
   labs(
     title = "Mediana del Gasto Total por Localización del Centro", x = "Localización del Centro", y = "Mediana del Gasto Total de la Persona (€)"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 1.25))
 ```
 
 
