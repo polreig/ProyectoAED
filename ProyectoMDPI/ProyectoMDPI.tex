@@ -1,0 +1,972 @@
+%  LaTeX support: latex@mdpi.com
+%  For support, please attach all files needed for compiling as well as the log file, and specify your operating system, LaTeX version, and LaTeX editor.
+
+%=================================================================
+% pandoc conditionals added to preserve backwards compatibility with previous versions of rticles
+
+\documentclass[notspecified,article,submit,moreauthors,pdftex]{Definitions/mdpi}
+
+
+%% Some pieces required from the pandoc template
+\setlist[itemize]{leftmargin=*,labelsep=5.8mm}
+\setlist[enumerate]{leftmargin=*,labelsep=4.9mm}
+
+
+%--------------------
+% Class Options:
+%--------------------
+%----------
+% journal
+%----------
+% Choose between the following MDPI journals:
+% acoustics, actuators, addictions, admsci, adolescents, aerobiology, aerospace, agriculture, agriengineering, agrochemicals, agronomy, ai, air, algorithms, allergies, alloys, analytica, analytics, anatomia, animals, antibiotics, antibodies, antioxidants, applbiosci, appliedchem, appliedmath, applmech, applmicrobiol, applnano, applsci, aquacj, architecture, arm, arthropoda, arts, asc, asi, astronomy, atmosphere, atoms, audiolres, automation, axioms, bacteria, batteries, bdcc, behavsci, beverages, biochem, bioengineering, biologics, biology, biomass, biomechanics, biomed, biomedicines, biomedinformatics, biomimetics, biomolecules, biophysica, biosensors, biotech, birds, bloods, blsf, brainsci, breath, buildings, businesses, cancers, carbon, cardiogenetics, catalysts, cells, ceramics, challenges, chemengineering, chemistry, chemosensors, chemproc, children, chips, cimb, civileng, cleantechnol, climate, clinpract, clockssleep, cmd, coasts, coatings, colloids, colorants, commodities, compounds, computation, computers, condensedmatter, conservation, constrmater, cosmetics, covid, crops, cryptography, crystals, csmf, ctn, curroncol, cyber, dairy, data, ddc, dentistry, dermato, dermatopathology, designs, devices, diabetology, diagnostics, dietetics, digital, disabilities, diseases, diversity, dna, drones, dynamics, earth, ebj, ecologies, econometrics, economies, education, ejihpe, electricity, electrochem, electronicmat, electronics, encyclopedia, endocrines, energies, eng, engproc, entomology, entropy, environments, environsciproc, epidemiologia, epigenomes, est, fermentation, fibers, fintech, fire, fishes, fluids, foods, forecasting, forensicsci, forests, foundations, fractalfract, fuels, future, futureinternet, futurepharmacol, futurephys, futuretransp, galaxies, games, gases, gastroent, gastrointestdisord, gels, genealogy, genes, geographies, geohazards, geomatics, geosciences, geotechnics, geriatrics, grasses, gucdd, hazardousmatters, healthcare, hearts, hemato, hematolrep, heritage, higheredu, highthroughput, histories, horticulturae, hospitals, humanities, humans, hydrobiology, hydrogen, hydrology, hygiene, idr, ijerph, ijfs, ijgi, ijms, ijns, ijpb, ijtm, ijtpp, ime, immuno, informatics, information, infrastructures, inorganics, insects, instruments, inventions, iot, j, jal, jcdd, jcm, jcp, jcs, jcto, jdb, jeta, jfb, jfmk, jimaging, jintelligence, jlpea, jmmp, jmp, jmse, jne, jnt, jof, joitmc, jor, journalmedia, jox, jpm, jrfm, jsan, jtaer, jvd, jzbg, kidneydial, kinasesphosphatases, knowledge, land, languages, laws, life, liquids, literature, livers, logics, logistics, lubricants, lymphatics, machines, macromol, magnetism, magnetochemistry, make, marinedrugs, materials, materproc, mathematics, mca, measurements, medicina, medicines, medsci, membranes, merits, metabolites, metals, meteorology, methane, metrology, micro, microarrays, microbiolres, micromachines, microorganisms, microplastics, minerals, mining, modelling, molbank, molecules, mps, msf, mti, muscles, nanoenergyadv, nanomanufacturing,\gdef\@continuouspages{yes}} nanomaterials, ncrna, ndt, network, neuroglia, neurolint, neurosci, nitrogen, notspecified, %%nri, nursrep, nutraceuticals, nutrients, obesities, oceans, ohbm, onco, %oncopathology, optics, oral, organics, organoids, osteology, oxygen, parasites, parasitologia, particles, pathogens, pathophysiology, pediatrrep, pharmaceuticals, pharmaceutics, pharmacoepidemiology,\gdef\@ISSN{2813-0618}\gdef\@continuous pharmacy, philosophies, photochem, photonics, phycology, physchem, physics, physiologia, plants, plasma, platforms, pollutants, polymers, polysaccharides, poultry, powders, preprints, proceedings, processes, prosthesis, proteomes, psf, psych, psychiatryint, psychoactives, publications, quantumrep, quaternary, qubs, radiation, reactions, receptors, recycling, regeneration, religions, remotesensing, reports, reprodmed, resources, rheumato, risks, robotics, ruminants, safety, sci, scipharm, sclerosis, seeds, sensors, separations, sexes, signals, sinusitis, skins, smartcities, sna, societies, socsci, software, soilsystems, solar, solids, spectroscj, sports, standards, stats, std, stresses, surfaces, surgeries, suschem, sustainability, symmetry, synbio, systems, targets, taxonomy, technologies, telecom, test, textiles, thalassrep, thermo, tomography, tourismhosp, toxics, toxins, transplantology, transportation, traumacare, traumas, tropicalmed, universe, urbansci, uro, vaccines, vehicles, venereology, vetsci, vibration, virtualworlds, viruses, vision, waste, water, wem, wevj, wind, women, world, youth, zoonoticdis 
+% For posting an early version of this manuscript as a preprint, you may use "preprints" as the journal. Changing "submit" to "accept" before posting will remove line numbers.
+
+%---------
+% article
+%---------
+% The default type of manuscript is "article", but can be replaced by: 
+% abstract, addendum, article, book, bookreview, briefreport, casereport, comment, commentary, communication, conferenceproceedings, correction, conferencereport, entry, expressionofconcern, extendedabstract, datadescriptor, editorial, essay, erratum, hypothesis, interestingimage, obituary, opinion, projectreport, reply, retraction, review, perspective, protocol, shortnote, studyprotocol, systematicreview, supfile, technicalnote, viewpoint, guidelines, registeredreport, tutorial
+% supfile = supplementary materials
+
+%----------
+% submit
+%----------
+% The class option "submit" will be changed to "accept" by the Editorial Office when the paper is accepted. This will only make changes to the frontpage (e.g., the logo of the journal will get visible), the headings, and the copyright information. Also, line numbering will be removed. Journal info and pagination for accepted papers will also be assigned by the Editorial Office.
+
+%------------------
+% moreauthors
+%------------------
+% If there is only one author the class option oneauthor should be used. Otherwise use the class option moreauthors.
+
+%---------
+% pdftex
+%---------
+% The option pdftex is for use with pdfLaTeX. Remove "pdftex" for (1) compiling with LaTeX & dvi2pdf (if eps figures are used) or for (2) compiling with XeLaTeX.
+
+%=================================================================
+% MDPI internal commands - do not modify
+\firstpage{1} 
+\makeatletter 
+\setcounter{page}{\@firstpage} 
+\makeatother
+\pubvolume{1}
+\issuenum{1}
+\articlenumber{0}
+\pubyear{2024}
+\copyrightyear{2024}
+%\externaleditor{Academic Editor: Firstname Lastname}
+\datereceived{ } 
+\daterevised{ } % Comment out if no revised date
+\dateaccepted{ } 
+\datepublished{ } 
+%\datecorrected{} % For corrected papers: "Corrected: XXX" date in the original paper.
+%\dateretracted{} % For corrected papers: "Retracted: XXX" date in the original paper.
+\hreflink{https://doi.org/} % If needed use \linebreak
+%\doinum{}
+%\pdfoutput=1 % Uncommented for upload to arXiv.org
+%\CorrStatement{yes}  % For updates
+
+
+%=================================================================
+% Add packages and commands here. The following packages are loaded in our class file: fontenc, inputenc, calc, indentfirst, fancyhdr, graphicx, epstopdf, lastpage, ifthen, float, amsmath, amssymb, lineno, setspace, enumitem, mathpazo, booktabs, titlesec, etoolbox, tabto, xcolor, colortbl, soul, multirow, microtype, tikz, totcount, changepage, attrib, upgreek, array, tabularx, pbox, ragged2e, tocloft, marginnote, marginfix, enotez, amsthm, natbib, hyperref, cleveref, scrextend, url, geometry, newfloat, caption, draftwatermark, seqsplit
+% cleveref: load \crefname definitions after \begin{document}
+
+%=================================================================
+% Please use the following mathematics environments: Theorem, Lemma, Corollary, Proposition, Characterization, Property, Problem, Example, ExamplesandDefinitions, Hypothesis, Remark, Definition, Notation, Assumption
+%% For proofs, please use the proof environment (the amsthm package is loaded by the MDPI class).
+
+%=================================================================
+% Full title of the paper (Capitalized)
+\Title{Análisis Exploratorio del Gasto de los Hogares en Educación (EGHE
+2019)}
+
+% MDPI internal command: Title for citation in the left column
+\TitleCitation{Análisis Exploratorio del Gasto de los Hogares en
+Educación (EGHE 2019)}
+
+% Author Orchid ID: enter ID or remove command
+%\newcommand{\orcidauthorA}{0000-0000-0000-000X} % Add \orcidA{} behind the author's name
+%\newcommand{\orcidauthorB}{0000-0000-0000-000X} % Add \orcidB{} behind the author's name
+
+
+% Authors, for the paper (add full first names)
+\Author{Pol Reig i Gómez$^{1}$, Clara Montalvá Barcenilla$^{2}$, Pablo
+Carbonell Martínez$^{3}$}
+
+
+%\longauthorlist{yes}
+
+
+% MDPI internal command: Authors, for metadata in PDF
+\AuthorNames{Pol Reig i Gómez, Clara Montalvá Barcenilla, Pablo
+Carbonell Martínez}
+
+% MDPI internal command: Authors, for citation in the left column
+
+% Affiliations / Addresses (Add [1] after \address if there is only one affiliation.)
+\address{%
+$^{1}$ \quad Máster en Ciencia de
+Datos; \href{mailto:polreig@alumni.uv.es}{\nolinkurl{polreig@alumni.uv.es}}\\
+$^{2}$ \quad Máster en Ciencia de
+Datos; \href{mailto:barcenil@alumni.uv.es}{\nolinkurl{barcenil@alumni.uv.es}}\\
+$^{3}$ \quad Máster en Ciencia de
+Datos; \href{mailto:pacarma4@alumni.uv.es}{\nolinkurl{pacarma4@alumni.uv.es}}\\
+}
+
+% Contact information of the corresponding author
+\corres{Correspondence: Máster en Ciencia de Datos, Universitat de
+Valencia.}
+
+% Current address and/or shared authorship
+
+
+
+
+
+
+
+
+% The commands \thirdnote{} till \eighthnote{} are available for further notes
+
+% Simple summary
+
+%\conference{} % An extended version of a conference paper
+
+% Abstract (Do not insert blank lines, i.e. \\)
+\abstract{El presente proyecto realiza un Análisis Exploratorio de Datos
+(AED) sobre la Encuesta de Gasto de los Hogares en Educación (EGHE) del
+año 2019, publicada por el Instituto Nacional de Estadística (INE). El
+objetivo es entender la estructura del gasto en educación en España,
+identificando sus principales componentes y las características de los
+hogares y estudiantes asociados a dicho gasto. Este informe detalla el
+proceso de importación, limpieza y transformación de los microdatos,
+seguido de un análisis univariante y bivariante para responder a las
+preguntas de investigación planteadas.}
+
+
+% Keywords
+\keyword{AED, Gasto Educación, INE, EGHE 2019.}
+
+% The fields PACS, MSC, and JEL may be left empty or commented out if not applicable
+%\PACS{J0101}
+%\MSC{}
+%\JEL{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Only for the journal Diversity
+%\LSID{\url{http://}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Only for the journal Applied Sciences
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Only for the journal Data
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Only for the journal Toxins
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Only for the journal Encyclopedia
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Only for the journal Advances in Respiratory Medicine
+%\addhighlights{yes}
+%\renewcommand{\addhighlights}{%
+
+%\noindent This is an obligatory section in “Advances in Respiratory Medicine”, whose goal is to increase the discoverability and readability of the article via search engines and other scholars. Highlights should not be a copy of the abstract, but a simple text allowing the reader to quickly and simplified find out what the article is about and what can be cited from it. Each of these parts should be devoted up to 2~bullet points.\vspace{3pt}\\
+%\textbf{What are the main findings?}
+% \begin{itemize}[labelsep=2.5mm,topsep=-3pt]
+% \item First bullet.
+% \item Second bullet.
+% \end{itemize}\vspace{3pt}
+%\textbf{What is the implication of the main finding?}
+% \begin{itemize}[labelsep=2.5mm,topsep=-3pt]
+% \item First bullet.
+% \item Second bullet.
+% \end{itemize}
+%}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% tightlist command for lists without linebreak
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% From pandoc table feature
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+
+% Add imagehandling
+
+
+
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\begin{document}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introducción}\label{introducciuxf3n}
+
+La educación es ampliamente reconocida como uno de los pilares
+fundamentales para el desarrollo económico y social de un país. Sin
+embargo, el acceso y la permanencia en el sistema educativo conllevan
+una serie de costes directos e indirectos que son asumidos en gran
+medida por los hogares. Este gasto no se limita únicamente a las tasas y
+matrículas, sino que abarca un complejo ecosistema de bienes y servicios
+que incluye desde libros de texto y material escolar hasta servicios de
+comedor, transporte, actividades extraescolares y clases particulares.
+
+Comprender la magnitud y la composición de este gasto es esencial para
+evaluar la equidad del sistema educativo y el esfuerzo económico que
+supone para las familias. El Instituto Nacional de Estadística (INE)
+proporciona una visión detallada de esta realidad a través de la
+Encuesta de Gasto de los Hogares en Educación (EGHE).
+
+El presente proyecto tiene como objetivo realizar un Análisis
+Exploratorio de Datos (AED) sobre los microdatos de la EGHE 2019.
+Nuestro propósito es diseccionar la estructura del gasto en educación en
+España, identificando los patrones subyacentes, las diferencias entre
+distintos tipos de enseñanza y las características de los estudiantes
+que más gasto generan.
+
+Para guiar nuestro análisis, planteamos las siguientes preguntas de
+investigación:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{¿Cómo se distribuye la estructura del gasto promedio entre los
+  diferentes tipos de centros (públicos, concertados, privados) y qué
+  factores explican estas diferencias?} Compararemos los patrones de
+  gasto entre los tres regímenes de financiación, analizando no solo las
+  diferencias en el gasto total sino también en su composición
+  (matrículas, servicios complementarios, material).
+\item
+  \textbf{¿Qué características del hogar y del estudiante predicen un
+  mayor gasto educativo? ¿Existen diferencias significativas por sexo,
+  composición familiar o tamaño del municipio?} Identificaremos los
+  principales predictores del gasto educativo mediante el análisis de
+  variables demográficas y estructurales. Evaluaremos específicamente si
+  existen brechas de gasto asociadas al sexo del estudiante y el efecto
+  de la composición del hogar.
+\item
+  \textbf{¿Cómo evoluciona el gasto educativo total promedio a lo largo
+  del itinerario educativo, desde Infantil hasta la Universidad?}
+  Compararemos el gasto medio en diferentes niveles, como Educación
+  Infantil, Primaria, ESO, Bachillerato y Universidad.
+\item
+  \textbf{¿Qué peso real tienen los gastos complementarios (clases
+  particulares, actividades extraescolares, material específico) en el
+  presupuesto total?} Cuantificaremos el impacto de partidas específicas
+  como clases particulares, servicios de comedor, actividades
+  extraescolares y uniformes escolares, que frecuentemente pasan
+  desapercibidos en el debate público sobre el coste de la educación.
+\end{enumerate}
+
+Este informe detallará el proceso de limpieza y transformación de los
+datos, seguido del análisis univariante y bivariante para dar respuesta
+a estas preguntas, concluyendo con los principales hallazgos de nuestro
+estudio.
+
+\section{Carga y Preparación de
+Datos}\label{carga-y-preparaciuxf3n-de-datos}
+
+El punto de partida de este análisis son los microdatos de la Encuesta
+de Gasto de los Hogares en Educación (EGHE) del año 2019, proporcionados
+por el INE. El fichero original, \emph{EGHE\_2019.csv}, es un conjunto
+de datos que, si bien es completo, presenta desafíos significativos para
+un análisis directo:
+
+\begin{itemize}
+\item
+  \textbf{Codificación de Variables}: Los nombres de las variables (ej.
+  GTT, C01, NEST2) y sus valores (ej. 1, 2, 3) siguen la codificación
+  interna del INE, lo que los hace poco intuitivos.
+\item
+  \textbf{Valores Nulos (NA)}: El dataset utiliza NA (Not Available) de
+  manera ambigua. Un NA en un campo de importe (como importe\_comedor)
+  puede significar que el dato se desconoce o, más probablemente, que el
+  estudiante no incurrió en dicho gasto (gasto de 0€).
+\item
+  \textbf{Datos Irrelevantes}: El dataset original contiene numerosas
+  columnas y filas que no son pertinentes para nuestras preguntas de
+  investigación (ej. personas que no son estudiantes, columnas de
+  control de la encuesta). Estos datos o variables son eliminados.
+\end{itemize}
+
+Para abordar estos retos, se ha implementado un proceso de limpieza y
+transformación estructurado en tres fases, ejecutadas secuencialmente
+mediante los scripts \emph{limpieza\_gastos.R}, \emph{limpieza\_hogar.R}
+y \emph{limpieza\_estudiantes.R}.
+
+El \textbf{chunk} de código asociado a la limpieza de los datos carga el
+conjunto de datos crudo y aplica estos tres scripts para generar el
+dataset limpio (\textbf{datos}) que se utilizará en el resto del
+informe. A continuación, se detallan las transformaciones clave
+realizadas durante este proceso.
+
+\subsection{Renombrado y Selección de
+Variables}\label{renombrado-y-selecciuxf3n-de-variables}
+
+El primer paso consistió en ``traducir'' el dataset. Se renombraron
+todas las variables de interés de sus códigos del INE a nombres
+descriptivos en español. Por ejemplo: \emph{C01} se renombró a
+\emph{Tipo\_educacion}. Esto fué posible gracias al archivo de
+descripción del dataset proporcionado por el INE, donde se describe que
+tipo de nomenclatura se gasta en cada variable y como se codifican los
+datos.
+
+Paralelamente, se eliminaron columnas innecesarias, variables con
+porcentajes demasiado elevados de NAs, como las relacionadas con
+información de becas, para simplificar la estructura del dataset y
+reducir el ruido.
+
+\subsection{Recodificación de Variables
+Categóricas}\label{recodificaciuxf3n-de-variables-categuxf3ricas}
+
+Las variables categóricas más importantes fueron transformadas a
+factores con etiquetas descriptivas para la correcta interpretación y
+visualización en los análisis.
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{Ejemplos de Recodificación de Variables
+Categóricas}\tabularnewline
+\toprule\noalign{}
+Variable & Código\_INE & Etiqueta \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Variable & Código\_INE & Etiqueta \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Tipo\_educacion & 1, 2, 3 & Pública, Concertada, Privada \\
+SEXO & 1, 2 & Hombre, Mujer \\
+Nacionalidad & 1, 2, 3 & Española, Extranjera, Doble nacionalidad \\
+\end{longtable}
+
+\subsection{Imputación y Tratamiento de Valores
+Nulos}\label{imputaciuxf3n-y-tratamiento-de-valores-nulos}
+
+Partimos de la hipótesis de que, en un campo de gasto, un valor NA
+significa un gasto de 0€. Posteriormente, se realizó la comprobación de
+que, para todas las muestras, la suma de todos los tipos de gasto es
+igual al valor de la variable \emph{gasto\_total\_educacion}:
+
+\[\sum{\textbf{importes individuales} = \textbf{gasto\_total\_educacion}}\]
+
+Tras comprobar que se cumplía esta condición, se aplicó la siguiente
+lógica de imputación:
+
+\begin{itemize}
+\item
+  \textbf{Importes (\emph{importe\_})}: Todos los valores NA en columnas
+  de importes (ej. \emph{importe\_comedor},
+  \emph{importe\_clases\_particulares}) se sustituyeron por 0, indicando
+  un gasto nulo.
+\item
+  \textbf{Servicios (\emph{servicio\_})}: En las variables que indican
+  si se usó un servicio (donde 1=Sí), los NA se imputaron como 2 (el
+  código para ``No'').
+\item
+  \textbf{Gastos Totales (\emph{gasto\_total\_})}: Del mismo modo, los
+  NA en las columnas de gasto total se reemplazaron por 0.
+\end{itemize}
+
+Tras este proceso exhaustivo, el objeto datos queda listo para el
+análisis. Contiene únicamente las observaciones y variables relevantes,
+con tipos de datos correctos, sin valores nulos ambiguos y con etiquetas
+descriptivas.
+
+\section{Descripción del Conjunto de Datos Limpio: Análisis
+Univariante}\label{descripciuxf3n-del-conjunto-de-datos-limpio-anuxe1lisis-univariante}
+
+Tras la ejecución de los scripts de limpieza, obtenemos el dataset
+\texttt{datos}. Este conjunto de datos contiene 4185 observaciones (cada
+una representando a un estudiante que reportó gastos) y 61 variables
+limpias y listas para el análisis.
+
+El objetivo de esta sección es realizar un análisis univariante de las
+variables clave. Este paso es fundamental para entender la distribución
+y las características de cada variable de forma aislada, antes de buscar
+relaciones entre ellas. Nos centraremos en la variable objetivo (Gasto
+Total) y en las principales variables categóricas y numéricas que
+usaremos para responder a nuestras preguntas.
+
+\subsection{Variable Objetivo: Gasto Total Anual
+(gasto\_total\_educacion)}\label{variable-objetivo-gasto-total-anual-gasto_total_educacion}
+
+Nuestra principal variable de interés es el
+\emph{gasto\_total\_educacion} anual por estudiante.
+
+\begin{longtable}[t]{lr}
+\caption{\label{tab:unnamed-chunk-4}Estadísticas Descriptivas del Gasto Total Anual por Estudiante}\\
+\toprule
+Métrica & Valor (€)\\
+\midrule
+Media & 1638.14\\
+Mediana & 972.00\\
+Mínimo & 0.00\\
+Máximo & 37853.00\\
+1er Cuartil & 422.00\\
+\addlinespace
+3er Cuartil & 1962.00\\
+Desv. Estándar & 2224.81\\
+\bottomrule
+\end{longtable}
+
+La tabla 2 revela un hallazgo clave: la media (1638.14 €) es
+significativamente más alta que la mediana (972 €). Esto indica una
+distribución asimétrica positiva (sesgada a la derecha).
+
+En la práctica, esto significa que la mayoría de los hogares reportan un
+gasto relativamente bajo, pero un pequeño número de hogares
+(probablemente aquellos en centros privados de élite o con altos gastos
+en actividades complementarias) tienen gastos muy elevados, ``inflando''
+la media hacia arriba. Por esta razón, y tal como se planteaba en
+nuestras preguntas de investigación, la mediana será una métrica más
+robusta para describir el gasto del hogar ``típico''.
+
+El siguiente histograma confirma visualmente esta fuerte asimetría. La
+gran mayoría de las observaciones se concentran en la parte izquierda
+del gráfico, con una larga cola de outliers hacia la derecha.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth,]{ProyectoMDPI_files/figure-latex/unnamed-chunk-5-1} 
+
+}
+
+\caption{Histograma del Gasto Total Anual (Escala Lineal y Logarítmica).}\label{fig:unnamed-chunk-5}
+\end{figure}
+
+La Figura 1 combina dos vistas de la misma variable:
+
+\begin{itemize}
+\item
+  El gráfico de la izquierda (escala lineal) nos permite observar la
+  fuerte asimetría positiva y el impacto de los \emph{outliers}, que
+  elevan la media (1638.14 €) muy por encima de la mediana (972 €).
+\item
+  El gráfico de la derecha (escala logarítmica) complementa al primero.
+  Al comprimir los valores altos y expandir los bajos, nos permite
+  visualizar la forma de la distribución del grueso de los hogares. En
+  esta vista, se puede apreciar mejor dónde se concentran los gastos más
+  comunes.
+\end{itemize}
+
+\subsection{Variables Categóricas
+Principales}\label{variables-categuxf3ricas-principales}
+
+A continuación, exploramos la composición de nuestra muestra en función
+de las variables categóricas clave que guían nuestras preguntas de
+investigación.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\linewidth,]{ProyectoMDPI_files/figure-latex/unnamed-chunk-6-1} 
+
+}
+
+\caption{Nº de Estudiantes por Tipo de Centro y por Nivel Educativo}\label{fig:unnamed-chunk-6}
+\end{figure}
+
+De estos gráficos, observamos que:
+
+\begin{itemize}
+\item
+  \textbf{Tipo de Centro}: La mayoría de los estudiantes de la muestra
+  se encuentran en la enseñanza pública, seguida de la concertada y,
+  finalmente, la privada. Esta distribución es coherente con la
+  estructura del sistema educativo español.
+\item
+  \textbf{Nivel Educativo}: La muestra tiene una representación
+  significativa en todas las etapas, con los picos de frecuencia en
+  Educación Primaria y Secundaria.
+\end{itemize}
+
+\subsection{Componentes del Gasto (Bienes
+vs.~Servicios)}\label{componentes-del-gasto-bienes-vs.-servicios}
+
+Las componentes que forman el gasto total son los bienes y los
+servicios, por eso es interesante identificar cuál de los dos grandes
+componentes del gasto tiene un mayor peso.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\linewidth,]{ProyectoMDPI_files/figure-latex/unnamed-chunk-7-1} 
+
+}
+
+\caption{Desglose del Gasto Educativo Total}\label{fig:unnamed-chunk-7}
+\end{figure}
+
+El gráfico circular de la Figura 3 muestra de forma concluyente que, a
+nivel agregado, el gasto en Servicios (matrículas, comedor, transporte,
+extraescolares, etc.) representa la mayor parte del desembolso total de
+los hogares, superando ampliamente al gasto en Bienes (libros, material,
+uniformes).
+
+\subsection{Gastos Complementarios}\label{gastos-complementarios}
+
+Finalmente, el análisis debe responder a dos preguntas planteadas
+inicialmente en la Pregunta 4:
+
+\begin{itemize}
+\item
+  ¿Qué porcentaje de familias incurre realmente en los gastos
+  complementarios?
+\item
+  Entre las que sí gastan, ¿cuál es el gasto medio?
+\end{itemize}
+
+\begin{longtable}[t]{lrr}
+\caption{\label{tab:gastcomp}Análisis de Gastos Complementarios Específicos}\\
+\toprule
+Tipo de Gasto & \% Estudiantes que pagan & Gasto Medio (si paga) (€)\\
+\midrule
+Matrícula/Tasas & 50.70 & 500\\
+Clases Particulares & 18.73 & 360\\
+Comedor & 22.56 & 519\\
+Act. Extraescolares & 15.60 & 180\\
+Transporte & 3.15 & 318\\
+\addlinespace
+Libros de Texto & 70.44 & 120\\
+Uniformes & 38.54 & 75\\
+Papelería & 78.90 & 50\\
+Prod. Informáticos & 22.39 & 370\\
+\bottomrule
+\end{longtable}
+
+En la Tabla 3 se observa una clara distinción entre Bienes (materiales)
+y Servicios:
+
+\begin{itemize}
+\item
+  Bienes (Alta Frecuencia, Bajo Coste): Existe un grupo de gastos que
+  son casi universales. La `Papelería' (78.9\%) y los `Libros de Texto'
+  (70.4\%) son asumidos por la gran mayoría de los hogares. Sin embargo,
+  su desembolso medio (para quien paga) es de los más bajos,
+  especialmente la papelería (59.04€). Los `Uniformes' (38.5\%) también
+  son un gasto frecuente, pero con un coste medio bajo (109.82€).
+\item
+  Servicios (Baja Frecuencia, Alto Coste): El patrón se invierte con los
+  servicios, que son menos frecuentes pero suponen un desembolso mucho
+  mayor. El `Comedor' (22.56\%) es el gasto medio más elevado de la
+  tabla (508.14€). Le siguen de cerca las `Clases Particulares'
+  (18.73\%), que suponen 449.11€ de media para quien las contrata.
+\end{itemize}
+
+\section{Análisis Bivariante del Gasto según las Características de los
+Estudiantes}\label{anuxe1lisis-bivariante-del-gasto-seguxfan-las-caracteruxedsticas-de-los-estudiantes}
+
+Una vez realizado el análisis univariante, se pretende observar las
+relaciones y los patrones explicativos que influyen en el gasto
+educativo. Para ello, se emplea el análisis bivariante, cruzando el
+gasto total de educación y su composición (bienes, servicios reglados o
+básicos y servicios no reglados o adicionales) con las variables
+estructurales del sistema educativo.
+
+Este análisis se centra en dos comparaciones fundamentales:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Distribución del gasto por tipo de centro. Se compararán los patrones
+  de gasto entre los tres tipos de educación (pública, concertada y
+  privada), analizando no solo las diferencias en el gasto total sino
+  también en la composición de la estructura del gasto. Esto permite
+  determinar cómo el tipo de centro afecta el coste promedio y la
+  inversión en bienes y servicios educativos.
+\item
+  Evolución del gasto por nivel educativo. Se examinará cómo el gasto
+  total evoluciona a lo largo de las etapas educativas, desde Infantil
+  hasta la Universidad. Esta comparación del gasto medio en diferentes
+  niveles identifica la intensidad y la carga económica que representa
+  cada etapa para los hogares.
+\end{enumerate}
+
+\subsection{Composición y promedio del gasto según el tipo de
+centro}\label{composiciuxf3n-y-promedio-del-gasto-seguxfan-el-tipo-de-centro}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\linewidth,]{ProyectoMDPI_files/figure-latex/unnamed-chunk-9-1} 
+
+}
+
+\caption{Gasto educativo promedio desglosado en bienes y servicios según el tipo de centro}\label{fig:unnamed-chunk-9}
+\end{figure}
+
+La gráfica revela una fuerte disparidad en el gasto promedio total entre
+los tipos de financiación en la educación, siendo la enseñanza privada
+el coste más elevado superando los 4.500€, seguida por la concertada
+cercana a 2.000€ y finalmente por la pública alrededor de los 1000€. En
+los tres casos, el componente dominante es el de servicios (coste como
+matrícula, cuotas de centro o comedor). No obstante, este gasto es
+significativamente más alto en la enseñanza privada debido a que estos
+costes no están subvencionados por el Estado, contrariamente a lo que
+ocurre en la educación pública y parcielmente en la concertada.
+
+El análisis de la composición demuestra que los bienes, aunque presentes
+en los tres tipos de centros, representan una proporción relativamente
+menor del gasto total y no son la causa de las grandes diferencias
+observadas entre ellos, estableciendo que las familias que optan por la
+enseñanza privada asumen un coste de servicios muy superior.
+
+\subsection{Gasto educativo total promedio por nivel
+educativo}\label{gasto-educativo-total-promedio-por-nivel-educativo}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\linewidth,]{ProyectoMDPI_files/figure-latex/unnamed-chunk-10-1} 
+
+}
+
+\caption{Gasto educativo promedio total según el nivel educativo}\label{fig:unnamed-chunk-10}
+\end{figure}
+
+La gráfica revela que el gasto educativo promedio aumenta
+significativamente a lo largo de las etapas académicas. Esta evolución
+alcanza su punto máximo en la Universidad (€3.056), que es más del doble
+del gasto en la mayoría de las etapas inferiores, y experimenta su
+primer gran salto en Bachillerato. En las etapas iniciales, el 1er ciclo
+de Infantil destaca por ser más caro que las etapas posteriores, lo cual
+se atribuye a los costes no subvencionados de la etapa 0-3 años. Por
+otro lado, durante la educación obligatoria, el gasto se mantiene
+relativamente estable. Las transiciones a Bachillerato y Universidad
+marcan los puntos críticos donde el coste de tasas, materiales como
+portátiles y matrículas impacta más fuertemente en el presupuesto
+familiar.
+
+\section{Análisis bivariante de los gastos respecto las características
+del
+hogar}\label{anuxe1lisis-bivariante-de-los-gastos-respecto-las-caracteruxedsticas-del-hogar}
+
+Continuando con el análisis bivariante, y tras haber examinado la
+influencia de las características propias del estudiante, este apartado
+se centra en las variables estructurales del hogar que condicionan el
+gasto. Para ello, analizamos la dependencia del gasto total del hogar y
+su composición (educación, bienes, servicios reglados y no reglados) con
+dos variables clave del hogar: el tamaño de su municipio y la
+composición de sus miembros.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Gasto del hogar por tamaño del municipio (TMUNI). Se compararán los
+  patrones de gasto mediano entre los diferentes tamaños de municipio
+  (desde ``\textless10.000 habitantes'' hasta ``\textgreater500.000
+  habitantes''). El objetivo es determinar si la magnitud de la
+  población del municipio se relaciona con el gasto promedio del hogar,
+  tanto en su totalidad como en su composición específica. Para ello, se
+  emplearán diagramas de caja (geom\_boxplot) y la prueba de correlación
+  de Spearman, dado el carácter ordinal de la variable TMUNI.
+\item
+  Gasto del hogar por proporción de estudiantes. Se examinará cómo
+  evoluciona el gasto total a medida que la ``densidad'' de estudiantes
+  en el hogar (la proporción EHOGAR / NHOGAR) aumenta. Esta variable
+  numérica se ha categorizado en 5 intervalos (0-20\%, 21-40\%, etc.)
+  para facilitar la comparación. Esta comparación del gasto mediano
+  (mediante boxplots y correlación de Spearman) medirá la fuerza de la
+  tendencia respecto la carga económica que representan los estudiantes
+  para los hogares.
+\item
+  Gasto por localización del centro de estudios. Finalmente, se
+  analizará la dependencia del gasto con la localización del centro.
+  Aunque esta es una característica del estudiante (nivel de persona) y
+  no del hogar, su impacto económico es fundamental. Se compararán los
+  patrones de gasto mediano (mediante diagramas de barras) para
+  determinar si la distancia al centro supone una brecha económica
+  significativa.
+\end{enumerate}
+
+\subsection{Relación del gasto del hogar con el tamaño del
+municipio.}\label{relaciuxf3n-del-gasto-del-hogar-con-el-tamauxf1o-del-municipio.}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\linewidth,]{ProyectoMDPI_files/figure-latex/unnamed-chunk-13-1} 
+
+}
+
+\caption{Relación entre gastos del hogar y tamaño del municipio}\label{fig:unnamed-chunk-13}
+\end{figure}
+
+Para analizar la relación entre el gasto del hogar y el Tamaño del
+Municipio (TMUNI), fue necesario abordar primero la naturaleza de los
+datos. Las variables de gasto presentan una fuerte asimetría (sesgo a la
+derecha) y la presencia de numerosos valores cero (0€), lo cual es
+evidente en la alta concentración de outliers. Para manejar esto y
+permitir una visualización válida de las tendencias, se aplica una
+transformación logarítmica (log(Gasto + 1)) a todas las variables de
+gasto. Esta técnica robustece el análisis al comprimir la escala y
+mantener los valores cero en el gráfico como log(1)=0.
+
+El análisis visual (mostrado en el gráfico) confirma la hipótesis de que
+el gasto aumenta con el tamaño del municipio. Los diagramas de caja
+(geom\_boxplot) revelan una clara tendencia positiva: la mediana del
+gasto (la línea central de la caja) se desplaza sistemáticamente hacia
+la derecha (mayor gasto) a medida que el municipio es más grande.
+
+Esta observación visual ha sido validada estadísticamente mediante una
+Correlación de Spearman (cor.test), método robusto que mide la fuerza de
+una tendencia monótona y es adecuado para variables ordinales como
+TMUNI.
+
+Los resultados de esta prueba son concluyentes. Se obtuvo un p-value de
+2.346e-12, un valor drásticamente inferior al umbral de significación de
+0.05, por lo que se rechaza la hipótesis nula. Esto confirma que la
+relación es estadísticamente significativa. En cuanto a la fuerza y
+dirección, se obtuvo un coeficiente rho de 0.137. Este valor indica una
+correlación positiva débil; si bien la relación es estadísticamente
+real, el tamaño del municipio es solo uno de los factores que influyen
+en el gasto total del hogar.
+
+\subsection{Relación entre el gasto y el porcentaje de estudiantes en el
+hogar}\label{relaciuxf3n-entre-el-gasto-y-el-porcentaje-de-estudiantes-en-el-hogar}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\linewidth,]{ProyectoMDPI_files/figure-latex/unnamed-chunk-17-1} 
+
+}
+
+\caption{Gastos del hogar por proporción de esudiantes}\label{fig:unnamed-chunk-17}
+\end{figure}
+
+Para analizar cómo el gasto se ve afectado por la ``densidad'' de
+estudiantes, la variable Prop\_Estudia se categorizó en cinco intervalos
+ordinales de 20\% (de ``0-20\%'' a ``81-100\%''). Al igual que en el
+análisis anterior, se aplica la transformación logarítmica (log(Gasto +
+1)) a las variables de gasto para gestionar la fuerte asimetría y la
+presencia de valores cero (0€).
+
+El análisis visual confirma que el gasto mediano (la línea central de la
+caja) es significativamente diferente entre los grupos. Sin embargo, el
+análisis numérico revela un detalle clave: la tendencia no es
+perfectamente lineal. El gasto mediano alcanza su pico en el grupo
+`61-80\%' (2330.5€), siendo este ligeramente superior al del grupo
+`81-100\%' (2175.0€). Este hallazgo sugiere que el gasto máximo no lo
+definen los hogares compuestos 100\% por estudiantes (posiblemente pisos
+compartidos con gastos optimizados), sino las familias tradicionales que
+financian simultáneamente las etapas educativas más caras (ej.
+Bachillerato y Universidad).
+
+Esta tendencia general creciente ha sido validada estadísticamente
+mediante una Correlación de Spearman. Los resultados muestran un
+coeficiente rho positivo de 0.274. Este valor indica una correlación
+positiva de fuerza moderada, la cual es altamente significativa según el
+p-value de 5.319e-46. Al ser el p-value drásticamente inferior a 0.05,
+se rechaza la hipótesis nula, confirmando que la tendencia es real.
+
+En resumen, la evidencia confirma una tendencia significativa y
+positiva: a mayor proporción de estudiantes, mayor es el gasto total
+mediano, alcanzando su máximo en los hogares con una proporción de
+estudiantes del 61-80\%.
+
+\subsection{Relación de gasto con localización del centro
+escolar}\label{relaciuxf3n-de-gasto-con-localizaciuxf3n-del-centro-escolar}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\linewidth,]{ProyectoMDPI_files/figure-latex/unnamed-chunk-21-1} 
+
+}
+
+\caption{Mediana del gasto total por localización del centro}\label{fig:unnamed-chunk-21}
+\end{figure}
+
+El análisis bivariante del gasto total por Localización\_Centro revela
+una fuerte y clara disparidad en el coste que asume el estudiante, como
+se observa en el gráfico. El uso de la mediana para la comparación (en
+lugar de la media) es fundamental, ya que ofrece una medida de tendencia
+central robusta que no se ve afectada por los outliers de gasto extremo.
+
+La gráfica muestra una jerarquía de gasto que parece estar directamente
+correlacionada con la distancia y la necesidad de alojamiento. El coste
+más elevado corresponde a los estudiantes que cursan en otra Comunidad
+Autonoma, con una mediana de gasto total de 6039€. Le sigue de cerca el
+gasto en la misma Comunidad Autónoma (4046€), lo que sugiere que el
+principal factor que impulsa la brecha económica es el coste asociado a
+vivir fuera del municipio de residencia (alquiler, manutención).
+
+En el extremo opuesto, el gasto más bajo se da, como es lógico, en el
+Municipio Residencia (1690€), donde el estudiante no incurre en gastos
+de alojamiento y el transporte es mínimo. Es notable que estudiar en el
+Extranjero (2955€) representa un coste intermedio, significativamente
+más bajo que desplazarse a otra comunidad autónoma, lo que podría
+explicarse por la naturaleza de los programas de intercambio o becas
+asociadas.
+
+\section{Conclusiones}\label{conclusiones}
+
+El Análisis Exploratorio de Datos (AED) realizado sobre la Encuesta de
+Gasto de los Hogares en Educación (EGHE) de 2019 ha permitido
+diseccionar la estructura del gasto educativo en España, dando respuesta
+a las preguntas de investigación planteadas. Las conclusiones
+principales de este estudio son las siguientes:
+
+\begin{itemize}
+\item
+  El gasto educativo está dominado por los servicios, no por los bienes.
+  A nivel agregado, el 77.4\% del desembolso total de los hogares se
+  destina a servicios (matrículas, comedor, transporte, etc.), mientras
+  que los bienes (libros, material) suponen el 22.6\%. Esto desmitifica
+  la idea de que los libros o el material son el principal componente
+  del gasto.
+\item
+  El tipo de centro es el factor más determinante del gasto. El análisis
+  confirma una brecha inmensa: el gasto promedio en la enseñanza privada
+  (superando los 4.500€) es más del doble que en la concertada
+  (\textasciitilde2.000€) y más de cuatro veces superior al de la
+  pública (\textasciitilde1.000€). Esta disparidad se explica casi en su
+  totalidad por el coste de los servicios (tasas, matrículas y cuotas),
+  que no están subvencionados en el caso de la privada.
+\item
+  El gasto sigue un itinerario claro y creciente con la etapa educativa.
+  El coste de la educación no es lineal. Se identifican dos picos de
+  alto coste: el 1er Ciclo de Educación Infantil (etapa 0-3 años), cuyo
+  gasto es elevado por la falta de subvención pública, y la Universidad,
+  que representa el desembolso promedio más alto (3.056€). Las etapas de
+  educación obligatoria (Primaria y ESO) son las que presentan un gasto
+  más estable y contenido.
+\item
+  Las características del hogar actúan como condicionantes claros. El
+  gasto educativo no ocurre en el vacío. Este estudio confirma
+  correlaciones estadísticamente significativas (p \textless{} 0.05) que
+  indican que el gasto aumenta en municipios más grandes (rho=0.137) y
+  en hogares con una mayor proporción de estudiantes (rho=0.274).
+  Además, la localización del centro es crítica: estudiar fuera del
+  municipio de residencia, y especialmente en otra Comunidad Autónoma
+  (mediana \textgreater{} 6.000€), dispara el gasto por los costes de
+  alojamiento.
+\end{itemize}
+
+En resumen, el gasto educativo en España es profundamente heterogéneo,
+segmentado por el eje público-privado y por la etapa educativa. El coste
+real para las familias no solo viene determinado por las tasas
+oficiales, sino por un ecosistema de gastos complementarios en servicios
+(comedor, informática, extraescolares) que suponen una carga económica
+considerable.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{6pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% optional
+
+% Only for the journal Methods and Protocols:
+% If you wish to submit a video article, please do so with any other supplementary material.
+% \supplementary{The following supporting information can be downloaded at: \linksupplementary{s1}, Figure S1: title; Table S1: title; Video S1: title. A supporting video article is available at doi: link.}
+
+% Only for journal Hardware:
+% If you wish to submit a video article, please do so with any other supplementary material.
+% \supplementary{The following supporting information can be downloaded at: \linksupplementary{s1}, Figure S1: title; Table S1: title; Video S1: title.\vspace{6pt}\\
+%\begin{tabularx}{\textwidth}{lll}
+%\toprule
+%\textbf{Name} & \textbf{Type} & \textbf{Description} \\
+%\midrule
+%S1 & Python script (.py) & Script of python source code used in XX \\
+%S2 & Text (.txt) & Script of modelling code used to make Figure X \\
+%S3 & Text (.txt) & Raw data from experiment X \\
+%S4 & Video (.mp4) & Video demonstrating the hardware in use \\
+%... & ... & ... \\
+%\bottomrule
+%\end{tabularx}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+% Only for journal Nursing Reports
+%\publicinvolvement{Please describe how the public (patients, consumers, carers) were involved in the research. Consider reporting against the GRIPP2 (Guidance for Reporting Involvement of Patients and the Public) checklist. If the public were not involved in any aspect of the research add: ``No public involvement in any aspect of this research''.}
+
+% Only for journal Nursing Reports
+%\guidelinesstandards{Please add a statement indicating which reporting guideline was used when drafting the report. For example, ``This manuscript was drafted against the XXX (the full name of reporting guidelines and citation) for XXX (type of research) research''. A complete list of reporting guidelines can be accessed via the equator network: \url{https://www.equator-network.org/}.}
+
+% Only for journal Nursing Reports
+%\guidelinesstandards{Please add a statement indicating which reporting guideline was used when drafting the report. For example, ``This manuscript was drafted against the XXX (the full name of reporting guidelines and citation) for XXX (type of research) research''. A complete list of reporting guidelines can be accessed via the equator network: \url{https://www.equator-network.org/}.}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Optional
+
+%% Only for journal Encyclopedia
+%\entrylink{The Link to this entry published on the encyclopedia platform.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Optional
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{adjustwidth}{-\extralength}{0cm}
+
+%\printendnotes[custom] % Un-comment to print a list of endnotes
+
+
+\reftitle{References}
+\bibliography{mybibfile.bib}
+
+% If authors have biography, please use the format below
+%\section*{Short Biography of Authors}
+%\bio
+%{\raisebox{-0.35cm}{\includegraphics[width=3.5cm,height=5.3cm,clip,keepaspectratio]{Definitions/author1.pdf}}}
+%{\textbf{Firstname Lastname} Biography of first author}
+%
+%\bio
+%{\raisebox{-0.35cm}{\includegraphics[width=3.5cm,height=5.3cm,clip,keepaspectratio]{Definitions/author2.jpg}}}
+%{\textbf{Firstname Lastname} Biography of second author}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% for journal Sci
+%\reviewreports{\\
+%Reviewer 1 comments and authors’ response\\
+%Reviewer 2 comments and authors’ response\\
+%Reviewer 3 comments and authors’ response
+%}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\PublishersNote{}
+\end{adjustwidth}
+
+
+\end{document}

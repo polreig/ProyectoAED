@@ -69,11 +69,11 @@ library(dplyr)
 # Leemos los datos del dataset EGHE_2019.csv
 
 # Se asignará la lectura a una variable llamada datos, esta será modificada por los archivos de limpieza y dará como salida un dataset limpio
-datos <- read.csv("data/raw/EGHE_2019.csv",sep="\t")
+datos <- read.csv("../data/raw/EGHE_2019.csv",sep="\t")
 
-source("scripts/limpieza_gastos.R")
-source("scripts/limpieza_hogar.R")
-source("scripts/limpieza_estudiantes.R")
+source("../scripts/limpieza_gastos.R")
+source("../scripts/limpieza_hogar.R")
+source("../scripts/limpieza_estudiantes.R")
 
 ```
 
@@ -196,7 +196,7 @@ plot_gasto_log <- ggplot(subset(datos, gasto_total_educacion > 0), aes(x = gasto
     x = "Gasto Total (€) - Escala Log",
     y = NULL # Quitar eje Y para no repetir
   ) +
-  theme_minimal()
+  theme_minimal()+theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # 3. Combinar con patchwork (asegúrate de tener 'library(patchwork)' en el setup)
 plot_gasto_linear + plot_gasto_log
@@ -319,21 +319,211 @@ analizar_gasto_complementario <- function(gasto_vector, nombre_gasto) {
 }
 
 # Aplicamos la función a las variables de interés (usamos 'importe_' que limpiamos en la Sección 2)
+df_matricula <- analizar_gasto_complementario(datos$importe_matricula_clases, "Matrícula/Tasas")
 df_clases_part <- analizar_gasto_complementario(datos$importe_clases_particulares, "Clases Particulares")
 df_comedor <- analizar_gasto_complementario(datos$importe_comedor, "Comedor")
 df_extraescolares <- analizar_gasto_complementario(datos$importe_actividades_extraescolares, "Act. Extraescolares")
 df_uniformes <- analizar_gasto_complementario(datos$importe_uniformes, "Uniformes")
 
 # Combinamos y mostramos la tabla
-tabla_complementarios <- bind_rows(df_clases_part, df_comedor, df_extraescolares, df_uniformes)
+tabla_complementarios <- bind_rows(df_matricula,df_clases_part, df_comedor, df_extraescolares, df_uniformes)
 
 knitr::kable(
   tabla_complementarios,
   caption = "Análisis de Gastos Complementarios Específicos",
   digits = 2,
-  col.names = c("Partida de Gasto", "% Hogares que pagan", "Gasto Medio (si paga) (€)", "Gasto Medio (Total) (€)")
+  col.names = c("Tipo de Gasto", "% Estudiantes que pagan", "Gasto Medio (si paga) (€)", "Gasto Medio (Total) (€)")
 ) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE)
 ```
 
 En esta tabla se observa que el gasto en Uniformes es el más frecuente (asumido por un 38.5% de los hogares), pero su desembolso medio es el más bajo (109.82€). En el extremo opuesto, el Comedor y las Clases Particulares, aunque son menos frecuentes (22.6% y 18.7% respectivamente), suponen el mayor coste medio para las familias que sí los pagan, con 508.14€ y 449.11€ de media.
+
+
+## 4.1
+```{r}
+library(ggplot2)
+library(patchwork)
+library(scales)
+
+# Colores para los centros
+colores_centro <- c("Enseñanza pública" = "#0072B2", "Enseñanza concertada" = "#E69F00", "Enseñanza privada" = "#D55E00")
+
+# Gráfico 1: Comedor
+p_comedor <- ggplot(subset(datos, importe_comedor > 0), 
+                    aes(x = Tipo_educacion, y = importe_comedor, fill = Tipo_educacion)) +
+  geom_boxplot() +
+  scale_y_continuous(labels = dollar_format(suffix = "€", prefix = "")) +
+  scale_fill_manual(values = colores_centro) +
+  labs(title = "Gasto en Comedor", x = NULL, y = "Gasto Anual (€)") +
+  theme_minimal() +
+  theme(legend.position = "none", axis.text.x = element_text(angle = 15, hjust = 1))
+
+# Gráfico 2: Clases Particulares
+p_clases_part <- ggplot(subset(datos, importe_clases_particulares > 0), 
+                        aes(x = Tipo_educacion, y = importe_clases_particulares, fill = Tipo_educacion)) +
+  geom_boxplot() +
+  scale_y_continuous(labels = dollar_format(suffix = "€", prefix = "")) +
+  scale_fill_manual(values = colores_centro) +
+  labs(title = "Gasto en Clases Particulares", x = NULL, y = NULL) +
+  theme_minimal() +
+  theme(legend.position = "none", axis.text.x = element_text(angle = 15, hjust = 1))
+
+# Gráfico 3: Extraescolares
+p_extraescolares <- ggplot(subset(datos, importe_actividades_extraescolares > 0), 
+                           aes(x = Tipo_educacion, y = importe_actividades_extraescolares, fill = Tipo_educacion)) +
+  geom_boxplot() +
+  scale_y_continuous(labels = dollar_format(suffix = "€", prefix = "")) +
+  scale_fill_manual(values = colores_centro) +
+  labs(title = "Gasto en Act. Extraescolares", x = NULL, y = "Gasto Anual (€)") +
+  theme_minimal() +
+  theme(legend.position = "none", axis.text.x = element_text(angle = 15, hjust = 1))
+
+# Gráfico 4: Uniformes
+p_uniformes <- ggplot(subset(datos, importe_uniformes > 0), 
+                      aes(x = Tipo_educacion, y = importe_uniformes, fill = Tipo_educacion)) +
+  geom_boxplot() +
+  scale_y_continuous(labels = dollar_format(suffix = "€", prefix = "")) +
+  scale_fill_manual(values = colores_centro) +
+  labs(title = "Gasto en Uniformes", x = NULL, y = NULL) +
+  theme_minimal() +
+  theme(legend.position = "none", axis.text.x = element_text(angle = 15, hjust = 1))
+
+# Combinar los 4 gráficos
+(p_comedor + p_clases_part) / (p_extraescolares + p_uniformes)
+```
+```{r}
+# Reutilizamos el orden lógico de niveles definido en la Sección 3
+orden_niveles <- c("Educación Infantil", 
+                   "Educación Primaria", 
+                   "Educación Secundaria", 
+                   "Educación Superior",
+                   "Otros estudios sin nivel académico")
+niveles_presentes <- intersect(orden_niveles, unique(datos$Nivel_estudios))
+
+# 1. Gráfico de Clases Particulares por Nivel
+# Calculamos la media de gasto SOLO para quienes pagan (gasto > 0)
+datos_plot_clases <- datos %>%
+  filter(importe_clases_particulares > 0) %>%
+  group_by(Nivel_estudios) %>%
+  summarise(Media_Gasto = mean(importe_clases_particulares, na.rm = TRUE))
+
+plot_clases_nivel <- ggplot(datos_plot_clases, aes(x = Nivel_estudios, y = Media_Gasto)) +
+  geom_bar(stat = "identity", fill = "#0072B2") +
+  scale_x_discrete(limits = niveles_presentes) +
+  scale_y_continuous(labels = dollar_format(suffix = "€", prefix = "")) +
+  geom_text(aes(label = round(Media_Gasto, 0)), vjust = -0.5) +
+  labs(title = "Gasto Medio en Clases Particulares (si paga)", x = NULL, y = "Gasto Anual (€)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# 2. Gráfico de Extraescolares por Nivel
+# Calculamos la media de gasto SOLO para quienes pagan (gasto > 0)
+datos_plot_extra <- datos %>%
+  filter(importe_actividades_extraescolares > 0) %>%
+  group_by(Nivel_estudios) %>%
+  summarise(Media_Gasto = mean(importe_actividades_extraescolares, na.rm = TRUE))
+  
+plot_extra_nivel <- ggplot(datos_plot_extra, aes(x = Nivel_estudios, y = Media_Gasto)) +
+  geom_bar(stat = "identity", fill = "#D55E00") +
+  scale_x_discrete(limits = niveles_presentes) +
+  scale_y_continuous(labels = dollar_format(suffix = "€", prefix = "")) +
+  geom_text(aes(label = round(Media_Gasto, 0)), vjust = -0.5) +
+  labs(title = "Gasto Medio en Act. Extraescolares (si paga)", x = NULL, y = NULL) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Combinar
+plot_clases_nivel + plot_extra_nivel
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(tidyr) # Para pivot_longer
+library(scales) # Para dollar_format
+
+# 1. Crear una variable "Otros Gastos"
+#    Esta es la forma correcta de hacerlo: el gasto medio total es la suma de las medias de los componentes.
+datos_con_otros <- datos %>%
+  mutate(
+    # Calculamos 'Otros' restando los 4 complementarios al Gasto Total
+    # Esto agrupa (matrícula, libros, transporte, papelería, etc.)
+    importe_otros_gastos = gasto_total_educacion - 
+                           (importe_clases_particulares + 
+                            importe_comedor + 
+                            importe_actividades_extraescolares + 
+                            importe_uniformes)
+  )
+
+# 2. Calcular el GASTO MEDIO de cada componente por Tipo de Centro
+#    (Se promedia sobre TODOS los estudiantes, incluidos los 0€,
+#     para obtener la composición del gasto medio total).
+gasto_composicion_media <- datos_con_otros %>%
+  group_by(Tipo_educacion) %>%
+  summarise(
+    Comedor = mean(importe_comedor, na.rm = TRUE),
+    Clases_Particulares = mean(importe_clases_particulares, na.rm = TRUE),
+    Extraescolares = mean(importe_actividades_extraescolares, na.rm = TRUE),
+    Uniformes = mean(importe_uniformes, na.rm = TRUE),
+    'Otros Gastos' = mean(importe_otros_gastos, na.rm = TRUE)
+  )
+
+# 3. Convertir a formato "largo" (long format) para ggplot
+gasto_composicion_long <- gasto_composicion_media %>%
+  pivot_longer(
+    cols = -Tipo_educacion,
+    names_to = "Componente_Gasto",
+    values_to = "Gasto_Medio"
+  )
+
+# 4. Graficar
+ggplot(gasto_composicion_long, aes(x = Tipo_educacion, y = Gasto_Medio, fill = Componente_Gasto)) +
+  geom_bar(stat = "identity", position = "stack") +
+  scale_y_continuous(labels = dollar_format(suffix = "€", prefix = "")) +
+  labs(
+    x = "Tipo de Centro",
+    y = "Gasto Medio Anual por Estudiante (€)",
+    fill = "Partida de Gasto"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 10, hjust = 0.5))
+```
+
+```{r, echo=TRUE, comment="Cálculo Porcentaje Matrículas"}
+# 1. Sumar el gasto total de todas las matrículas
+# (El dataset 'datos' ya tiene los NA=0 gracias a la limpieza)
+total_matriculas <- sum(datos$importe_matricula_clases, na.rm = TRUE)
+
+# 2. Sumar el gasto total educativo
+total_gasto <- sum(datos$gasto_total_educacion, na.rm = TRUE)
+
+# 3. Calcular el porcentaje
+porcentaje_matriculas <- (total_matriculas / total_gasto) * 100
+
+# 4. Mostrar el resultado
+print(paste0("El gasto en matrículas (importe_matricula_clases) es un ", 
+             round(porcentaje_matriculas, 2), 
+             "% del gasto total."))
+```
+
+```{r, echo=TRUE, comment="Cálculo Porcentaje Alumnos que pagan Matrícula"}
+# 1. Contar cuántos alumnos tienen un gasto en matrícula > 0
+# (Los NAs ya fueron imputados a 0 en la limpieza)
+alumnos_que_pagan <- sum(datos$importe_matricula_clases > 0, na.rm = TRUE)
+
+# 2. Obtener el número total de alumnos en el dataset
+total_alumnos <- nrow(datos)
+
+# 3. Calcular el porcentaje
+porcentaje_pagan <- (alumnos_que_pagan / total_alumnos) * 100
+
+# 4. Mostrar el resultado
+print(paste0("Un ", 
+             round(porcentaje_pagan, 2), 
+             "% de los alumnos ('",
+             alumnos_que_pagan, 
+             "' de '", 
+             total_alumnos,
+             "') gasta en matrículas (importe_matricula_clases)."))
+```

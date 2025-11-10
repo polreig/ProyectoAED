@@ -1,0 +1,544 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Análisis Exploratorio del Gasto de los Hogares en Educación (EGHE 2019)},
+  pdfkeywords={AED, Gasto Educación, INE, EGHE 2019, R Markdown,
+rticles},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Análisis Exploratorio del Gasto de los Hogares en Educación (EGHE
+2019)}
+\author{true \and true \and true}
+\date{9 de Noviembre de 2025}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+El presente proyecto realiza un Análisis Exploratorio de Datos (AED)
+sobre la Encuesta de Gasto de los Hogares en Educación (EGHE) del año
+2019, publicada por el Instituto Nacional de Estadística (INE). El
+objetivo es entender la estructura del gasto en educación en España,
+identificando sus principales componentes y las características de los
+hogares y estudiantes asociados a dicho gasto. Este informe detalla el
+proceso de importación, limpieza y transformación de los microdatos,
+seguido de un análisis univariante y bivariante para responder a las
+preguntas de investigación planteadas.
+\end{abstract}
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\section{Introducción}\label{introducciuxf3n}
+
+La educación es ampliamente reconocida como uno de los pilares
+fundamentales para el desarrollo económico y social de un país. Sin
+embargo, el acceso y la permanencia en el sistema educativo conllevan
+una serie de costes directos e indirectos que son asumidos en gran
+medida por los hogares. Este gasto no se limita únicamente a las tasas y
+matrículas, sino que abarca un complejo ecosistema de bienes y servicios
+que incluye desde libros de texto y material escolar hasta servicios de
+comedor, transporte, actividades extraescolares y clases particulares.
+
+Comprender la magnitud y la composición de este gasto es esencial para
+evaluar la equidad del sistema educativo y el esfuerzo económico que
+supone para las familias. El Instituto Nacional de Estadística (INE)
+proporciona una visión detallada de esta realidad a través de la
+Encuesta de Gasto de los Hogares en Educación (EGHE).
+
+El presente proyecto tiene como objetivo realizar un Análisis
+Exploratorio de Datos (AED) sobre los microdatos de la EGHE 2019.
+Nuestro propósito es diseccionar la estructura del gasto en educación en
+España, identificando los patrones subyacentes, las diferencias entre
+distintos tipos de enseñanza y las características de los estudiantes
+que más gasto generan.
+
+Para guiar nuestro análisis, planteamos las siguientes preguntas de
+investigación:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{¿Cómo se distribuye estructura del gasto promedio entre los
+  diferentes tipos de centros (públicos, concertados, privados) y qué
+  factores explican estas diferencias?} Compararemos los patrones de
+  gasto entre los tres regímenes de financiación, analizando no solo las
+  diferencias en el gasto total sino también en su composición
+  (matrículas, servicios complementarios, material).
+\item
+  \textbf{¿Qué características del hogar y del estudiante predicen un
+  mayor gasto educativo? ¿Existen diferencias significativas por sexo,
+  composición familiar o tamaño del municipio?} Identificaremos los
+  principales predictores del gasto educativo mediante el análisis de
+  variables demográficas y estructurales. Evaluaremos específicamente si
+  existen brechas de gasto asociadas al sexo del estudiante y el efecto
+  de la composición del hogar.
+\item
+  \textbf{¿Cómo evoluciona el gasto educativo total promedio a lo largo
+  del itinerario educativo, desde Infantil hasta la Universidad?}
+  Compararemos el gasto medio en diferentes niveles, como Educación
+  Infantil, Primaria, ESO, Bachillerato y Universidad.
+\item
+  \textbf{¿Qué peso real tienen los gastos complementarios (clases
+  particulares, actividades extraescolares, material específico) en el
+  presupuesto total y qué familias los asumen en mayor medida?}
+  Cuantificaremos el impacto de partidas específicas como clases
+  particulares, servicios de comedor, actividades extraescolares y
+  uniformes escolares, que frecuentemente pasan desapercibidos en el
+  debate público sobre el coste de la educación.
+\end{enumerate}
+
+Este informe detallará el proceso de limpieza y transformación de los
+datos, seguido del análisis univariante y bivariante para dar respuesta
+a estas preguntas, concluyendo con los principales hallazgos de nuestro
+estudio.
+
+\section{Carga y Preparación de
+Datos}\label{carga-y-preparaciuxf3n-de-datos}
+
+El punto de partida de este análisis son los microdatos de la Encuesta
+de Gasto de los Hogares en Educación (EGHE) del año 2019, proporcionados
+por el INE. El fichero original, \emph{EGHE\_2019.csv}, es un conjunto
+de datos que, si bien es completo, presenta desafíos significativos para
+un análisis directo:
+
+\begin{itemize}
+\item
+  \textbf{Codificación de Variables}: Los nombres de las variables (ej.
+  GTT, C01, NEST2) y sus valores (ej. 1, 2, 3) siguen la codificación
+  interna del INE, lo que los hace poco intuitivos.
+\item
+  \textbf{Valores Nulos (NA)}: El dataset utiliza NA (Not Available) de
+  manera ambigua. Un NA en un campo de importe (como importe\_comedor)
+  puede significar que el dato se desconoce o, más probablemente, que el
+  estudiante no incurrió en dicho gasto (gasto de 0€).
+\item
+  \textbf{Datos Irrelevantes}: El dataset original contiene numerosas
+  columnas y filas que no son pertinentes para nuestras preguntas de
+  investigación (ej. personas que no son estudiantes, columnas de
+  control de la encuesta). Estos datos o variables son eliminados.
+\end{itemize}
+
+Para abordar estos retos, se ha implementado un proceso de limpieza y
+transformación estructurado en tres fases, ejecutadas secuencialmente
+mediante los scripts \emph{limpieza\_gastos.R}, \emph{limpieza\_hogar.R}
+y \emph{limpieza\_estudiantes.R}.
+
+El \textbf{chunk} de código asociado a la limpieza de los datos carga el
+conjunto de datos crudo y aplica estos tres scripts para generar el
+dataset limpio (\textbf{datos}) que se utilizará en el resto del
+informe. A continuación, se detallan las transformaciones clave
+realizadas durante este proceso.
+
+\subsection{Renombrado y Selección de
+Variables}\label{renombrado-y-selecciuxf3n-de-variables}
+
+El primer paso consistió en ``traducir'' el dataset. Se renombraron
+todas las variables de interés de sus códigos del INE a nombres
+descriptivos en español. Por ejemplo: \emph{C01} se renombró a
+\emph{Tipo\_educacion}. Esto fué posible gracias al archivo de
+descripción del dataset proporcionado por el INE, donde se describe que
+tipo de nomenclatura se gasta en cada variable y como se codifican los
+datos.
+
+Paralelamente, se eliminaron columnas innecesarias, variables con
+porcentajes demasiado elevados de NAs, como las relacionadas con
+información de becas, para simplificar la estructura del dataset y
+reducir el ruido.
+
+\subsection{Recodificación de Variables
+Categóricas}\label{recodificaciuxf3n-de-variables-categuxf3ricas}
+
+Las variables categóricas más importantes fueron transformadas a
+factores con etiquetas descriptivas para la correcta interpretación y
+visualización en los análisis.
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{Ejemplos de Recodificación de Variables
+Categóricas}\tabularnewline
+\toprule\noalign{}
+Variable & Código\_INE & Etiqueta \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Variable & Código\_INE & Etiqueta \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Tipo\_educacion & 1, 2, 3 & Pública, Concertada, Privada \\
+SEXO & 1, 2 & Hombre, Mujer \\
+Nacionalidad & 1, 2, 3 & Española, Extranjera, Doble nacionalidad \\
+\end{longtable}
+
+\subsection{Imputación y Tratamiento de Valores
+Nulos}\label{imputaciuxf3n-y-tratamiento-de-valores-nulos}
+
+Partimos de la hipótesis de que, en un campo de gasto, un valor NA
+significa un gasto de 0€. Posteriormente, se realizó la comprobación de
+que, para todas las muestras, la suma de todos los tipos de gasto es
+igual al valor de la variable \emph{gasto\_total\_educacion}:
+
+\[\sum{\textbf{importes individuales} = \textbf{gasto\_total\_educacion}}\]
+
+Tras comprobar que se cumplía esta condición, se aplicó la siguiente
+lógica de imputación:
+
+\begin{itemize}
+\item
+  \textbf{Importes (\emph{importe\_})}: Todos los valores NA en columnas
+  de importes (ej. \emph{importe\_comedor},
+  \emph{importe\_clases\_particulares}) se sustituyeron por 0, indicando
+  un gasto nulo.
+\item
+  \textbf{Servicios (\emph{servicio\_})}: En las variables que indican
+  si se usó un servicio (donde 1=Sí), los NA se imputaron como 2 (el
+  código para ``No'').
+\item
+  \textbf{Gastos Totales (\emph{gasto\_total\_})}: Del mismo modo, los
+  NA en las columnas de gasto total se reemplazaron por 0.
+\end{itemize}
+
+\subsection{Filtrado y Saneamiento de
+Datos}\label{filtrado-y-saneamiento-de-datos}
+
+Finalmente, se aplicaron varios filtros para asegurar la coherencia y
+relevancia del dataset:
+
+Se eliminaron registros con inconsistencias obvias, como un hogar con
+NHOGAR (número de personas en el hogar) inferior a 1.
+
+Se eliminaron las filas donde variables fundamentales para nuestro
+análisis eran nulas, ya que no se podían imputar de forma fiable.
+Específicamente:
+
+\begin{itemize}
+\item
+  Se eliminaron muestras con \emph{gasto\_total\_educacion} nulo, pues
+  es nuestra variable objetivo.
+\item
+  Se eliminaron muestras con \emph{Tipo\_educacion} nulo, ya que esta es
+  una variable explicativa central para la Pregunta 1.
+\end{itemize}
+
+Tras este proceso exhaustivo, el objeto datos queda listo para el
+análisis. Contiene únicamente las observaciones y variables relevantes,
+con tipos de datos correctos, sin valores nulos ambiguos y con etiquetas
+descriptivas.
+
+\section{Descripción del Conjunto de Datos Limpio: Análisis
+Univariante}\label{descripciuxf3n-del-conjunto-de-datos-limpio-anuxe1lisis-univariante}
+
+Tras la ejecución de los scripts de limpieza, obtenemos el dataset
+\texttt{datos}. Este conjunto de datos contiene 4185 observaciones (cada
+una representando a un estudiante que reportó gastos) y 61 variables
+limpias y listas para el análisis.
+
+El objetivo de esta sección es realizar un análisis univariante de las
+variables clave. Este paso es fundamental para entender la distribución
+y las características de cada variable de forma aislada, antes de buscar
+relaciones entre ellas. Nos centraremos en la variable objetivo (Gasto
+Total) y en las principales variables categóricas y numéricas que
+usaremos para responder a nuestras preguntas.
+
+\subsection{Variable Objetivo: Gasto Total Anual
+(gasto\_total\_educacion)}\label{variable-objetivo-gasto-total-anual-gasto_total_educacion}
+
+Nuestra principal variable de interés es el
+\emph{gasto\_total\_educacion} anual por estudiante.
+
+\begin{longtable}[t]{lr}
+\caption{\label{tab:unnamed-chunk-4}Estadísticas Descriptivas del Gasto Total Anual por Estudiante}\\
+\toprule
+Métrica & Valor (€)\\
+\midrule
+Media & 1638.14\\
+Mediana & 972.00\\
+Mínimo & 0.00\\
+Máximo & 37853.00\\
+1er Cuartil & 422.00\\
+\addlinespace
+3er Cuartil & 1962.00\\
+Desv. Estándar & 2224.81\\
+\bottomrule
+\end{longtable}
+
+La tabla anterior revela un hallazgo clave: la media (1638.14 €) es
+significativamente más alta que la mediana (972 €). Esto indica una
+distribución asimétrica positiva (sesgada a la derecha).
+
+En la práctica, esto significa que la mayoría de los hogares reportan un
+gasto relativamente bajo, pero un pequeño número de hogares
+(probablemente aquellos en centros privados de élite o con altos gastos
+en actividades complementarias) tienen gastos muy elevados, ``tirando''
+de la media hacia arriba. Por esta razón, y tal como se planteaba en
+nuestras preguntas de investigación, la mediana será una métrica más
+robusta para describir el gasto del hogar ``típico''.
+
+El siguiente histograma confirma visualmente esta fuerte asimetría. La
+gran mayoría de las observaciones se concentran en la parte izquierda
+del gráfico, con una larga cola de outliers hacia la derecha.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth,]{ProyectoAED_files/figure-latex/unnamed-chunk-5-1} 
+
+}
+
+\caption{Histograma del Gasto Total Anual (Escala Lineal y Logarítmica).}\label{fig:unnamed-chunk-5}
+\end{figure}
+
+La Figura 1 combina dos vistas de la misma variable:
+
+\begin{itemize}
+\item
+  El gráfico de la izquierda (escala lineal) nos permite observar la
+  fuerte asimetría positiva y el impacto de los \emph{outliers}, que
+  elevan la media (1638.14 €) muy por encima de la mediana (972 €).
+\item
+  El gráfico de la derecha (escala logarítmica) complementa al primero.
+  Al comprimir los valores altos y expandir los bajos, nos permite
+  visualizar la forma de la distribución del grueso de los hogares. En
+  esta vista, se puede apreciar mejor dónde se concentran los gastos más
+  comunes.
+\end{itemize}
+
+\subsection{Variables Categóricas
+Principales}\label{variables-categuxf3ricas-principales}
+
+A continuación, exploramos la composición de nuestra muestra en función
+de las variables categóricas clave que guían nuestras preguntas de
+investigación.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\linewidth,]{ProyectoAED_files/figure-latex/unnamed-chunk-6-1} 
+
+}
+
+\caption{Nº de Estudiantes por Tipo de Centro y por Nivel Educativo}\label{fig:unnamed-chunk-6}
+\end{figure}
+
+De estos gráficos, observamos que:
+
+\begin{itemize}
+\item
+  \textbf{Tipo de Centro}: La mayoría de los estudiantes de la muestra
+  se encuentran en la enseñanza pública, seguida de la concertada y,
+  finalmente, la privada. Esta distribución es coherente con la
+  estructura del sistema educativo español.
+\item
+  \textbf{Nivel Educativo}: La muestra tiene una representación
+  significativa en todas las etapas, con los picos de frecuencia en
+  Educación Primaria y Secundaria. Es importante notar que si un grupo
+  está poco representado (ej. ``Otros estudios''), deberemos ser
+  cautelosos al generalizar los resultados para ese grupo.
+\end{itemize}
+
+\subsection{Componentes del Gasto (Bienes
+vs.~Servicios)}\label{componentes-del-gasto-bienes-vs.-servicios}
+
+Nuestra Pregunta 2 busca identificar cuál de los dos grandes componentes
+del gasto (Servicios vs.~Bienes) tiene un mayor peso.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\linewidth,]{ProyectoAED_files/figure-latex/unnamed-chunk-7-1} 
+
+}
+
+\caption{Desglose del Gasto Educativo Total}\label{fig:unnamed-chunk-7}
+\end{figure}
+
+El gráfico circular muestra de forma concluyente que, a nivel agregado,
+el gasto en Servicios (matrículas, comedor, transporte, extraescolares,
+etc.) representa la mayor parte del desembolso total de los hogares,
+superando ampliamente al gasto en Bienes (libros, material, uniformes).
+
+\subsection{Gastos Complementarios}\label{gastos-complementarios}
+
+Finalmente, el análisis debe responder a dos preguntas planteadas
+inicialmente en la Pregunta 4:
+
+\begin{itemize}
+\item
+  ¿Qué porcentaje de familias incurre realmente en los gastos
+  complementarios?
+\item
+  Entre las que sí gastan, ¿cuál es el gasto medio?
+\end{itemize}
+
+\begin{longtable}[t]{lrrr}
+\caption{\label{tab:unnamed-chunk-8}Análisis de Gastos Complementarios Específicos}\\
+\toprule
+Partida de Gasto & \% Hogares que pagan & Gasto Medio (si paga) (€) & Gasto Medio (Total) (€)\\
+\midrule
+Clases Particulares & 18.73 & 449.11 & 84.13\\
+Comedor & 22.56 & 508.14 & 114.62\\
+Act. Extraescolares & 15.60 & 262.47 & 40.95\\
+Uniformes & 38.54 & 109.82 & 42.33\\
+\bottomrule
+\end{longtable}
+
+En esta tabla se observa que el gasto en Uniformes es el más frecuente
+(asumido por un 38.5\% de los hogares), pero su desembolso medio es el
+más bajo (109.82€). En el extremo opuesto, el Comedor y las Clases
+Particulares, aunque son menos frecuentes (22.6\% y 18.7\%
+respectivamente), suponen el mayor coste medio para las familias que sí
+los pagan, con 508.14€ y 449.11€ de media.
+
+\section{Análisis Bivariante del Gasto según las Características de los
+Estudiantes}\label{anuxe1lisis-bivariante-del-gasto-seguxfan-las-caracteruxedsticas-de-los-estudiantes}
+
+Una vez realizado el análisis univariante, se pretende observar las
+relaciones y los patrones explicativos que influyen en el gasto
+educativo. Para ello, se emplea el análisis bivariante, cruzando el
+gasto total de educación y su composición (bienes, servicios reglados o
+básicos y servicios no reglados o adicionales) con las variables
+estructurales del sistema educativo.
+
+Este análisis se centra en dos comparaciones fundamentales:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Distribución del gasto por tipo de centro. Se compararán los patrones
+  de gasto entre los tres tipos de educación (pública, concertada y
+  privada), analizando no solo las diferencias en el gasto total sino
+  también en la composición de la estructura del gasto. Esto permite
+  determinar cómo el tipo de centro afecta el coste promedio y la
+  inversión en bienes y servicios educativos.
+\item
+  Evolución del gasto por nivel educativo. Se examinará cómo el gasto
+  total evoluciona a lo largo de las etapas educativas, desde Infantil
+  hasta la Universidad. Esta comparación del gasto medio en diferentes
+  niveles identifica la intensidad y la carga económica que representa
+  cada etapa para los hogares.
+\end{enumerate}
+
+\subsection{Composición y promedio del gasto según el tipo de
+centro}\label{composiciuxf3n-y-promedio-del-gasto-seguxfan-el-tipo-de-centro}
+
+\begin{center}\includegraphics[width=0.6\linewidth,]{ProyectoAED_files/figure-latex/unnamed-chunk-10-1} \end{center}
+
+La gráfica revela una fuerte disparidad en el gasto promedio total entre
+los tipos de financiación, siendo la enseñanza privada el coste más
+elevado superando los 4.500€, seguida por la concertada cercana a 2.000€
+y finalmente por la pública alrededor de los 1000€. En los tres casos,
+el componente dominante es el de servicios básicos (coste de estructura
+como matrícula, cuotas de centro o comedor). No obstante, este gasto es
+significativamente más alto en la enseñanza privada debido a que estos
+costes no están subvencionados por el Estado, contrariamente a lo que
+ocurre en la educación pública y parcielmente en la concertada. lo que
+confirma que el modelo de financiación es el principal factor que
+impulsa la brecha económica.
+
+El análisis de la composición demuestra que los bienes, aunque presentes
+en los tres tipos de centros, representan una proporción relativamente
+menor del gasto total y no son la causa de las grandes diferencias
+observadas entre ellos, estableciendo que las familias que optan por la
+enseñanza privada asumen un coste de servicios muy superior.
+
+\subsection{Gasto educativo total promedio por nivel
+educativo}\label{gasto-educativo-total-promedio-por-nivel-educativo}
+
+\begin{center}\includegraphics[width=0.6\linewidth,]{ProyectoAED_files/figure-latex/unnamed-chunk-11-1} \end{center}
+
+La gráfica revela que el gasto educativo promedio aumenta
+significativamente a lo largo de las etapas académicas. Esta evolución
+alcanza su punto máximo en la Universidad (€3.056), que es más del doble
+del gasto en la mayoría de las etapas inferiores, y experimenta su
+primer gran salto en Bachillerato. En las etapas iniciales, el 1er ciclo
+de Infantil destaca por ser más caro que las etapas posteriores, lo cual
+se atribuye a los costes no subvencionados de la etapa 0-3 años. Por
+otro lado, durante la educación obligatoria, el gasto se mantiene
+relativamente estable. Las transiciones a Bachillerato y Universidad
+marcan los puntos críticos donde el coste de tasas, materiales como
+portátiles y matrículas impacta más fuertemente en el presupuesto
+familiar.
+
+\end{document}
